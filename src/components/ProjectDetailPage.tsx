@@ -1043,18 +1043,18 @@ public class PropertySearchRepository {
                       </div>
                     </div>
 
-                    {'architecture' in project && project.architecture?.database && (
+                    {'architecture' in project && project.architecture && 'database' in project.architecture && project.architecture.database && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                           데이터베이스 설계
                         </h3>
                         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
                           <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">
-                            {'architecture' in project && project.architecture?.database?.schema}
+                            {'architecture' in project && project.architecture && 'database' in project.architecture ? project.architecture.database?.schema : ''}
                           </pre>
                           <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
                             <p className="text-gray-600 dark:text-gray-300">
-                              <strong>설계 원칙:</strong> {'architecture' in project && project.architecture?.database?.design}
+                              <strong>설계 원칙:</strong> {'architecture' in project && project.architecture && 'database' in project.architecture ? project.architecture.database?.design : ''}
                             </p>
                           </div>
                         </div>
