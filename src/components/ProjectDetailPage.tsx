@@ -1001,7 +1001,7 @@ public class PropertySearchRepository {
                 </section>
               )}
 
-              {activeSection === "architecture" && project.architecture && (
+              {activeSection === "architecture" && 'architecture' in project && project.architecture && (
                 <section>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                     🏗️ 아키텍처 & 설계
@@ -1014,7 +1014,7 @@ public class PropertySearchRepository {
                       </h3>
                       <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 overflow-x-auto">
                         <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre">
-                          {project.architecture.systemDiagram}
+                          {'architecture' in project && project.architecture?.systemDiagram}
                         </pre>
                       </div>
                     </div>
@@ -1024,7 +1024,7 @@ public class PropertySearchRepository {
                         주요 컴포넌트
                       </h3>
                       <div className="grid gap-4">
-                        {project.architecture.keyComponents.map((component, index) => (
+                        {'architecture' in project && project.architecture?.keyComponents?.map((component, index) => (
                           <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                             <div className="flex items-center gap-2 mb-2">
                               <Server className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -1043,18 +1043,18 @@ public class PropertySearchRepository {
                       </div>
                     </div>
 
-                    {project.architecture.database && (
+                    {'architecture' in project && project.architecture?.database && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                           데이터베이스 설계
                         </h3>
                         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
                           <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">
-                            {project.architecture.database.schema}
+                            {'architecture' in project && project.architecture?.database?.schema}
                           </pre>
                           <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
                             <p className="text-gray-600 dark:text-gray-300">
-                              <strong>설계 원칙:</strong> {project.architecture.database.design}
+                              <strong>설계 원칙:</strong> {'architecture' in project && project.architecture?.database?.design}
                             </p>
                           </div>
                         </div>
