@@ -1071,7 +1071,7 @@ public class PropertySearchRepository {
                   </h2>
                   
                   <div className="space-y-8">
-                    {project.challenges.map((challenge, index) => (
+                    {'challenges' in project && project.challenges.map((challenge, index) => (
                       <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                           {challenge.problem}
@@ -1122,7 +1122,7 @@ public class PropertySearchRepository {
                 </section>
               )}
 
-              {activeSection === "tech" && (
+              {activeSection === "tech" && 'techStack' in project && project.techStack && (
                 <section>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                     🔧 사용 기술
@@ -1218,7 +1218,7 @@ public class PropertySearchRepository {
                       </div>
                     </div>
                     
-                    {project.lessons && (
+                    {'lessons' in project && project.lessons && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                           배운 점과 성장
@@ -1243,7 +1243,7 @@ public class PropertySearchRepository {
                       </div>
                     )}
                     
-                    {project.improvements && (
+                    {'improvements' in project && project.improvements && (
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                           향후 개선 방향
