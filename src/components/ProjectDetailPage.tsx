@@ -14,7 +14,6 @@ import {
   TrendingUp,
   AlertTriangle,
   CheckCircle,
-  Database,
   Server,
   Settings
 } from "lucide-react";

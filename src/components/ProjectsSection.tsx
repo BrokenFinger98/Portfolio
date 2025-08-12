@@ -1,4 +1,4 @@
-import { ExternalLink, Github, ArrowRight, Calendar, Users, TrendingUp } from "lucide-react";
+import { Github, ArrowRight, Calendar, Users, TrendingUp } from "lucide-react";
 
 export default function ProjectsSection() {
   const projects = [
@@ -148,7 +148,7 @@ export default function ProjectsSection() {
         </div>
 
         <div className="space-y-8">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <div
               key={project.id}
               className="bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-600"

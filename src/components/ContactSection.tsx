@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
+import { Mail, Github } from "lucide-react";
 
 export default function ContactSection() {
   const contactInfo = [
@@ -26,24 +26,6 @@ export default function ContactSection() {
     }
   ];
 
-  const socialLinks = [
-    {
-      icon: <Github className="w-6 h-6" />,
-      label: "GitHub",
-      href: "https://github.com/BrokenFinger98",
-      color: "hover:text-gray-900 dark:hover:text-white"
-    },
-    {
-      icon: <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 32 32">
-        <path d="M4.857 2C3.832 2 3 2.832 3 3.857v24.286C3 29.168 3.832 30 4.857 30h22.286C28.168 30 29 29.168 29 28.143V3.857C29 2.832 28.168 2 27.143 2H4.857z" fill="#20c997"/>
-        <path d="M8.5 8.5h15v2h-15zm0 4h15v2h-15zm0 4h15v2h-15zm0 4h10v2h-10z" fill="white"/>
-        <path d="M12.5 14.5l8 4-8 4v-8z" fill="white"/>
-      </svg>,
-      label: "Velog",
-      href: "https://velog.io/@brokenfinger/posts",
-      color: "hover:text-green-600"
-    }
-  ];
 
   return (
     <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-800">

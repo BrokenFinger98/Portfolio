@@ -65,7 +65,7 @@ export default function AboutSection() {
           </h2>
           <div className="max-w-4xl mx-auto">
             <h3 className="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
-              "{developmentPhilosophy.description}"
+              &quot;{developmentPhilosophy.description}&quot;
             </h3>
             <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
               {developmentPhilosophy.details}
