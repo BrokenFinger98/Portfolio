@@ -1,21 +1,21 @@
 import { Metadata } from 'next';
 import ProjectDetailPage from '@/components/ProjectDetailPage';
 
-interface RouteParams {
-  params: {
+interface RouteParamsPromise {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export function generateMetadata({ params }: RouteParams): Metadata {
-  const { id } = params;
+export async function generateMetadata({ params }: RouteParamsPromise): Promise<Metadata> {
+  const { id } = await params;
   return {
     title: `프로젝트 상세 - ${id} | 백엔드 개발자 유선우`,
     description: '백엔드 개발자 유선우의 프로젝트 상세 정보와 기술적 구현 내용',
   };
 }
 
-export default function ProjectPage({ params }: RouteParams) {
-  const { id } = params;
+export default async function ProjectPage({ params }: RouteParamsPromise) {
+  const { id } = await params;
   return <ProjectDetailPage projectId={id} />;
 }

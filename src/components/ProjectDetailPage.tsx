@@ -1156,7 +1156,7 @@ public class PropertySearchRepository {
                 </section>
               )}
 
-              {activeSection === "code" && project.codeExamples && (
+              {activeSection === "code" && 'codeExamples' in project && project.codeExamples && (
                 <section>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                     💻 핵심 구현 코드
