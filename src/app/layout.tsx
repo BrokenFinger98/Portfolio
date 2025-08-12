@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Backend Developer Portfolio",
-  description: "백엔드 개발자 포트폴리오 - Java, Spring Boot, 마이크로서비스 전문",
+  description: "백엔드 개발자 포트폴리오 - Java, Kotlin, Spring Boot",
 };
 
 export default function RootLayout({
