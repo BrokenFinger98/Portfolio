@@ -22,76 +22,57 @@ export default function SkillsSection() {
     {
       category: "Language",
       skills: [
-        { name: "Java", level: 5, experience: "실무 프로젝트 다수 경험", color: "bg-orange-500" },
-        { name: "Kotlin", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-purple-500" },
-        { name: "C", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-blue-600" },
-        { name: "JavaScript", level: 3, experience: "기본 사용법 숙지", color: "bg-yellow-500" },
+        { name: "Java", level: 5, color: "bg-gradient-to-r from-amber-400 to-orange-400" },
+        { name: "Kotlin", level: 5, color: "bg-gradient-to-r from-purple-400 to-violet-500" },
+        { name: "JavaScript", level: 3, color: "bg-gradient-to-r from-yellow-300 to-amber-400" },
+        { name: "C", level: 2, color: "bg-gradient-to-r from-slate-400 to-gray-500" },
       ]
     },
     {
-      category: "Back-end (상급)",
+      category: "Back-end",
       skills: [
-        { name: "Spring Boot", level: 5, experience: "실무 프로젝트 다수 경험", color: "bg-green-500" },
-        { name: "Spring Data JPA", level: 5, experience: "실무 프로젝트 다수 경험", color: "bg-green-600" },
+        { name: "Spring Boot", level: 5, color: "bg-gradient-to-r from-emerald-400 to-green-500" },
+        { name: "Spring Data JPA", level: 5, color: "bg-gradient-to-r from-green-400 to-emerald-600" },
+        { name: "QueryDSL", level: 5, color: "bg-gradient-to-r from-indigo-400 to-blue-500" },
+        { name: "Spring Security", level: 4, color: "bg-gradient-to-r from-lime-400 to-green-400" },
+        { name: "Spring Cloud", level: 4, color: "bg-gradient-to-r from-teal-300 to-cyan-400" },
+        { name: "Apache Kafka", level: 4, color: "bg-gradient-to-r from-gray-500 to-slate-600" },
       ]
     },
     {
-      category: "Back-end (중급)",
+      category: "Database & Cache",
       skills: [
-        { name: "Spring Security", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-green-400" },
-        { name: "Spring Cloud Gateway", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-green-300" },
-        { name: "Spring Cloud Config", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-green-300" },
-        { name: "Spring Cloud Eureka", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-green-300" },
-        { name: "QueryDSL", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-indigo-500" },
-        { name: "MyBatis", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-red-400" },
-        { name: "OAuth2.0", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-blue-400" },
-        { name: "Apache Kafka", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-gray-600" },
-        { name: "JUnit5", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-orange-400" },
-      ]
-    },
-    {
-      category: "Database",
-      skills: [
-        { name: "MySQL", level: 5, experience: "실무 프로젝트 다수 경험", color: "bg-blue-500" },
-        { name: "Redis", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-red-500" },
-        { name: "MongoDB", level: 3, experience: "기본 사용법 숙지", color: "bg-green-600" },
+        { name: "MySQL", level: 5, color: "bg-gradient-to-r from-sky-400 to-blue-500" },
+        { name: "Redis", level: 5, color: "bg-gradient-to-r from-rose-400 to-red-500" },
+        { name: "MongoDB", level: 3, color: "bg-gradient-to-r from-green-500 to-emerald-600" },
       ]
     },
     {
       category: "Infrastructure",
       skills: [
-        { name: "Docker", level: 5, experience: "실무 프로젝트 다수 경험", color: "bg-blue-600" },
-        { name: "AWS EC2", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-orange-500" },
-        { name: "AWS S3", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-orange-400" },
-        { name: "Jenkins", level: 3, experience: "기본 사용법 숙지", color: "bg-blue-400" },
-        { name: "AWS CloudFront", level: 3, experience: "기본 사용법 숙지", color: "bg-orange-300" },
+        { name: "Docker", level: 5, color: "bg-gradient-to-r from-cyan-400 to-blue-500" },
+        { name: "AWS", level: 4, color: "bg-gradient-to-r from-orange-400 to-amber-500" },
+        { name: "Jenkins", level: 4, color: "bg-gradient-to-r from-blue-400 to-indigo-500" },
       ]
     },
     {
       category: "Tools & Others",
       skills: [
-        { name: "Git", level: 5, experience: "실무 프로젝트 다수 경험", color: "bg-gray-700" },
-        { name: "Jira", level: 4, experience: "심화 학습 및 프로젝트 적용", color: "bg-blue-600" },
-        { name: "K6", level: 3, experience: "기본 사용법 숙지", color: "bg-purple-500" },
-        { name: "Vue.js", level: 3, experience: "기본 사용법 숙지", color: "bg-green-500" },
-        { name: "Swagger", level: 3, experience: "기본 사용법 숙지", color: "bg-green-400" },
+        { name: "Git", level: 5,  color: "bg-gradient-to-r from-slate-600 to-gray-700" },
+        { name: "JUnit5", level: 5, color: "bg-gradient-to-r from-orange-300 to-yellow-400" },
+        { name: "Jira", level: 4, color: "bg-gradient-to-r from-blue-500 to-indigo-600" },
       ]
     }
   ];
 
   const experienceLegend = [
-    { level: 5, description: "실무 프로젝트 다수 경험", icon: "⭐⭐⭐⭐⭐" },
-    { level: 4, description: "심화 학습 및 프로젝트 적용", icon: "⭐⭐⭐⭐" },
-    { level: 3, description: "기본 사용법 숙지", icon: "⭐⭐⭐" },
+    { level: 5, description: "숙련 활용 - 복잡한 기능 구현, 문제 해결 가능", icon: "⭐⭐⭐⭐⭐" },
+    { level: 4, description: "실무 활용 - 프로젝트 적용, 독립적 개발", icon: "⭐⭐⭐⭐" },
+    { level: 3, description: "기본 활용 - 기본 기능 구현, 학습 경험", icon: "⭐⭐⭐" },
+    { level: 2, description: "초보 활용 - 간단한 기능, 튜토리얼 경험", icon: "⭐⭐" },
+    { level: 1, description: "입문 수준 - 기본 개념 이해, 학습 중", icon: "⭐" },
   ];
 
-  const allTechStack = [
-    "Java", "Kotlin", "C", "JavaScript", "Spring Boot", "Spring Data JPA", 
-    "Spring Security", "Spring Cloud Gateway", "Spring Cloud Config", "Spring Cloud Eureka", 
-    "QueryDSL", "MyBatis", "OAuth2.0", "Apache Kafka", "JUnit5", "MySQL", 
-    "Redis", "MongoDB", "Docker", "AWS EC2", "AWS S3", "Jenkins", 
-    "AWS CloudFront", "Git", "Jira", "K6", "Vue.js", "Swagger"
-  ];
 
   return (
     <section id="skills" className="py-20 bg-gray-50 dark:bg-gray-800">
@@ -110,7 +91,9 @@ export default function SkillsSection() {
             <div className="space-y-2 text-left">
               {experienceLegend.map((legend, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <span className="text-sm">{legend.icon}</span>
+                  <div className="w-24 flex-shrink-0">
+                    <span className="text-sm">{legend.icon}</span>
+                  </div>
                   <span className="text-sm text-gray-600 dark:text-gray-300">{legend.description}</span>
                 </div>
               ))}
@@ -119,8 +102,9 @@ export default function SkillsSection() {
         </div>
 
         {/* 핵심 기술 스택 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {coreSkills.map((category, categoryIndex) => (
+        <div className="mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {coreSkills.slice(0, 4).map((category, categoryIndex) => (
             <div
               key={categoryIndex}
               className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
@@ -137,9 +121,6 @@ export default function SkillsSection() {
                       </span>
                       {renderStars(skill.level)}
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {skill.experience}
-                    </p>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
                         className={`h-2 rounded-full ${skill.color} transition-all duration-1000 ease-out`}
@@ -151,22 +132,35 @@ export default function SkillsSection() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* 전체 기술 스택 태그 */}
-        <div className="text-center">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-            사용 가능한 기술 스택
-          </h3>
-          <div className="flex flex-wrap gap-3 justify-center">
-            {allTechStack.map((tech, index) => (
-              <span
-                key={index}
-                className="px-4 py-2 bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium hover:scale-105 transition-transform cursor-default"
-              >
-                {tech}
-              </span>
-            ))}
+          </div>
+          
+          {/* 마지막 카드는 가운데 배치 */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-md">
+              <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center border-b border-gray-200 dark:border-gray-700 pb-3">
+                  {coreSkills[4].category}
+                </h3>
+                <div className="space-y-5">
+                  {coreSkills[4].skills.map((skill, skillIndex) => (
+                    <div key={skillIndex} className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-lg font-medium text-gray-900 dark:text-white">
+                          {skill.name}
+                        </span>
+                        {renderStars(skill.level)}
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full ${skill.color} transition-all duration-1000 ease-out`}
+                          style={{ width: `${(skill.level / 5) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

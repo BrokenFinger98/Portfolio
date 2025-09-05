@@ -1,10 +1,10 @@
-import { Code, Database, Server, Zap, Target, Users, BookOpen } from "lucide-react";
+import { Database, Server, Users, Zap } from "lucide-react";
 
 export default function AboutSection() {
   const developmentPhilosophy = {
     title: "개발 철학",
     description: "확장 가능하고 유지보수하기 쉬운 코드",
-    details: "복잡한 비즈니스 요구사항을 단순하고 명확한 코드로 해결하며, 미래의 변화에 유연하게 대응할 수 있는 아키텍처를 설계합니다."
+    details: "단순한 기능 구현을 위한 코드가 아니라, 유지보수하기 좋은 코드에 대해 끊임없이 고민하며, 미래의 변화에 유연하게 대응할 수 있는 아키텍처를 설계합니다."
   };
 
   const coreStrengths = [
@@ -12,48 +12,28 @@ export default function AboutSection() {
       icon: <Server className="w-8 h-8" />,
       title: "MSA 아키텍처 설계",
       description: "마이크로서비스 패턴을 활용한 확장 가능한 시스템 구축",
-      achievement: "10개+ 서비스 운영 경험"
-    },
-    {
-      icon: <Zap className="w-8 h-8" />,
-      title: "성능 최적화",
-      description: "캐싱, DB 튜닝을 통한 시스템 성능 개선",
-      achievement: "응답시간 70% 단축"
+      achievement: "Spring Cloud를 활용한 MSA"
     },
     {
       icon: <Database className="w-8 h-8" />,
-      title: "대용량 데이터 처리",
-      description: "Kafka, Spring Batch를 활용한 실시간 데이터 파이프라인",
-      achievement: "일 100만건+ 처리"
+      title: "대용량 트래픽 정복",
+      description: "동시 접속 1만명도 문제없이! Redis와 Kafka로 트래픽 폭증 상황을 안정적으로 처리",
+      achievement: "쿠폰 발급 성능 3.4배 급상승"
     },
     {
-      icon: <Code className="w-8 h-8" />,
-      title: "클린 아키텍처",
-      description: "테스트 가능하고 유지보수 용이한 코드 설계",
-      achievement: "코드 커버리지 90%+"
+      icon: <Zap className="w-8 h-8" />,
+      title: "AI와 함께하는 스마트 개발",
+      description: "Claude Code로 실시간 코딩부터 ChatGPT API까지, AI를 개발 파트너로 활용",
+      achievement: "생산성 극대화 + 코드 퀄리티 Up"
+    },
+    {
+      icon: <Users className="w-8 h-8" />,
+      title: "소통의 달인",
+      description: "Jira로 이슈 추적, Notion으로 지식 공유, Confluence로 문서화까지 완벽 정리",
+      achievement: "팀워크 만점! 프로젝트 성공률 Up"
     }
   ];
 
-  const differentiators = [
-    {
-      icon: <Target className="w-6 h-6" />,
-      title: "문제 해결 중심 사고",
-      description: "비즈니스 문제를 기술적 솔루션으로 전환하는 능력",
-      example: "레거시 시스템을 무중단으로 MSA로 전환"
-    },
-    {
-      icon: <Users className="w-6 h-6" />,
-      title: "협업 및 커뮤니케이션",
-      description: "개발팀, 기획팀과의 원활한 소통으로 프로젝트 성공 이끔",
-      example: "크로스 펑셔널 팀에서 기술 리드 역할 수행"
-    },
-    {
-      icon: <BookOpen className="w-6 h-6" />,
-      title: "지속적 학습 및 개선",
-      description: "새로운 기술을 빠르게 학습하고 실무에 적용",
-      example: "Kotlin 도입으로 개발 생산성 30% 향상"
-    }
-  ];
 
   return (
     <section id="about" className="py-20 bg-white dark:bg-gray-900">
@@ -101,36 +81,6 @@ export default function AboutSection() {
           </div>
         </div>
 
-        {/* 차별화 포인트 */}
-        <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-800 dark:via-gray-750 dark:to-gray-700 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
-            차별화 포인트
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {differentiators.map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="flex justify-center mb-4">
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
-                    <div className="text-blue-600 dark:text-blue-400">
-                      {item.icon}
-                    </div>
-                  </div>
-                </div>
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
-                  {item.title}
-                </h4>
-                <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm">
-                  {item.description}
-                </p>
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-3">
-                  <p className="text-blue-600 dark:text-blue-400 font-medium text-sm">
-                    💡 {item.example}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
