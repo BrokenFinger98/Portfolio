@@ -935,14 +935,14 @@ class ContractEnforcementAspect {
         }
       ]
     },
-    memeto: {
+    memento: {
       title: "MEMENTO",
       subtitle: "TDD와 개인 PC 서버 운영을 통한 추억 공유 플랫폼",
       thumbnail: "💭",
       duration: "2025.07.29 ~ 2025.09.05 (5주)",
       team: "백엔드 3명",
       role: "Back-End, DevOps",
-      github: "https://github.com/mmt-12/back-end",
+      github: "https://github.com/BrokenFinger98/memento",
       demo: "#",
       overview: {
         background: "클라우드 서비스 비용 부담과 개발 과정에서의 테스트 중요성, 그리고 팀 협업 시 API 문서 관리의 어려움을 해결하고자 했습니다. 개인 PC를 직접 서버로 운영하며 인프라 비용을 절약하고, TDD와 문서 자동화를 통해 개발 품질을 높이는 것이 목표였습니다.",

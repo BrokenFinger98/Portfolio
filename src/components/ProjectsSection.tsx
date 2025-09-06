@@ -3,7 +3,7 @@ import { ArrowRight, Calendar, Users, TrendingUp } from "lucide-react";
 export default function ProjectsSection() {
   const projects = [
     {
-      id: "memeto",
+      id: "memento",
       priority: 1,
       title: "MEMENTO",
       shortDescription: "싸피생을 위한 추억 아카이빙 웹 서비스",
@@ -27,7 +27,7 @@ export default function ProjectsSection() {
         "Minio를 활용한 S3 호환 오브젝트 스토리지 구현",
         "Spring REST DOCS로 테스트 코드 기반 문서 자동 생성"
       ],
-      github: "https://github.com/mmt-12/back-end",
+      github: "https://github.com/BrokenFinger98/memento",
       demo: "#",
     },
     {
