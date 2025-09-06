@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { 
   ArrowLeft, 
   ExternalLink, 
@@ -21,8 +23,103 @@ interface ProjectDetailPageProps {
   projectId: string;
 }
 
+interface KeyFeature {
+  title: string;
+  description: string[];
+}
+
+interface ImageItem {
+  title?: string;
+  src: string;
+  alt?: string;
+}
+
+interface TechItem {
+  name: string;
+  icon: string;
+  reason?: string;
+  version?: string;
+}
+
 export default function ProjectDetailPage({ projectId }: ProjectDetailPageProps) {
   const [activeSection, setActiveSection] = useState("overview");
+
+  const renderKeyFeatures = (overview: Record<string, unknown>) => {
+    if (!('keyFeatures' in overview) || !overview.keyFeatures || !Array.isArray(overview.keyFeatures) || overview.keyFeatures.length === 0) {
+      return null;
+    }
+
+    return (
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          주요 기능
+        </h3>
+        <div className="space-y-5">
+          {(overview.keyFeatures as KeyFeature[]).map((feature: KeyFeature, index: number) => (
+            <div key={index}>
+              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                {feature.title}
+              </h4>
+              <ul className="list-none space-y-2 ml-4">
+                {feature.description.map((desc: string, descIndex: number) => (
+                  <li key={descIndex} className="text-gray-600 dark:text-gray-300 text-base flex items-start">
+                    <span className="text-gray-400 mr-3">•</span>
+                    {desc}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderVideoPortfolio = (project: Record<string, unknown>) => {
+    if (!('videoPortfolio' in project) || !project.videoPortfolio) {
+      return null;
+    }
+
+    return (
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          🎬 영상 포트폴리오
+        </h3>
+        <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+          <iframe
+            src={convertToEmbedUrl(project.videoPortfolio as string)}
+            className="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            title="프로젝트 영상 포트폴리오"
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const renderDemoVideo = (project: Record<string, unknown>) => {
+    if (!('demoVideo' in project) || !project.demoVideo) {
+      return null;
+    }
+
+    return (
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          🎥 시연 영상
+        </h3>
+        <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+          <iframe
+            src={convertToEmbedUrl(project.demoVideo as string)}
+            className="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            title="프로젝트 시연 영상"
+          />
+        </div>
+      </div>
+    );
+  };
 
   // YouTube URL을 임베드 URL로 변환하는 함수
   const convertToEmbedUrl = (url: string) => {
@@ -1667,67 +1764,11 @@ public class PromptTemplateLoader {
                       </p>
                     </div>
 
-                    {/* 주요 기능 */}
-                    {'keyFeatures' in project.overview && project.overview.keyFeatures && (
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                          주요 기능
-                        </h3>
-                        <div className="space-y-5">
-                          {project.overview.keyFeatures.map((feature: any, index: number) => (
-                            <div key={index}>
-                              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                                {feature.title}
-                              </h4>
-                              <ul className="list-none space-y-2 ml-4">
-                                {feature.description.map((desc: string, descIndex: number) => (
-                                  <li key={descIndex} className="text-gray-600 dark:text-gray-300 text-base flex items-start">
-                                    <span className="text-gray-400 mr-3">•</span>
-                                    {desc}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    {renderKeyFeatures(project.overview)}
 
-                    {/* 영상 포트폴리오 */}
-                    {'videoPortfolio' in project && project.videoPortfolio && (
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                          🎬 영상 포트폴리오
-                        </h3>
-                        <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
-                          <iframe
-                            src={convertToEmbedUrl(project.videoPortfolio)}
-                            className="w-full h-full"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            title="프로젝트 영상 포트폴리오"
-                          />
-                        </div>
-                      </div>
-                    )}
+                    {renderVideoPortfolio(project)}
 
-                    {/* 시연영상 */}
-                    {'demoVideo' in project && project.demoVideo && (
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                          🎥 시연영상
-                        </h3>
-                        <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
-                          <iframe
-                            src={convertToEmbedUrl(project.demoVideo || '')}
-                            className="w-full h-full"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            title="프로젝트 시연영상"
-                          />
-                        </div>
-                      </div>
-                    )}
+                    {renderDemoVideo(project)}
 
                     {/* 화면 이미지 */}
                     {'images' in project && project.images && 'gallery' in project.images && (
@@ -1836,10 +1877,10 @@ public class PromptTemplateLoader {
                           {('erd' in project.images && project.images.erd) ? 'ERD 다이어그램' : '아키텍처 다이어그램'}
                         </h3>
                         <div className="space-y-6">
-                          {(('erd' in project.images && project.images.erd) ? 
+                          {((('erd' in project.images && project.images.erd) ? 
                             project.images.erd : 
-                            ('architecture' in project.images ? project.images.architecture : [])
-                          ).map((image: any, index: number) => (
+                            ('architecture' in project.images ? project.images.architecture : [])) as ImageItem[]
+                          ).map((image: ImageItem, index: number) => (
                             <div key={index} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
                               {image.title && (
                                 <div className="p-4 bg-gray-50 dark:bg-gray-900">
@@ -1935,7 +1976,7 @@ public class PromptTemplateLoader {
                           {category}
                         </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
-                          {techs.map((tech: any, index: number) => (
+                          {techs.map((tech: TechItem, index: number) => (
                             <div key={index} className="text-center p-4">
                               <img 
                                 src={tech.icon}
@@ -1971,10 +2012,22 @@ public class PromptTemplateLoader {
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                           {example.title}
                         </h3>
-                        <div className="bg-gray-900 rounded-lg p-6 overflow-x-auto">
-                          <pre className="text-sm text-gray-100">
-                            <code>{example.code}</code>
-                          </pre>
+                        <div className="rounded-lg overflow-hidden">
+                          <SyntaxHighlighter
+                            language={example.language}
+                            style={oneDark}
+                            customStyle={{
+                              margin: 0,
+                              padding: '1.5rem',
+                              fontSize: '0.875rem',
+                              lineHeight: '1.5',
+                            }}
+                            showLineNumbers={true}
+                            wrapLines={true}
+                            wrapLongLines={true}
+                          >
+                            {example.code}
+                          </SyntaxHighlighter>
                         </div>
                       </div>
                     ))}
