@@ -144,64 +144,412 @@ export default function ProjectDetailPage({ projectId }: ProjectDetailPageProps)
 
   // 프로젝트 데이터 (실제로는 API나 데이터베이스에서 가져올 수 있음)
   const projectsData = {
+    memento: {
+      title: "MEMENTO",
+      subtitle: "TDD와 개인 PC 서버 운영을 통한 추억 공유 플랫폼",
+      thumbnail: "💭",
+      duration: "2025.07.29 ~ 2025.09.05 (5주)",
+      team: "백엔드 3명",
+      role: "Back-End, DevOps",
+      github: "https://github.com/BrokenFinger98/memento",
+      demo: "#",
+      overview: {
+        background: "클라우드 서비스 비용 부담과 개발 과정에서의 테스트 중요성, 그리고 팀 협업 시 API 문서 관리의 어려움을 해결하고자 했습니다. 개인 PC를 직접 서버로 운영하며 인프라 비용을 절약하고, TDD와 문서 자동화를 통해 개발 품질을 높이는 것이 목표였습니다.",
+        objectives: [
+          "개인 PC 기반 Linux 서버 구축 및 운영 경험 습득",
+          "Minio 오브젝트 스토리지를 활용한 미디어 파일 관리 시스템",
+          "TDD 방법론 도입으로 안정적인 소프트웨어 개발",
+          "Spring REST DOCS를 통한 API 문서 자동화"
+        ],
+      },
+      challenges: [
+        {
+          problem: "클라우드 비용 절약을 위한 개인 서버 운영",
+          situation: "AWS나 GCP 같은 클라우드 서비스 비용이 부담스러워 개인 PC를 직접 서버로 활용해야 했지만, 안정적인 운영과 외부 접근 설정에 대한 경험이 부족했습니다.",
+          solution: "개인 PC Linux 서버 구축과 포트 포워딩 설정",
+          implementation: [
+            "Ubuntu Server 설치 및 네트워크 설정",
+            "공유기 포트 포워딩으로 외부 접근 허용",
+            "방화벽 및 보안 설정으로 안전한 서버 운영",
+            "Docker Compose를 활용한 서비스 컨테이너화"
+          ],
+          result: "월 클라우드 비용 100% 절약 및 서버 운영 실무 경험 획득"
+        },
+        {
+          problem: "대용량 미디어 파일의 효율적 저장과 관리",
+          situation: "음성, 이미지 등 다양한 미디어 파일을 저장해야 했지만, 파일 시스템 기반 저장은 확장성과 관리 측면에서 한계가 있었습니다.",
+          solution: "Minio 오브젝트 스토리지 도입",
+          implementation: [
+            "Minio 서버 구축 및 S3 호환 API 설정",
+            "버킷 정책을 통한 파일 접근 권한 관리",
+            "Spring Boot와 Minio Client 연동 구현",
+            "미디어 파일 업로드/다운로드 API 개발"
+          ],
+          result: "확장 가능한 오브젝트 스토리지 구축 및 S3 호환성 확보"
+        },
+        {
+          problem: "협업 시 API 문서 동기화와 테스트 커버리지 확보",
+          situation: "팀 개발 과정에서 API 명세 변경 시 문서 업데이트가 지연되고, 수동 테스트로 인한 버그 발생 위험이 높았습니다.",
+          solution: "TDD 도입과 Spring REST DOCS 기반 문서 자동화",
+          implementation: [
+            "JUnit5와 MockMvc를 활용한 API 테스트 작성",
+            "Given-When-Then 패턴의 체계적인 테스트 코드",
+            "Spring REST DOCS로 테스트 기반 문서 자동 생성",
+            "Gradle 빌드 시 문서 자동 배포 설정"
+          ],
+          result: "90% 이상 테스트 커버리지 달성 및 항상 최신 상태의 API 문서 제공"
+        }
+      ],
+      techStack: {
+        backend: [
+          { name: "Java 17", reason: "최신 LTS 버전으로 안정성과 성능 보장" },
+          { name: "Spring Boot", reason: "빠른 개발과 운영 효율성" },
+          { name: "Spring Data JPA", reason: "객체 지향적 데이터 액세스 계층" },
+          { name: "Spring Security", reason: "사용자 인증과 권한 관리" }
+        ],
+        storage: [
+          { name: "Minio", reason: "S3 호환 오브젝트 스토리지로 미디어 파일 관리" },
+          { name: "MySQL", reason: "관계형 데이터의 일관성과 ACID 트랜잭션" }
+        ],
+        testing: [
+          { name: "JUnit5", reason: "TDD 방법론의 핵심 테스트 프레임워크" },
+          { name: "Spring REST DOCS", reason: "테스트 기반 API 문서 자동 생성" },
+          { name: "MockMvc", reason: "Spring MVC 컨트롤러 통합 테스트" }
+        ],
+        infrastructure: [
+          { name: "Ubuntu Server", reason: "개인 PC 기반 Linux 서버 환경" },
+          { name: "Docker", reason: "컨테이너 기반 서비스 배포" },
+          { name: "Docker Compose", reason: "멀티 컨테이너 애플리케이션 관리" }
+        ]
+      },
+      codeExamples: [
+        {
+          title: "Minio 오브젝트 스토리지 서비스",
+          language: "java",
+          code: `@Service
+@RequiredArgsConstructor
+public class MinioStorageService {
+    
+    private final MinioClient minioClient;
+    
+    @Value("\${minio.bucket.name}")
+    private String bucketName;
+    
+    public String uploadFile(MultipartFile file, String fileName) throws Exception {
+        // 버킷 존재 확인 및 생성
+        ensureBucketExists();
+        
+        // 파일 업로드
+        minioClient.putObject(
+            PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(fileName)
+                .stream(file.getInputStream(), file.getSize(), -1)
+                .contentType(file.getContentType())
+                .build()
+        );
+        
+        // 퍼블릭 URL 반환
+        return minioClient.getPresignedObjectUrl(
+            GetPresignedObjectUrlArgs.builder()
+                .method(Method.GET)
+                .bucket(bucketName)
+                .object(fileName)
+                .expiry(60 * 60 * 24) // 24시간 유효
+                .build()
+        );
+    }
+    
+    private void ensureBucketExists() throws Exception {
+        boolean bucketExists = minioClient.bucketExists(
+            BucketExistsArgs.builder().bucket(bucketName).build());
+        
+        if (!bucketExists) {
+            minioClient.makeBucket(
+                MakeBucketArgs.builder().bucket(bucketName).build());
+                
+            // 퍼블릭 읽기 정책 설정
+            String policy = """
+                {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": "*",
+                            "Action": "s3:GetObject",
+                            "Resource": "arn:aws:s3:::%s/*"
+                        }
+                    ]
+                }""".formatted(bucketName);
+                
+            minioClient.setBucketPolicy(
+                SetBucketPolicyArgs.builder()
+                    .bucket(bucketName)
+                    .config(policy)
+                    .build()
+            );
+        }
+    }
+}`
+        },
+        {
+          title: "TDD 기반 API 테스트 with Spring REST DOCS",
+          language: "java",
+          code: `@ExtendWith(RestDocumentationExtension.class)
+@WebMvcTest(MemoryController.class)
+class MemoryControllerTest {
+    
+    @Autowired
+    private MockMvc mockMvc;
+    
+    @MockBean
+    private MemoryService memoryService;
+    
+    @Test
+    @DisplayName("추억 생성 API 테스트")
+    void createMemory_Success() throws Exception {
+        // Given
+        MemoryCreateRequest request = MemoryCreateRequest.builder()
+            .title("소중한 추억")
+            .content("가족과 함께한 여행")
+            .build();
+            
+        MemoryResponse response = MemoryResponse.builder()
+            .id(1L)
+            .title(request.getTitle())
+            .content(request.getContent())
+            .createdAt(LocalDateTime.now())
+            .build();
+            
+        given(memoryService.createMemory(any(), any()))
+            .willReturn(response);
+        
+        // When & Then
+        mockMvc.perform(post("/api/memories")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.title").value(request.getTitle()))
+            .andExpect(jsonPath("$.content").value(request.getContent()))
+            .andDo(document("memory-create",
+                requestFields(
+                    fieldWithPath("title").description("추억 제목"),
+                    fieldWithPath("content").description("추억 내용")
+                ),
+                responseFields(
+                    fieldWithPath("id").description("추억 ID"),
+                    fieldWithPath("title").description("추억 제목"),
+                    fieldWithPath("content").description("추억 내용"),
+                    fieldWithPath("createdAt").description("생성 일시")
+                )
+            ));
+    }
+}`
+        }
+      ],
+      achievements: [
+        {
+          metric: "인프라 비용",
+          before: "클라우드 월 $50+",
+          after: "개인 서버 $0",
+          improvement: "100% 절약",
+          description: "개인 PC Linux 서버 구축 및 운영"
+        },
+        {
+          metric: "파일 스토리지",
+          before: "파일 시스템",
+          after: "Minio 오브젝트 스토리지",
+          improvement: "S3 호환성 확보",
+          description: "확장 가능한 오브젝트 스토리지 구축"
+        },
+        {
+          metric: "테스트 커버리지",
+          before: "수동 테스트",
+          after: "TDD 90%+",
+          improvement: "자동화 달성",
+          description: "JUnit5 기반 체계적 테스트 도입"
+        },
+        {
+          metric: "API 문서화",
+          before: "수동 관리",
+          after: "자동 생성",
+          improvement: "동기화 100%",
+          description: "Spring REST DOCS 기반 테스트 연동 문서"
+        }
+      ],
+      lessons: [
+        {
+          category: "DevOps & 인프라",
+          points: [
+            "개인 PC Ubuntu Server 구축 및 네트워크 설정 경험",
+            "Docker Compose를 활용한 멀티 컨테이너 서비스 운영",
+            "포트 포워딩과 방화벽 설정을 통한 안전한 서버 운영",
+            "Minio 오브젝트 스토리지 구축 및 S3 호환 API 활용"
+          ]
+        },
+        {
+          category: "TDD & 테스트",
+          points: [
+            "Given-When-Then 패턴의 체계적인 테스트 작성법",
+            "Spring REST DOCS를 활용한 테스트 기반 문서 자동화",
+            "MockMvc와 JUnit5를 통한 API 통합 테스트 경험",
+            "테스트 커버리지 90% 이상 달성을 통한 코드 품질 향상"
+          ]
+        },
+        {
+          category: "협업 & 문서화",
+          points: [
+            "API 문서 자동화로 팀 간 커뮤니케이션 효율성 증대",
+            "테스트 코드와 문서의 동기화를 통한 신뢰성 확보",
+            "Git Flow와 코드 리뷰를 통한 체계적 협업 프로세스"
+          ]
+        }
+      ],
+      improvements: [
+        "Kubernetes 클러스터 구축으로 컨테이너 오케스트레이션 자동화",
+        "Jenkins Pipeline을 통한 CI/CD 자동화 고도화",
+        "Prometheus + Grafana 모니터링 시스템 구축",
+        "Load Balancer 도입으로 고가용성 서버 아키텍처 구현"
+      ]
+    },
+    contract4k: {
+      title: "Contract4k(Contract for Kotlin)",
+      subtitle: "계약 기반 설계를 Kotlin DSL로 구현할 수 있도록 돕는 오픈소스 라이브러리",
+      thumbnail: "📚",
+      duration: "2025.04.14 ~ 2025.05.22 (5주)",
+      team: "개인 프로젝트",
+      role: "개발자",
+      github: "https://github.com/BrokenFinger98/contract4k",
+      demo: "#",
+      overview: {
+        background: "Java의 기존 계약 기반 설계(Contract-based Design) 도구들은 문법이 복잡하고 가독성이 떨어져 개발자들이 사용하기 어려웠습니다. Kotlin의 DSL(Domain Specific Language) 특성을 활용하여 더 직관적이고 사용하기 쉬운 계약 라이브러리를 만들고자 했습니다.",
+        objectives: [
+          "Kotlin DSL 기반 직관적인 계약 작성 인터페이스 제공",
+          "컴파일 타임 위빙으로 런타임 성능 최적화",
+          "JitPack을 통한 간편한 의존성 배포",
+          "오픈소스 생태계에 기여"
+        ],
+      },
+      codeExamples: [
+        {
+          title: "Kotlin DSL 계약 정의",
+          language: "kotlin",
+          code: `@Contract
+class BankAccount(private var balance: Double) {
+    
+    @PreCondition("amount > 0")
+    @PostCondition("balance == old(balance) + amount")
+    fun deposit(amount: Double) {
+        require(amount > 0) { "입금액은 양수여야 합니다" }
+        balance += amount
+    }
+    
+    @PreCondition("amount > 0 && amount <= balance")
+    @PostCondition("balance == old(balance) - amount")
+    fun withdraw(amount: Double): Boolean {
+        return if (amount > 0 && amount <= balance) {
+            balance -= amount
+            true
+        } else {
+            false
+        }
+    }
+    
+    @Invariant("balance >= 0")
+    fun getBalance(): Double = balance
+}`
+        },
+        {
+          title: "AspectJ 기반 자동 검증",
+          language: "kotlin",
+          code: `@Aspect
+class ContractEnforcementAspect {
+    
+    @Around("@annotation(contract)")
+    fun enforceContract(joinPoint: ProceedingJoinPoint, contract: Contract): Any? {
+        val method = (joinPoint.signature as MethodSignature).method
+        val target = joinPoint.target
+        val args = joinPoint.args
+        
+        // Pre-condition 검증
+        method.annotations.filterIsInstance<PreCondition>()
+            .forEach { preCondition ->
+                val result = evaluateCondition(preCondition.value, target, args)
+                if (!result) {
+                    throw ContractViolationException(
+                        "Pre-condition violated: \${preCondition.value}"
+                    )
+                }
+            }
+        
+        // 원본 메서드 실행
+        val oldState = captureState(target)
+        val result = joinPoint.proceed()
+        
+        // Post-condition 검증
+        method.annotations.filterIsInstance<PostCondition>()
+            .forEach { postCondition ->
+                val conditionResult = evaluateCondition(
+                    postCondition.value, target, args, oldState, result
+                )
+                if (!conditionResult) {
+                    throw ContractViolationException(
+                        "Post-condition violated: \${postCondition.value}"
+                    )
+                }
+            }
+        
+        return result
+    }
+}`
+        }
+      ],
+      achievements: [
+        {
+          metric: "오픈소스 공개",
+          before: "개인 사용",
+          after: "JitPack 배포",
+          improvement: "100% 공개",
+          description: "GitHub + JitPack 기반 의존성 배포"
+        },
+        {
+          metric: "런타임 성능",
+          before: "리플렉션 기반",
+          after: "컴파일 타임",
+          improvement: "90% 개선",
+          description: "AspectJ compile-time weaving 적용"
+        }
+      ],
+      lessons: [
+        {
+          category: "라이브러리 설계",
+          points: [
+            "Kotlin DSL 설계와 구현 방법 학습",
+            "AspectJ를 활용한 AOP 프로그래밍 경험",
+            "오픈소스 라이브러리 배포 및 관리 프로세스 이해"
+          ]
+        }
+      ]
+    },
     aicheck: {
       title: "aicheck(아이췤)",
       subtitle: "AI를 활용한 금융 사기 예방 및 자녀의 건전한 금융 습관 형성 서비스",
       thumbnail: "/images/projects/aicheck/logo.png",
       duration: "2025.03.02 ~ 2025.04.11 (6주)",
-      team: "백엔드 1명 (PL), 프론트 2명, AI 1명",
+      team: "백엔드 2명 (PL), 프론트 2명, AI 2명",
       role: "Back-End, Infra, PL",
       github: "https://github.com/BrokenFinger98/aicheck-back",
       demo: "#",
       overview: {
-        background: "급증하는 금융 사기와 자녀의 잘못된 금융 습관 형성에 대한 사회적 우려가 높아지는 상황에서, AI 기술을 활용해 실시간으로 사기를 탐지하고 건전한 금융 습관을 형성할 수 있는 서비스의 필요성이 대두되었습니다.",
+        background: "급증하는 금융 사기와 자녀의 잘못된 금융 습관 형성에 대한 사회적 우려가 높아지는 상황에서, AI 기술을 활용해 실시간으로 사기를 탐지하고 건전한 금융 습관을 형성할 수 있는 서비스를 만들고자 하였습니다.",
         objectives: [
-          "AI 기반 실시간 금융 사기 탐지 시스템 구축",
+          "온디바이스 AI 기반 실시간 금융 사기 탐지 시스템 구축",
           "코어뱅킹·채널계 기반의 안정적인 MSA 아키텍처 설계",
           "실시간 알림과 사용자 경험을 위한 성능 최적화",
           "확장 가능하고 유지보수 용이한 금융 플랫폼 개발"
         ],
       },
       architecture: {
-        systemDiagram: `
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Mobile App    │    │   Web Client    │    │   Admin Panel   │
-│   (Flutter)     │    │    (React)      │    │    (React)      │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                        │                        │
-         └────────────────────────┼────────────────────────┘
-                                  │
-                         ┌─────────────────┐
-                         │  Nginx + SSL    │
-                         │  Load Balancer  │
-                         └─────────────────┘
-                                  │
-                         ┌─────────────────┐
-                         │ Spring Gateway  │
-                         │   API Gateway   │
-                         └─────────────────┘
-                                  │
-        ┌─────────────────────────┼─────────────────────────┐
-        │                        │                         │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   User Service  │    │Account Service  │    │  AI Service     │
-│   (인증/인가)     │    │   (계좌관리)     │    │  (사기탐지)      │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-        │                        │                         │
-        └────────────────────────┼─────────────────────────┘
-                                 │
-                    ┌─────────────────┐
-                    │ Config Server   │
-                    │  (설정 중앙화)   │
-                    └─────────────────┘
-                                 │
-        ┌────────────────────────┼────────────────────────┐
-        │                       │                        │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│     MySQL       │    │     Redis       │    │     Kafka       │
-│  (주요 데이터)    │    │    (캐시)       │    │  (이벤트 처리)   │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-`,
         keyComponents: [
           {
             name: "API Gateway",
@@ -538,239 +886,431 @@ public class AIServiceClient {
       subtitle: "개발자와 수강생 간의 실시간 과외 매칭 플랫폼",
       thumbnail: "/images/projects/ceonsun/logo.png",
       duration: "2025.01.13 ~ 2025.02.21 (6주)",
-      team: "백엔드 3명, 프론트 3명",
+      team: "백엔드 4명, 프론트 1명",
       role: "Back-End",
       github: "https://github.com/BrokenFinger98/SSAFY-ceon-sun",
       demo: "#",
       overview: {
-        background: "코로나19 이후 온라인 교육 수요가 급증하면서, 개발자와 수강생을 연결하는 전문화된 플랫폼의 필요성이 높아졌습니다. 특히 개발 분야는 실무 경험이 중요한 영역으로, 현업 개발자로부터 직접 배울 수 있는 과외 서비스의 수요가 증가했습니다.",
+        background: "코로나19 이후 온라인 교육 수요가 급증하면서, 다양한 과외 매칭 플랫폼이 만들어졌습니다. 대부분 다양한 종류의 과외에 대한 서비스들였기 때문에, 개발자에 특화된 과외 매칭 플랫폼을 만들고 싶었습니다.",
         objectives: [
           "개발자-수강생 실시간 매칭 시스템 구축",
           "대용량 트래픽 처리 가능한 쿠폰 발급 시스템 개발",
           "안정적인 결제 시스템과 정산 기능 구현",
           "MSA 기반 확장 가능한 플랫폼 아키텍처 설계"
         ],
+        keyFeatures: [
+          {
+            title: "로그인",
+            description: [
+              "Kakao 소셜 로그인을 이용한 간편한 회원가입 및 로그인"
+            ]
+          },
+          {
+            title: "학생",
+            description: [
+              "학생 소개글 작성을 통해 본인이 수강하기 원하는 카테고리 설정 가능",
+              "카테고리, 성별, 나이를 필터로 하는 선생 검색 기능 제공",
+              "과외 문의하기 버튼을 통해 선생에게 과외 문의",
+              "수업 신청을 요청 받고, 결제를 통해 수강 횟수 구매"
+            ]
+          },
+          {
+            title: "선생",
+            description: [
+              "선생 소개글 작성을 통해 본인이 수업 가능한 카테고리 설정 가능",
+              "과외 문의를 보낸 학생과 채팅으로 대화 후, 수업 신청 기능 제공"
+            ]
+          },
+          {
+            title: "채팅",
+            description: [
+              "학생과 선생의 1:1 실시간 채팅을 통해 과외 문의 및 과외 일정 조정 기능 제공",
+            ]
+          },
+          {
+            title: "알림",
+            description: [
+              "채팅, 쿠폰 발급 이벤트, 과외 등 다양한 알림을 실시간으로 제공",
+            ]
+          },
+          {
+            title: "쿠폰",
+            description: [
+              "선착순 쿠폰 발급 이벤트 제공",
+              "발급받은 쿠폰을 이용해 수강권 결제 금액 할인"
+            ]
+          },
+          {
+            title: "결제",
+            description: [
+              "포트원 API를 이용한 테스트 결제 기능 구현"
+            ]
+          },
+          {
+            title: "랭킹",
+            description: [
+              "선생 랭킹을 통해 학생들에게 더 많은 노출 기회 제공"
+            ]
+          }
+        ]
       },
       architecture: {
-        systemDiagram: `
-┌─────────────────┐    ┌─────────────────┐
-│   Web Client    │    │   Mobile App    │
-│    (React)      │    │   (Flutter)     │
-└─────────────────┘    └─────────────────┘
-         │                        │
-         └────────────────────────┼────────────────────────┐
-                                  │                         │
-                         ┌─────────────────┐               │
-                         │ Spring Gateway  │               │
-                         │   + Eureka      │               │
-                         └─────────────────┘               │
-                                  │                         │
-        ┌─────────────────────────┼─────────────────────────┘
-        │                        │                         
-        │                        │                        
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   User Service  │    │ Tutoring Service│    │ Coupon Service  │
-│     (인증)       │    │   (과외매칭)     │    │  (쿠폰발급)      │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-        │                        │                         │
-        │                        │                         │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│Payment Service  │    │ Config Server   │    │Discovery Service│
-│   (결제처리)     │    │   (설정관리)     │    │   (서비스등록)   │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-        │                        │                         │
-        └────────────────────────┼─────────────────────────┘
-                                 │
-        ┌────────────────────────┼────────────────────────┐
-        │                       │                        │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│     MySQL       │    │     Redis       │    │     Kafka       │
-│  (주요 데이터)    │    │ (분산락/캐시)    │    │ (이벤트 처리)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-`,
         keyComponents: [
           {
+            name: "Config Service",
+            description: "MSA 전체 서비스의 중앙 집중식 설정 관리",
+            tech: "Spring Cloud Config Server, AMQP Bus"
+          },
+          {
+            name: "Discovery Service",
+            description: "서비스 등록/발견 및 로드 밸런싱",
+            tech: "Netflix Eureka Server"
+          },
+          {
             name: "Gateway Service",
-            description: "Eureka 서비스 디스커버리와 라우팅 관리",
-            tech: "Spring Cloud Gateway, Eureka"
+            description: "API 게이트웨이로 모든 클라이언트 요청의 진입점",
+            tech: "Spring Cloud Gateway, Eureka Client"
           },
           {
-            name: "User Service",
-            description: "사용자 인증/인가, 프로필 관리",
-            tech: "Spring Security, JWT, OAuth2"
+            name: "Auth Service",
+            description: "Kakao OAuth 소셜 로그인 및 JWT 토큰 관리",
+            tech: "OAuth2, JWT, Redis, Kakao API"
           },
           {
-            name: "Tutoring Service", 
-            description: "과외 요청, 매칭, 스케줄 관리",
-            tech: "Spring Boot, JPA, QueryDSL"
+            name: "Member Service",
+            description: "사용자(학생/선생) 프로필 및 검색 관리",
+            tech: "Spring Data JPA, MySQL, AWS S3"
+          },
+          {
+            name: "Class Service",
+            description: "온라인 화상 수업 및 수업 요청/계약 관리",
+            tech: "OpenVidu, JPA, MySQL, Kafka"
+          },
+          {
+            name: "Chat Service",
+            description: "실시간 1:1 채팅 및 WebSocket 연결 관리",
+            tech: "WebSocket, Kafka, MongoDB, JWT"
+          },
+          {
+            name: "Chat Consumer",
+            description: "채팅 메시지 비동기 처리 및 MongoDB 저장",
+            tech: "Kafka Consumer, MongoDB"
           },
           {
             name: "Coupon Service",
-            description: "대용량 트래픽 처리 선착순 쿠폰 발급",
-            tech: "Redis, Kafka, Spring Boot"
+            description: "쿠폰 생성/검증 및 기본 CRUD 관리",
+            tech: "Spring Data JPA, MySQL"
+          },
+          {
+            name: "Coupon Kafka Service",
+            description: "쿠폰 발급 시스템",
+            tech: "Redis, Kafka Streams, JDBC Bulk Insert"
           },
           {
             name: "Payment Service",
-            description: "PG사 연동 결제 처리 및 정산",
-            tech: "Spring Boot, 토스페이먼츠 API"
+            description: "아임포트 연동 결제 처리 및 결제 이력 관리",
+            tech: "Iamport API, Kafka, MySQL"
+          },
+          {
+            name: "Rank Service",
+            description: "선생님 랭킹 계산 및 평가 통계 관리",
+            tech: "Spring Data JPA, MySQL"
+          },
+          {
+            name: "Notification Service",
+            description: "실시간 알림 전송 및 알림 이력 관리",
+            tech: "Server-Sent Events, Kafka, MongoDB"
           }
         ]
       },
       challenges: [
         {
-          problem: "선착순 쿠폰 발급 시 대용량 트래픽 처리 성능 한계",
-          situation: "인기 강의의 할인 쿠폰 발급 시 동시 접속자 1만명+ 상황에서 기존 DB 기반 처리로는 응답 지연과 데드락이 빈발했습니다.",
-          solution: "Redis 분산락 + Kafka 이벤트 처리 조합",
+          problem: "대규모 트래픽 상황(동시 접속)에서 안정적으로 작동하는 선착순 쿠폰 발급 이벤트 기능 구현",
+          situation: "단순 Write/Update, DB Pessimistic Lock으로 구현 -> 대규모 트래픽을 버티기에 성능이 부족",
+          solution: "Redis 재고 및 발급 중복 관리 + Kafka 이벤트 처리 조합",
           implementation: [
-            "Redis SETNX를 활용한 분산락으로 동시성 제어",
-            "쿠폰 재고를 Redis에서 원자적 연산으로 관리",
-            "발급 성공 시 Kafka로 비동기 DB 저장",
-            "사용자에게는 즉시 응답, 실제 쿠폰 정보는 비동기 처리"
+            "쿠폰 발급 관리와 DB Write 작업을 분리",
+            "Redis로 재고 및 발급 중복 관리",
+            "Kafka를 통해 비동기로 DB 저장 처리",
+            "JDBC Bulk Insert 활용하여 일정 건수(최대 1000건)까지 쌓은 뒤 일괄 Insert",
           ],
-          result: "처리 성능 3.4배 향상 (300 TPS → 1,020 TPS), 응답시간 95% 단축"
+          result: "처리 성능 3.4배 향상 (285 TPS → 966 TPS), 사용자 응답 속도 향상"
         },
-        {
-          problem: "마이크로서비스 간 데이터 일관성 보장",
-          situation: "결제 완료 후 과외 예약 상태 업데이트, 쿠폰 사용 처리 등 여러 서비스 간 트랜잭션 처리 필요",
-          solution: "Saga 패턴과 보상 트랜잭션 구현",
-          implementation: [
-            "Choreography 방식의 이벤트 기반 Saga 패턴 적용",
-            "각 단계별 보상 트랜잭션 정의",
-            "실패 시 자동 롤백 및 알림 처리"
-          ],
-          result: "분산 트랜잭션 성공률 99.7% 달성, 데이터 불일치 제로화"
-        }
       ],
       techStack: {
-        backend: [
-          { name: "Java 11", reason: "팀 전체의 숙련도와 안정성 고려" },
-          { name: "Spring Boot", reason: "빠른 개발과 MSA 적합성" },
-          { name: "Spring Cloud", reason: "마이크로서비스 생태계 지원" },
-          { name: "Spring Data JPA", reason: "객체지향적 데이터 액세스" },
-          { name: "QueryDSL", reason: "타입 안전한 동적 쿼리 작성" }
+        "Back-end": [
+          { name: "Java", version: "17", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
+          { name: "Spring Boot", version: "3.4.1", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
+          { name: "Spring Data JPA", version: "", icon: "https://spring.io/img/projects/spring-data.svg" },
+          { name: "Spring JDBC", version: "", icon: "https://spring.io/img/projects/spring-data.svg" },
+          { name: "QueryDSL", version: "", icon: "https://cdn.inflearn.com/public/files/courses/328989/c1b5cabc-03f0-4cd8-9f98-8ec0e2f42378/329248-4.png" },
+          { name: "Spring Cloud", version: "", icon: "https://spring.io/img/projects/spring-cloud.svg" },
+          { name: "Spring Security", version: "", icon: "https://spring.io/img/projects/spring-security.svg" },
+          { name: "OAuth 2.0", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oauth/oauth-original.svg" },
+          { name: "WebSocket", version: "", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwqWz7aMlinMNdeQ2i5p8ITrqe9f81e9W_xA&s" },
+          { name: "Kafka", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg" },
         ],
-        messaging: [
-          { name: "Apache Kafka", reason: "고성능 이벤트 스트리밍" },
-          { name: "Redis", reason: "분산락과 고속 캐싱" },
-          { name: "MySQL", reason: "ACID 특성이 필요한 비즈니스 데이터" }
+        "Front-end": [
+          { name: "React", version: "19", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+          { name: "HTML5", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
+          { name: "CSS3", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
+          { name: "JavaScript", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" }
+        ],
+        "Database / Cache": [
+          { name: "MySQL", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
+          { name: "MongoDB", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-plain.svg" },
+          { name: "Redis", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" }
+        ],
+        "Infra": [
+          { name: "Docker", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
+          { name: "AWS EC2", version: "", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
+          { name: "AWS S3", version: "", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
+          { name: "Jenkins", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" }
         ]
       },
       codeExamples: [
         {
-          title: "Redis 분산락 기반 선착순 쿠폰 발급",
+          title: "쿠폰 재고 및 중복 발급 관리",
           language: "java",
-          code: `@Service
+          code: 
+`// 쿠폰 이벤트 생성 및 쿠폰 발급 요청을 처리하는 Service Class
 @RequiredArgsConstructor
-public class CouponService {
-    
-    private final RedisTemplate<String, String> redisTemplate;
-    private final KafkaTemplate<String, CouponEvent> kafkaTemplate;
-    private final CouponRepository couponRepository;
-    
-    private static final String COUPON_LOCK_KEY = "coupon:lock:";
-    private static final String COUPON_COUNT_KEY = "coupon:count:";
-    private static final int LOCK_TIMEOUT = 10; // seconds
-    
-    public CouponIssueResult issueCoupon(Long couponId, Long userId) {
-        String lockKey = COUPON_LOCK_KEY + couponId;
-        String countKey = COUPON_COUNT_KEY + couponId;
-        
-        // Redis 분산락 획득 시도
-        Boolean lockAcquired = redisTemplate.opsForValue()
-            .setIfAbsent(lockKey, String.valueOf(userId), 
-                        Duration.ofSeconds(LOCK_TIMEOUT));
-        
-        if (!lockAcquired) {
-            return CouponIssueResult.failure("쿠폰 발급 처리 중입니다.");
-        }
-        
-        try {
-            // 원자적 연산으로 재고 확인 및 차감
-            Long remainingCount = redisTemplate.opsForValue()
-                .decrement(countKey);
-                
-            if (remainingCount < 0) {
-                // 재고 복원
-                redisTemplate.opsForValue().increment(countKey);
-                return CouponIssueResult.failure("쿠폰이 모두 소진되었습니다.");
-            }
-            
-            // 쿠폰 발급 성공 - 비동기로 DB 저장
-            CouponEvent event = CouponEvent.builder()
-                .couponId(couponId)
-                .userId(userId)
-                .issuedAt(LocalDateTime.now())
-                .build();
-                
-            kafkaTemplate.send("coupon-issued-topic", event);
-            
-            return CouponIssueResult.success("쿠폰이 발급되었습니다.");
-            
-        } finally {
-            // 락 해제
-            redisTemplate.delete(lockKey);
-        }
-    }
-    
-    @KafkaListener(topics = "coupon-issued-topic")
-    @Transactional
-    public void saveCouponToDatabase(CouponEvent event) {
-        // 비동기로 실제 쿠폰 엔티티 저장
-        UserCoupon userCoupon = UserCoupon.builder()
-            .couponId(event.getCouponId())
-            .userId(event.getUserId())
-            .status(CouponStatus.ACTIVE)
-            .issuedAt(event.getIssuedAt())
-            .build();
-            
-        couponRepository.save(userCoupon);
-        
-        // 사용자에게 쿠폰 발급 완료 알림
-        notificationService.sendCouponIssuedNotification(event.getUserId());
-    }
+@Service
+public class CouponServiceImpl implements CouponService {
+
+	private final CouponKafkaClient couponKafkaClient;
+	private final NotificationClient notificationClient;
+	private final RedisService redisService;
+	private final KafkaProducerService kafkaProducerService;
+
+	@Override
+	public CreateCouponServiceResponse createCoupon(final CreateCouponServiceRequest request) {
+		final CreateCouponFeignResponse feignResponse = couponKafkaClient.createCoupon(
+			toCreateCouponFeignRequest(request));
+		final CreateCouponServiceResponse response = toCreateCouponServiceResponse(feignResponse);
+		try {
+			redisService.saveCouponInfo(toCouponCreateRedis(response));
+		} catch (BusinessException e) {
+			couponKafkaClient.cancelCoupon(response.couponId());
+			throw e;
+		}
+		notificationClient.sendNotification(makeMessage(request));
+		return response;
+	}
+
+	private NotificationRequestDto makeMessage(final CreateCouponServiceRequest request) {
+		return new NotificationRequestDto(
+			String.format("%s%%의 할인율을 가진 %s이 %s개 발급 가능합니다.",
+				request.discountRate(), request.name(), request.totalQuantity()));
+	}
+
+	@Override
+	public void issueCoupon(final IssueCouponServiceRequest request) {
+		redisService.issueCoupon(toCouponIssueRedis(request));
+		kafkaProducerService.sendCouponIssuedEvent(toIssueCouponRecord(request));
+	}
+}
+
+// 쿠폰 이벤트 발생시 쿠폰 생성 및 쿠폰 발급 요청시 쿠폰 발급 처리하는 Service Class 
+@Slf4j
+@RequiredArgsConstructor
+@Service
+public class RedisServiceImpl implements RedisService {
+
+	private final RedisTemplate<String, Object> redisTemplate;
+
+  // 쿠폰 이벤트 발생시 쿠폰 생성 
+	@Override
+	public void saveCouponInfo(final CouponCreateRedis couponCreateRedis) {
+		final String couponInfoKey = "coupon:info:" + couponCreateRedis.couponId();
+		final String couponRemainKey = "coupon:remain:" + couponCreateRedis.couponId();
+		final String issuedUsersKey = "coupon:issued:" + couponCreateRedis.couponId();
+		final Integer totalQuantity = couponCreateRedis.totalQuantity();
+		final CouponInfoValue couponInfoValue = toCouponInfoValue(couponCreateRedis);
+
+		final List<Object> txResults = redisTemplate.execute(new SessionCallback<List<Object>>() {
+			@Override
+			public List<Object> execute(final RedisOperations operations) throws DataAccessException {
+				operations.multi();
+				operations.opsForValue().set(couponRemainKey, totalQuantity, couponCreateRedis.validDays(), DAYS);
+				operations.expire(issuedUsersKey, couponCreateRedis.validDays(), DAYS);
+				operations.opsForValue().set(couponInfoKey, couponInfoValue, couponCreateRedis.validDays(), DAYS);
+				return operations.exec();
+			}
+		});
+
+		validateSaveTransaction(couponRemainKey, issuedUsersKey, couponInfoKey, txResults);
+	}
+
+	private void validateSaveTransaction(
+		final String couponRemainKey,
+		final String issuedUsersKey,
+		final String couponInfoKey,
+		final List<Object> txResults) {
+
+		if (txResults == null || txResults.isEmpty() || txResults.size() < 3) {
+			rollbackSaveTransaction(couponRemainKey, issuedUsersKey, couponInfoKey);
+			throw new BusinessException(REDIS_SAVE_FAILED);
+		}
+	}
+
+	private void rollbackSaveTransaction(
+		final String couponRemainKey,
+		final String issuedUsersKey,
+		final String couponInfoKey) {
+
+		try {
+			redisTemplate.delete(couponRemainKey);
+			redisTemplate.delete(issuedUsersKey);
+			redisTemplate.delete(couponInfoKey);
+		} catch (final Exception e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
+  // 쿠폰 발급(중복 발급 방지 및 재고 관리)
+	@Override
+	public void issueCoupon(final CouponIssueRedis couponIssueRedis) {
+		final String couponRemainKey = "coupon:remain:" + couponIssueRedis.couponId();
+		final String issuedUsersKey = "coupon:issued:" + couponIssueRedis.couponId();
+		final String memberId = couponIssueRedis.memberId().toString();
+
+		final Boolean alreadyIssued = redisTemplate.opsForSet().isMember(issuedUsersKey, memberId);
+		if (alreadyIssued != null && alreadyIssued) {
+			log.info("쿠폰 중복 발급 - memberId: {}, issuedUsersKey: {}", memberId, issuedUsersKey);
+			throw new BusinessException(COUPON_ALREADY_ISSUED);
+		}
+
+		final Object stockObj = redisTemplate.opsForValue().get(couponRemainKey);
+		if(stockObj == null) {
+			log.info("재고 없음");
+		}
+		int stock = stockObj != null ? Integer.parseInt(stockObj.toString()) : 0;
+		if (stock <= 0) {
+			log.info("쿠폰 재고 부족 - memberId: {}, issuedUsersKey: {}, 남은 수량: {}", memberId, issuedUsersKey, stock);
+			throw new BusinessException(COUPON_OUT_OF_STOCK);
+		}
+
+		final List<Object> txResults = redisTemplate.execute(new SessionCallback<List<Object>>() {
+			@Override
+			public List<Object> execute(final RedisOperations operations) throws DataAccessException {
+				operations.multi();
+				operations.opsForValue().decrement(couponRemainKey);
+				operations.opsForSet().add(issuedUsersKey, memberId);
+				return operations.exec();
+			}
+		});
+
+		validateIssueTransaction(txResults, couponRemainKey, issuedUsersKey, memberId);
+	}
+
+	private void validateIssueTransaction(final List<Object> txResults, final String remainingKey,
+		final String issuedUsersKey, final String memberId) {
+		if (txResults == null || txResults.isEmpty() || txResults.size() < 2) {
+			log.error("쿠폰 발급 트랜잭션 실패 - memberId: {}, issuedUsersKey: {}, 결과: {}", memberId, issuedUsersKey, txResults);
+			rollbackIssueTransaction(remainingKey, issuedUsersKey, memberId);
+			throw new BusinessException(REDIS_ISSUE_FAILED);
+		}
+
+		final Long remainingQuantity;
+		final Long addResult;
+		try {
+			remainingQuantity = txResults.get(0) != null ? Long.valueOf(txResults.get(0).toString()) : 0L;
+			addResult = txResults.get(1) != null ? Long.valueOf(txResults.get(1).toString()) : -1L;
+		} catch (final NumberFormatException e) {
+			log.error("Redis 트랜잭션 결과 변환 실패 - memberId: {}, issuedUsersKey: {}. 예외: {}", memberId, issuedUsersKey, e.getMessage(), e);
+			rollbackIssueTransaction(remainingKey, issuedUsersKey, memberId);
+			throw new BusinessException(REDIS_ISSUE_FAILED);
+		}
+
+		if (remainingQuantity < 0) {
+			log.warn("쿠폰 재고 부족 - memberId: {}, issuedUsersKey: {}, 남은 수량: {}", memberId, issuedUsersKey, remainingQuantity);
+			rollbackIssueTransaction(remainingKey, issuedUsersKey, memberId);
+			throw new BusinessException(COUPON_OUT_OF_STOCK);
+		}
+
+		if (addResult == 0) {
+			log.warn("쿠폰 중복 발급 - memberId: {}, issuedUsersKey: {}", memberId, issuedUsersKey);
+			rollbackIssueTransaction(remainingKey, issuedUsersKey, memberId);
+			throw new BusinessException(COUPON_ALREADY_ISSUED);
+		}
+	}
+
+	private void rollbackIssueTransaction(final String remainingKey, final String issuedUsersKey, final String memberId) {
+		try {
+			redisTemplate.opsForValue().increment(remainingKey);
+			redisTemplate.opsForSet().remove(issuedUsersKey, memberId);
+		} catch (final Exception e) {
+			log.error("쿠폰 발급 롤백 중 오류 발생 - memberId: {}, issuedUsersKey: {}. 예외: {}", memberId, issuedUsersKey, e.getMessage(), e);
+		}
+	}
+
+  // 발급 가능한 쿠폰 목록 조회
+	@Override
+	public SearchCouponsControllerResponse searchCoupons() {
+		final Set<String> keys = redisTemplate.keys("coupon:info:*");
+		final List<SearchCouponControllerResponse> couponList = new ArrayList<>();
+
+		if (keys == null || keys.isEmpty()) {
+			log.info("조회 가능한 쿠폰 정보가 없습니다.");
+			return new SearchCouponsControllerResponse(couponList);
+		}
+
+		for (final String infoKey : keys) {
+			try {
+				final Object valueObj = redisTemplate.opsForValue().get(infoKey);
+				final CouponInfoValue info = (CouponInfoValue) valueObj;
+
+				final String remainKey = "coupon:remain:" + info.couponId();
+				final Object remainObj = redisTemplate.opsForValue().get(remainKey);
+				final int remainingQuantity = remainObj != null ? Integer.parseInt(remainObj.toString()) : 0;
+
+				final SearchCouponControllerResponse couponResponse = toSearchCouponControllerResponse(info, remainingQuantity);
+				couponList.add(couponResponse);
+			} catch (final Exception e) {
+				log.error("쿠폰 정보 키 파싱 실패: {}. 예외: {}", infoKey, e.getMessage(), e);
+			}
+		}
+		return new SearchCouponsControllerResponse(couponList);
+	}
 }`
         }
       ],
       achievements: [
         {
           metric: "쿠폰 발급 성능",
-          before: "300 TPS",
-          after: "1,020 TPS",
+          before: "285 TPS",
+          after: "966 TPS",
           improvement: "3.4배 향상",
-          description: "Redis 분산락 + Kafka 비동기 처리"
-        },
-        {
-          metric: "응답 시간",
-          before: "2.5초", 
-          after: "120ms",
-          improvement: "95% 단축",
-          description: "메모리 기반 처리와 비동기 아키텍처"
-        },
-        {
-          metric: "동시 처리 사용자",
-          before: "500명",
-          after: "10,000명+",
-          improvement: "20배 증가",
-          description: "분산 시스템 아키텍처 적용"
+          description: "Redis 제고 및 중복 발급 관리 + Kafka를 이용한 DB Write 비동기"
         }
       ],
       lessons: [
         {
           category: "성능 최적화",
           points: [
-            "대용량 트래픽 상황에서의 분산락 활용법 습득",
-            "Redis와 Kafka를 조합한 고성능 이벤트 처리 경험",
-            "동시성 제어와 성능 최적화의 트레이드오프 이해"
+            "Redis와 Kafka를 조합한 고성능 이벤트 처리",
+            "K6를 이용한 API 부하 테스트",
+            "정량적인 수치를 통한 성능 개선"
+          ]
+        },
+        {
+          category: "Spring Cloud를 활용한 MSA 구축",
+          points: [
+            "Spring Eureka와 랜덤 포트 사용으로 포트 충돌 없이 Scale-out 가능",
+            "Spring Cloud Gateway + Spring Security를 모든 API 요청에 대해 인가 처리를 중앙화",
+            "Spring Cloud Config를 이용한 설정 정보 파일 관리를 외부 저장소로 관리, 대칭키 암호화를 사용하여 설정 정보 파일 암호화"
           ]
         }
       ],
+      improvements: [
+        "Active Profile을 이용한 개발 환경과 배포 환경 분리", 
+        "CQRS 패턴 적용을 통한 읽기/쓰기 성능 최적화",
+        "MSA 환경에서 데이터 원자성 보장",
+        "Event Driven Architecture(EDA), SAGA 패턴, Transactional Outbox 패턴을 함께 이용해서 충분한 데이터 원자성 확보"
+      ],
       images: {
         gallery: [
-          {
-            src: "/images/projects/ceonsun/architecture.png",
-            alt: "마이크로서비스 아키텍처",
-            title: "시스템 아키텍처"
-          },
           {
             src: "/images/projects/ceonsun/main.png",
             alt: "메인 페이지",
@@ -779,33 +1319,55 @@ public class CouponService {
           {
             src: "/images/projects/ceonsun/login.png",
             alt: "로그인 페이지",
-            title: "사용자 로그인"
+            title: "로그인"
           },
           {
-            src: "/images/projects/ceonsun/class.png",
-            alt: "과외 수업 화면", 
-            title: "과외 수업"
+            src: "/images/projects/ceonsun/student-description.png",
+            alt: "학생 소개글", 
+            title: "학생 소개글"
           },
           {
-            src: "/images/projects/ceonsun/chatting.png",
-            alt: "채팅 화면",
-            title: "실시간 채팅"
+            src: "/images/projects/ceonsun/teacher-description.png",
+            alt: "선생 소개글",
+            title: "선생 소개글"
+          },
+          {
+            src: "/images/projects/ceonsun/lecture-description.png",
+            alt: "강의 소개글",
+            title: "강의 소개글"
+          },
+          {
+            src: "/images/projects/ceonsun/class.png", 
+            alt: "수강 정보",
+            title: "수강 정보"
+          },
+          {
+            src: "/images/projects/ceonsun/notification.png",
+            alt: "알림",
+            title: "알림"
+          },
+          {
+            src: "/images/projects/ceonsun/coupon-notification.png",
+            alt: "쿠폰 알림",
+            title: "쿠폰 알림"
           },
           {
             src: "/images/projects/ceonsun/payment.png",
-            alt: "결제 화면",
-            title: "결제 시스템"
-          },
-          {
-            src: "/images/projects/ceonsun/notification.png", 
-            alt: "알림 화면",
-            title: "알림 기능"
+            alt: "결제",
+            title: "결제"
           },
           {
             src: "/images/projects/ceonsun/rank.png",
             alt: "강사 랭킹",
             title: "강사 랭킹 시스템"
           }
+        ],
+        architecture:[
+          {
+            src: "/images/projects/ceonsun/architecture.png",
+            alt: "마이크로서비스 아키텍처",
+            title: "시스템 아키텍처"
+          },
         ],
         erd: [
           {
@@ -815,393 +1377,6 @@ public class CouponService {
           }
         ]
       }
-    },
-    contract4k: {
-      title: "Contract4k(Contract for Kotlin)",
-      subtitle: "계약 기반 설계를 Kotlin DSL로 구현할 수 있도록 돕는 오픈소스 라이브러리",
-      thumbnail: "📚",
-      duration: "2025.04.14 ~ 2025.05.22 (5주)",
-      team: "개인 프로젝트",
-      role: "개발자",
-      github: "https://github.com/BrokenFinger98/contract4k",
-      demo: "#",
-      overview: {
-        background: "Java의 기존 계약 기반 설계(Contract-based Design) 도구들은 문법이 복잡하고 가독성이 떨어져 개발자들이 사용하기 어려웠습니다. Kotlin의 DSL(Domain Specific Language) 특성을 활용하여 더 직관적이고 사용하기 쉬운 계약 라이브러리를 만들고자 했습니다.",
-        objectives: [
-          "Kotlin DSL 기반 직관적인 계약 작성 인터페이스 제공",
-          "컴파일 타임 위빙으로 런타임 성능 최적화",
-          "JitPack을 통한 간편한 의존성 배포",
-          "오픈소스 생태계에 기여"
-        ],
-      },
-      codeExamples: [
-        {
-          title: "Kotlin DSL 계약 정의",
-          language: "kotlin",
-          code: `@Contract
-class BankAccount(private var balance: Double) {
-    
-    @PreCondition("amount > 0")
-    @PostCondition("balance == old(balance) + amount")
-    fun deposit(amount: Double) {
-        require(amount > 0) { "입금액은 양수여야 합니다" }
-        balance += amount
-    }
-    
-    @PreCondition("amount > 0 && amount <= balance")
-    @PostCondition("balance == old(balance) - amount")
-    fun withdraw(amount: Double): Boolean {
-        return if (amount > 0 && amount <= balance) {
-            balance -= amount
-            true
-        } else {
-            false
-        }
-    }
-    
-    @Invariant("balance >= 0")
-    fun getBalance(): Double = balance
-}`
-        },
-        {
-          title: "AspectJ 기반 자동 검증",
-          language: "kotlin",
-          code: `@Aspect
-class ContractEnforcementAspect {
-    
-    @Around("@annotation(contract)")
-    fun enforceContract(joinPoint: ProceedingJoinPoint, contract: Contract): Any? {
-        val method = (joinPoint.signature as MethodSignature).method
-        val target = joinPoint.target
-        val args = joinPoint.args
-        
-        // Pre-condition 검증
-        method.annotations.filterIsInstance<PreCondition>()
-            .forEach { preCondition ->
-                val result = evaluateCondition(preCondition.value, target, args)
-                if (!result) {
-                    throw ContractViolationException(
-                        "Pre-condition violated: \${preCondition.value}"
-                    )
-                }
-            }
-        
-        // 원본 메서드 실행
-        val oldState = captureState(target)
-        val result = joinPoint.proceed()
-        
-        // Post-condition 검증
-        method.annotations.filterIsInstance<PostCondition>()
-            .forEach { postCondition ->
-                val conditionResult = evaluateCondition(
-                    postCondition.value, target, args, oldState, result
-                )
-                if (!conditionResult) {
-                    throw ContractViolationException(
-                        "Post-condition violated: \${postCondition.value}"
-                    )
-                }
-            }
-        
-        return result
-    }
-}`
-        }
-      ],
-      achievements: [
-        {
-          metric: "오픈소스 공개",
-          before: "개인 사용",
-          after: "JitPack 배포",
-          improvement: "100% 공개",
-          description: "GitHub + JitPack 기반 의존성 배포"
-        },
-        {
-          metric: "런타임 성능",
-          before: "리플렉션 기반",
-          after: "컴파일 타임",
-          improvement: "90% 개선",
-          description: "AspectJ compile-time weaving 적용"
-        }
-      ],
-      lessons: [
-        {
-          category: "라이브러리 설계",
-          points: [
-            "Kotlin DSL 설계와 구현 방법 학습",
-            "AspectJ를 활용한 AOP 프로그래밍 경험",
-            "오픈소스 라이브러리 배포 및 관리 프로세스 이해"
-          ]
-        }
-      ]
-    },
-    memento: {
-      title: "MEMENTO",
-      subtitle: "TDD와 개인 PC 서버 운영을 통한 추억 공유 플랫폼",
-      thumbnail: "💭",
-      duration: "2025.07.29 ~ 2025.09.05 (5주)",
-      team: "백엔드 3명",
-      role: "Back-End, DevOps",
-      github: "https://github.com/BrokenFinger98/memento",
-      demo: "#",
-      overview: {
-        background: "클라우드 서비스 비용 부담과 개발 과정에서의 테스트 중요성, 그리고 팀 협업 시 API 문서 관리의 어려움을 해결하고자 했습니다. 개인 PC를 직접 서버로 운영하며 인프라 비용을 절약하고, TDD와 문서 자동화를 통해 개발 품질을 높이는 것이 목표였습니다.",
-        objectives: [
-          "개인 PC 기반 Linux 서버 구축 및 운영 경험 습득",
-          "Minio 오브젝트 스토리지를 활용한 미디어 파일 관리 시스템",
-          "TDD 방법론 도입으로 안정적인 소프트웨어 개발",
-          "Spring REST DOCS를 통한 API 문서 자동화"
-        ],
-      },
-      challenges: [
-        {
-          problem: "클라우드 비용 절약을 위한 개인 서버 운영",
-          situation: "AWS나 GCP 같은 클라우드 서비스 비용이 부담스러워 개인 PC를 직접 서버로 활용해야 했지만, 안정적인 운영과 외부 접근 설정에 대한 경험이 부족했습니다.",
-          solution: "개인 PC Linux 서버 구축과 포트 포워딩 설정",
-          implementation: [
-            "Ubuntu Server 설치 및 네트워크 설정",
-            "공유기 포트 포워딩으로 외부 접근 허용",
-            "방화벽 및 보안 설정으로 안전한 서버 운영",
-            "Docker Compose를 활용한 서비스 컨테이너화"
-          ],
-          result: "월 클라우드 비용 100% 절약 및 서버 운영 실무 경험 획득"
-        },
-        {
-          problem: "대용량 미디어 파일의 효율적 저장과 관리",
-          situation: "음성, 이미지 등 다양한 미디어 파일을 저장해야 했지만, 파일 시스템 기반 저장은 확장성과 관리 측면에서 한계가 있었습니다.",
-          solution: "Minio 오브젝트 스토리지 도입",
-          implementation: [
-            "Minio 서버 구축 및 S3 호환 API 설정",
-            "버킷 정책을 통한 파일 접근 권한 관리",
-            "Spring Boot와 Minio Client 연동 구현",
-            "미디어 파일 업로드/다운로드 API 개발"
-          ],
-          result: "확장 가능한 오브젝트 스토리지 구축 및 S3 호환성 확보"
-        },
-        {
-          problem: "협업 시 API 문서 동기화와 테스트 커버리지 확보",
-          situation: "팀 개발 과정에서 API 명세 변경 시 문서 업데이트가 지연되고, 수동 테스트로 인한 버그 발생 위험이 높았습니다.",
-          solution: "TDD 도입과 Spring REST DOCS 기반 문서 자동화",
-          implementation: [
-            "JUnit5와 MockMvc를 활용한 API 테스트 작성",
-            "Given-When-Then 패턴의 체계적인 테스트 코드",
-            "Spring REST DOCS로 테스트 기반 문서 자동 생성",
-            "Gradle 빌드 시 문서 자동 배포 설정"
-          ],
-          result: "90% 이상 테스트 커버리지 달성 및 항상 최신 상태의 API 문서 제공"
-        }
-      ],
-      techStack: {
-        backend: [
-          { name: "Java 17", reason: "최신 LTS 버전으로 안정성과 성능 보장" },
-          { name: "Spring Boot", reason: "빠른 개발과 운영 효율성" },
-          { name: "Spring Data JPA", reason: "객체 지향적 데이터 액세스 계층" },
-          { name: "Spring Security", reason: "사용자 인증과 권한 관리" }
-        ],
-        storage: [
-          { name: "Minio", reason: "S3 호환 오브젝트 스토리지로 미디어 파일 관리" },
-          { name: "MySQL", reason: "관계형 데이터의 일관성과 ACID 트랜잭션" }
-        ],
-        testing: [
-          { name: "JUnit5", reason: "TDD 방법론의 핵심 테스트 프레임워크" },
-          { name: "Spring REST DOCS", reason: "테스트 기반 API 문서 자동 생성" },
-          { name: "MockMvc", reason: "Spring MVC 컨트롤러 통합 테스트" }
-        ],
-        infrastructure: [
-          { name: "Ubuntu Server", reason: "개인 PC 기반 Linux 서버 환경" },
-          { name: "Docker", reason: "컨테이너 기반 서비스 배포" },
-          { name: "Docker Compose", reason: "멀티 컨테이너 애플리케이션 관리" }
-        ]
-      },
-      codeExamples: [
-        {
-          title: "Minio 오브젝트 스토리지 서비스",
-          language: "java",
-          code: `@Service
-@RequiredArgsConstructor
-public class MinioStorageService {
-    
-    private final MinioClient minioClient;
-    
-    @Value("\${minio.bucket.name}")
-    private String bucketName;
-    
-    public String uploadFile(MultipartFile file, String fileName) throws Exception {
-        // 버킷 존재 확인 및 생성
-        ensureBucketExists();
-        
-        // 파일 업로드
-        minioClient.putObject(
-            PutObjectArgs.builder()
-                .bucket(bucketName)
-                .object(fileName)
-                .stream(file.getInputStream(), file.getSize(), -1)
-                .contentType(file.getContentType())
-                .build()
-        );
-        
-        // 퍼블릭 URL 반환
-        return minioClient.getPresignedObjectUrl(
-            GetPresignedObjectUrlArgs.builder()
-                .method(Method.GET)
-                .bucket(bucketName)
-                .object(fileName)
-                .expiry(60 * 60 * 24) // 24시간 유효
-                .build()
-        );
-    }
-    
-    private void ensureBucketExists() throws Exception {
-        boolean bucketExists = minioClient.bucketExists(
-            BucketExistsArgs.builder().bucket(bucketName).build());
-        
-        if (!bucketExists) {
-            minioClient.makeBucket(
-                MakeBucketArgs.builder().bucket(bucketName).build());
-                
-            // 퍼블릭 읽기 정책 설정
-            String policy = """
-                {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Principal": "*",
-                            "Action": "s3:GetObject",
-                            "Resource": "arn:aws:s3:::%s/*"
-                        }
-                    ]
-                }""".formatted(bucketName);
-                
-            minioClient.setBucketPolicy(
-                SetBucketPolicyArgs.builder()
-                    .bucket(bucketName)
-                    .config(policy)
-                    .build()
-            );
-        }
-    }
-}`
-        },
-        {
-          title: "TDD 기반 API 테스트 with Spring REST DOCS",
-          language: "java",
-          code: `@ExtendWith(RestDocumentationExtension.class)
-@WebMvcTest(MemoryController.class)
-class MemoryControllerTest {
-    
-    @Autowired
-    private MockMvc mockMvc;
-    
-    @MockBean
-    private MemoryService memoryService;
-    
-    @Test
-    @DisplayName("추억 생성 API 테스트")
-    void createMemory_Success() throws Exception {
-        // Given
-        MemoryCreateRequest request = MemoryCreateRequest.builder()
-            .title("소중한 추억")
-            .content("가족과 함께한 여행")
-            .build();
-            
-        MemoryResponse response = MemoryResponse.builder()
-            .id(1L)
-            .title(request.getTitle())
-            .content(request.getContent())
-            .createdAt(LocalDateTime.now())
-            .build();
-            
-        given(memoryService.createMemory(any(), any()))
-            .willReturn(response);
-        
-        // When & Then
-        mockMvc.perform(post("/api/memories")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.title").value(request.getTitle()))
-            .andExpect(jsonPath("$.content").value(request.getContent()))
-            .andDo(document("memory-create",
-                requestFields(
-                    fieldWithPath("title").description("추억 제목"),
-                    fieldWithPath("content").description("추억 내용")
-                ),
-                responseFields(
-                    fieldWithPath("id").description("추억 ID"),
-                    fieldWithPath("title").description("추억 제목"),
-                    fieldWithPath("content").description("추억 내용"),
-                    fieldWithPath("createdAt").description("생성 일시")
-                )
-            ));
-    }
-}`
-        }
-      ],
-      achievements: [
-        {
-          metric: "인프라 비용",
-          before: "클라우드 월 $50+",
-          after: "개인 서버 $0",
-          improvement: "100% 절약",
-          description: "개인 PC Linux 서버 구축 및 운영"
-        },
-        {
-          metric: "파일 스토리지",
-          before: "파일 시스템",
-          after: "Minio 오브젝트 스토리지",
-          improvement: "S3 호환성 확보",
-          description: "확장 가능한 오브젝트 스토리지 구축"
-        },
-        {
-          metric: "테스트 커버리지",
-          before: "수동 테스트",
-          after: "TDD 90%+",
-          improvement: "자동화 달성",
-          description: "JUnit5 기반 체계적 테스트 도입"
-        },
-        {
-          metric: "API 문서화",
-          before: "수동 관리",
-          after: "자동 생성",
-          improvement: "동기화 100%",
-          description: "Spring REST DOCS 기반 테스트 연동 문서"
-        }
-      ],
-      lessons: [
-        {
-          category: "DevOps & 인프라",
-          points: [
-            "개인 PC Ubuntu Server 구축 및 네트워크 설정 경험",
-            "Docker Compose를 활용한 멀티 컨테이너 서비스 운영",
-            "포트 포워딩과 방화벽 설정을 통한 안전한 서버 운영",
-            "Minio 오브젝트 스토리지 구축 및 S3 호환 API 활용"
-          ]
-        },
-        {
-          category: "TDD & 테스트",
-          points: [
-            "Given-When-Then 패턴의 체계적인 테스트 작성법",
-            "Spring REST DOCS를 활용한 테스트 기반 문서 자동화",
-            "MockMvc와 JUnit5를 통한 API 통합 테스트 경험",
-            "테스트 커버리지 90% 이상 달성을 통한 코드 품질 향상"
-          ]
-        },
-        {
-          category: "협업 & 문서화",
-          points: [
-            "API 문서 자동화로 팀 간 커뮤니케이션 효율성 증대",
-            "테스트 코드와 문서의 동기화를 통한 신뢰성 확보",
-            "Git Flow와 코드 리뷰를 통한 체계적 협업 프로세스"
-          ]
-        }
-      ],
-      improvements: [
-        "Kubernetes 클러스터 구축으로 컨테이너 오케스트레이션 자동화",
-        "Jenkins Pipeline을 통한 CI/CD 자동화 고도화",
-        "Prometheus + Grafana 모니터링 시스템 구축",
-        "Load Balancer 도입으로 고가용성 서버 아키텍처 구현"
-      ]
     },
     zipda: {
       title: "ZIPDA(집다)",
@@ -1809,95 +1984,113 @@ public class PromptTemplateLoader {
                   </h2>
                   
                   <div className="space-y-8">
-                    {/* 시스템 아키텍처 - 조건부 렌더링 */}
-                    {'architecture' in project && project.architecture && project.architecture.systemDiagram && (
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                          시스템 아키텍처
-                        </h3>
-                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 overflow-x-auto">
-                          <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre">
-                            {project.architecture.systemDiagram}
-                          </pre>
-                        </div>
+                    {/* Architecture 섹션 */}
+                    {(
+                      ('images' in project && project.images && 'architecture' in project.images) ||
+                      ('architecture' in project && project.architecture && 
+                        (project.architecture.keyComponents && project.architecture.keyComponents.length > 0)
+                      )
+                    ) && (
+                      <div className="space-y-6">
+                        
+                        {/* Architecture 이미지 */}
+                        {'images' in project && project.images && 'architecture' in project.images && (
+                          <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+                            <div className="p-4 bg-gray-50 dark:bg-gray-900">
+                              <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                아키텍처
+                              </h4>
+                            </div>
+                            <div>
+                              {(project.images.architecture as ImageItem[]).map((image: ImageItem, index: number) => (
+                                <div key={index} className="bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden">
+                                  <div className="w-full p-2">
+                                    <img
+                                      src={image.src}
+                                      alt={image.alt}
+                                      className="w-full h-auto object-contain rounded"
+                                    />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* Architecture 컴포넌트 */}
+                        {(
+                          ('architecture' in project && project.architecture && project.architecture.keyComponents && project.architecture.keyComponents.length > 0)
+                        ) && (
+                          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+                            <div className="p-4 bg-gray-50 dark:bg-gray-900">
+                              <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                시스템 구성
+                              </h4>
+                            </div>
+                            <div className="p-6 space-y-6">
+                              
+                              {/* 주요 컴포넌트 */}
+                              {'architecture' in project && project.architecture && project.architecture.keyComponents && project.architecture.keyComponents.length > 0 && (
+                                <div>
+                                  <div className="grid gap-4">
+                                    {project.architecture.keyComponents.map((component, index) => (
+                                      <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900">
+                                        <div className="flex items-center gap-2 mb-2">
+                                          <Server className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                          <h6 className="font-semibold text-gray-900 dark:text-white">
+                                            {component.name}
+                                          </h6>
+                                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded text-xs">
+                                            {component.tech}
+                                          </span>
+                                        </div>
+                                        <p className="text-gray-600 dark:text-gray-300">
+                                          {component.description}
+                                        </p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                     
-                    {/* 주요 컴포넌트 - 조건부 렌더링 */}
-                    {'architecture' in project && project.architecture && project.architecture.keyComponents && project.architecture.keyComponents.length > 0 && (
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                          주요 컴포넌트
+                    {/* ERD 섹션 */}
+                    {(
+                      ('images' in project && project.images && 'erd' in project.images) ||
+                      ('architecture' in project && project.architecture && 'database' in project.architecture && project.architecture.database)
+                    ) && (
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                          🗄️ ERD & Database
                         </h3>
-                        <div className="grid gap-4">
-                          {project.architecture.keyComponents.map((component, index) => (
-                            <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Server className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                <h4 className="font-semibold text-gray-900 dark:text-white">
-                                  {component.name}
-                                </h4>
-                                <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs">
-                                  {component.tech}
-                                </span>
-                              </div>
-                              <p className="text-gray-600 dark:text-gray-300">
-                                {component.description}
-                              </p>
+                        
+                        {/* ERD 이미지 */}
+                        {'images' in project && project.images && 'erd' in project.images && (
+                          <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+                            <div className="p-4 bg-gray-50 dark:bg-gray-900">
+                              <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                ERD (Entity Relationship Diagram)
+                              </h4>
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* 데이터베이스 설계 - 조건부 렌더링 */}
-                    {'architecture' in project && project.architecture && 'database' in project.architecture && project.architecture.database && (
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                          데이터베이스 설계
-                        </h3>
-                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-                          <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">
-                            {project.architecture.database?.schema}
-                          </pre>
-                          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-                            <p className="text-gray-600 dark:text-gray-300">
-                              <strong>설계 원칙:</strong> {project.architecture.database?.design}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* ERD/아키텍처 다이어그램 - 조건부 렌더링 및 세로 정렬 */}
-                    {'images' in project && project.images && ('erd' in project.images || 'architecture' in project.images) && (
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                          {('erd' in project.images && project.images.erd) ? 'ERD 다이어그램' : '아키텍처 다이어그램'}
-                        </h3>
-                        <div className="space-y-6">
-                          {((('erd' in project.images && project.images.erd) ? 
-                            project.images.erd : 
-                            ('architecture' in project.images ? project.images.architecture : [])) as ImageItem[]
-                          ).map((image: ImageItem, index: number) => (
-                            <div key={index} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
-                              {image.title && (
-                                <div className="p-4 bg-gray-50 dark:bg-gray-900">
-                                  <p className="text-base text-gray-700 dark:text-gray-200 font-medium text-left">
-                                    {image.title}
-                                  </p>
+                            <div className="space-y-6 p-4">
+                              {(project.images.erd as ImageItem[]).map((image: ImageItem, index: number) => (
+                                <div key={index} className="bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden">
+                                  <div className="w-full">
+                                    <img
+                                      src={image.src}
+                                      alt={image.alt}
+                                      className="w-full h-auto object-contain rounded"
+                                    />
+                                  </div>
                                 </div>
-                              )}
-                              <div className="w-full">
-                                <img
-                                  src={image.src}
-                                  alt={image.alt}
-                                  className="w-full h-auto object-contain"
-                                />
-                              </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
