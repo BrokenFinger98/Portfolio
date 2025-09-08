@@ -1287,7 +1287,7 @@ class MemoryControllerTest {
             "이메일 전송 실패 시 예외 처리 및 재시도 로직 구현",
             "사용자 응답과 이메일 전송 프로세스 분리"
           ],
-          result: "사용자 응답 시간 70% 단축 (10초+ → 3초), 사용자 경험 대폭 개선"
+          result: "사용자 응답 시간 70% 단축 (10.x초 → 3.x초), 사용자 경험 대폭 개선"
         },
         {
           problem: "Spring AI 기반 부동산 상담 챗봇의 컨텍스트 관리",
@@ -1531,10 +1531,9 @@ public class PromptTemplateLoader {
         "Back-end": [
           { name: "Java", version: "21", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
           { name: "Spring Boot", version: "3.3.5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
-          { name: "Spring Data JPA", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
-          { name: "QueryDSL", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
-          { name: "Spring Security", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
-          { name: "Swagger", version: "", icon: "https://static1.smartbear.co/swagger/media/assets/images/swagger_logo.svg" }
+          { name: "Spring Data JPA", version: "", icon: "https://spring.io/img/projects/spring-data.svg" },
+          { name: "QueryDSL", version: "", icon: "https://cdn.inflearn.com/public/files/courses/328989/c1b5cabc-03f0-4cd8-9f98-8ec0e2f42378/329248-4.png" },
+          { name: "Swagger", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swagger/swagger-original.svg" }
         ],
         "Front-end": [
           { name: "Vue.js", version: "3.5.12", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" },
@@ -1547,8 +1546,8 @@ public class PromptTemplateLoader {
           { name: "Redis", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" }
         ],
         "Infra": [
-          { name: "AWS EC2", version: "", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
-          { name: "Docker", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" }
+          { name: "Docker", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
+          { name: "AWS EC2", version: "", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" }
         ]
       },
       achievements: [
