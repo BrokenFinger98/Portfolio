@@ -4,7 +4,6 @@ export default function ProjectsSection() {
   const projects = [
     {
       id: "memento",
-      priority: 1,
       title: "MEMENTO",
       shortDescription: "싸피생을 위한 추억 아카이빙 웹 서비스",
       description: "개인 PC를 직접 서버로 구축하고 Minio 오브젝트 스토리지를 활용한 미디어 관리 시스템. TDD 기반 개발과 Spring REST DOCS를 통한 API 문서 자동화를 구현한 협업 프로젝트.",
@@ -17,22 +16,10 @@ export default function ProjectsSection() {
         "Minio 오브젝트 스토리지로 미디어 파일 관리 시스템 구현",
         "Spring REST DOCS로 테스트 기반 API 문서 자동화"
       ],
-      problems: [
-        "클라우드 비용 절약을 위한 서버 인프라 구축",
-        "대용량 미디어 파일의 효율적 저장과 관리",
-        "협업 과정에서 API 문서 동기화 문제"
-      ],
-      solutions: [
-        "개인 PC를 Linux 서버로 직접 구축 및 운영",
-        "Minio를 활용한 S3 호환 오브젝트 스토리지 구현",
-        "Spring REST DOCS로 테스트 코드 기반 문서 자동 생성"
-      ],
       github: "https://github.com/BrokenFinger98/memento",
-      demo: "#",
     },
     {
       id: "contract4k",
-      priority: 2,
       title: "Contract4k(Contract for Kotlin)",
       shortDescription: "계약에 의한 설계를 Kotlin DSL로 구현할 수 있도록 돕는 오픈소스 라이브러리",
       description: "AspectJ compile-time weaving을 활용한 AOP 기반 자동 검증 시스템. Kotlin DSL을 통해 직관적인 계약 조건 작성이 가능한 라이브러리.",
@@ -46,22 +33,10 @@ export default function ProjectsSection() {
         "JitPack 기반 외부 의존성 배포 완료",
         "오픈소스 라이브러리로 공개 및 문서화"
       ],
-      problems: [
-        "Java의 복잡한 계약 기반 설계 문법",
-        "런타임 검증 성능 오버헤드",
-        "라이브러리 배포 및 의존성 관리"
-      ],
-      solutions: [
-        "Kotlin DSL을 활용한 직관적 문법 설계",
-        "compile-time weaving으로 런타임 성능 최적화",
-        "JitPack을 통한 간편한 의존성 배포"
-      ],
       github: "https://github.com/BrokenFinger98/contract4k",
-      demo: "#",
     },
     {
       id: "aicheck",
-      priority: 3,
       title: "aicheck(아이췤)",
       shortDescription: "온디바이스 AI를 활용한 금융 사기 예방 및 자녀의 건전한 금융 습관 형성 서비스",
       description: "코어뱅킹·채널계 기반의 MSA 아키텍처로 설계된 금융 보호 서비스. Kafka 기반 비동기 알림 처리와 AI 서버 연동을 통한 실시간 사기 탐지 시스템.",
@@ -75,22 +50,10 @@ export default function ProjectsSection() {
         "Jenkins + Docker 기반 CI/CD 파이프라인 구축",
         "FCM 기반 실시간 푸시 알림 시스템 구현"
       ],
-      problems: [
-        "금융 거래의 실시간 사기 탐지 요구사항",
-        "AI 서버와의 비동기 통신 처리 필요",
-        "마이크로서비스 간 설정 관리 복잡성"
-      ],
-      solutions: [
-        "Kafka 기반 이벤트 드리븐 아키텍처로 비동기 처리",
-        "Spring Config Server를 통한 설정 외부화 및 중앙화",
-        "WebClient를 이용한 AI 서버 비동기 통신 구현"
-      ],
       github: "https://github.com/BrokenFinger98/aicheck-back",
-      demo: "#",
     },
     {
       id: "ceonsun",
-      priority: 4,
       title: "개과천선(개발자 과외는 천선)",
       shortDescription: "개발자와 수강생 간의 실시간 과외 매칭 플랫폼",
       description: "Redis + Kafka 기반 선착순 쿠폰 발급 시스템을 구현한 과외 매칭 플랫폼. 분산 처리 및 재고 관리를 통해 대용량 트래픽 처리 성능을 대폭 개선.",
@@ -104,22 +67,10 @@ export default function ProjectsSection() {
         "PG사 결제 연동 및 예외 처리 로직 구현",
         "Feign Client 기반 서비스 간 안정적 통신 구현"
       ],
-      problems: [
-        "선착순 쿠폰 발급 시 대용량 트래픽 처리 한계",
-        "동시성 제어 및 재고 관리 이슈",
-        "마이크로서비스 간 통신 안정성"
-      ],
-      solutions: [
-        "Redis 분산락과 Kafka 이벤트 처리로 동시성 제어",
-        "재고 관리 로직을 별도 서비스로 분리",
-        "Circuit Breaker 패턴으로 장애 격리"
-      ],
       github: "https://github.com/BrokenFinger98/SSAFY-ceon-sun",
-      demo: "#",
     },
     {
       id: "zipda",
-      priority: 5,
       title: "ZIPDA(집다)",
       shortDescription: "조건 기반 필터링을 지원하는 부동산 매물 검색 플랫폼",
       description: "QueryDSL 기반 복잡 필터 조건 동적 쿼리와 Spring AI + ChatGPT API를 활용한 부동산 챗봇 기능을 제공하는 매물 검색 플랫폼.",
@@ -133,18 +84,7 @@ export default function ProjectsSection() {
         "@Async 활용 이메일 인증으로 응답 속도 향상",
         "Spring AI + ChatGPT API 부동산 챗봇 구현"
       ],
-      problems: [
-        "복잡한 매물 검색 조건의 동적 쿼리 처리",
-        "소셜 로그인 연동 및 사용자 인증 관리",
-        "이메일 인증으로 인한 응답 지연"
-      ],
-      solutions: [
-        "QueryDSL BooleanBuilder를 활용한 동적 쿼리 구성",
-        "Spring AOP + OAuth2.0 기반 인증 처리 자동화",
-        "비동기 처리로 이메일 발송과 응답 분리"
-      ],
       github: "https://github.com/BrokenFinger98/ZIPDA",
-      demo: "#",
     }
   ];
 

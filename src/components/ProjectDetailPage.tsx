@@ -35,6 +35,7 @@ interface ImageItem {
   title?: string;
   src: string;
   alt?: string;
+  size?: string;
 }
 
 interface TechItem {
@@ -150,7 +151,7 @@ export default function ProjectDetailPage({ projectId }: ProjectDetailPageProps)
     memento: {
       title: "MEMENTO",
       subtitle: "TDD와 개인 PC 서버 운영을 통한 추억 공유 플랫폼",
-      thumbnail: "💭",
+      thumbnail: "/images/projects/memento/logo.png",
       duration: "2025.07.29 ~ 2025.09.05 (5주)",
       team: "백엔드 3명, 프론트 2명",
       role: "Back-End, DevOps",
@@ -412,7 +413,7 @@ class MemoryControllerTest {
     contract4k: {
       title: "Contract4k(Contract for Kotlin)",
       subtitle: "계약에 의한 설계를 Kotlin DSL로 구현할 수 있도록 돕는 오픈소스 라이브러리",
-      thumbnail: "📚",
+      thumbnail: "/images/projects/contract4k/logo.png",
       duration: "2025.04.14 ~ 2025.05.22 (5주)",
       team: "백엔드 4명",
       role: "의존성 배포 및 컴파일 타임 위빙 설계",
@@ -855,7 +856,7 @@ class Contract4KAspect {
       ],
       lessons: [
         {
-          category: "라이브러리 설계",
+          category: "🧩 라이브러리 설계",
           points: [
             "Kotlin DSL 설계와 구현 방법 학습",
             "AspectJ를 활용한 AOP 프로그래밍 경험",
@@ -866,317 +867,507 @@ class Contract4KAspect {
     },
     aicheck: {
       title: "aicheck(아이췤)",
-      subtitle: "AI를 활용한 금융 사기 예방 및 자녀의 건전한 금융 습관 형성 서비스",
+      subtitle: "가족 안심 자녀 금융 지원 서비스",
       thumbnail: "/images/projects/aicheck/logo.png",
       duration: "2025.03.02 ~ 2025.04.11 (6주)",
       team: "백엔드 2명 (PL), 프론트 2명, AI 2명",
       role: "Back-End, Infra, PL",
       github: "https://github.com/BrokenFinger98/aicheck-back",
       demo: "#",
+      demoVideo: "https://www.youtube.com/watch?v=pnFKBppBN68",
       overview: {
-        background: "급증하는 금융 사기와 자녀의 잘못된 금융 습관 형성에 대한 사회적 우려가 높아지는 상황에서, AI 기술을 활용해 실시간으로 사기를 탐지하고 건전한 금융 습관을 형성할 수 있는 서비스를 만들고자 하였습니다."
-      },
-      architecture: {
-        keyComponents: [
+        background: "기록 기능을 넘어, 자녀의 소비 행동을 분석하고 학습 기회를 제공합니다. AI가 실시간 피드백을 통해 소비 습관 개선을 유도하며, 보이스피싱 및 스미싱 탐지를 통해 가족의 디지털 보안을 강화합니다. 금융 교육과 실생활 보안을 함께 고려한 가정용 AI 시스템입니다.",
+        keyFeatures: [
           {
-            name: "API Gateway",
-            description: "Spring Cloud Gateway를 통한 라우팅, 인증, 로드밸런싱",
-            tech: "Spring Cloud Gateway"
+            title: "📊 용돈 리포트",
+            description: [
+              "월별/카테고리별 지출 패턴 시각화",
+              "용돈 리포트 생성시 부모에게 알림 전송",
+              "부모의 정기 용돈 지급 판단 기준 제공"
+            ]
           },
           {
-            name: "User Service",
-            description: "JWT 기반 인증/인가, 사용자 관리",
-            tech: "Spring Security, JWT"
+            title: "🧾 자동 용돈 기입장", 
+            description: [
+              "수입/지출 발생 시 자동 금액 입력",
+              "자녀는 상세 내용만 작성하면 되는 간편한 기록 환경 제공"
+            ]
           },
           {
-            name: "Account Service", 
-            description: "코어뱅킹 계좌 관리, 거래 내역 처리",
-            tech: "Spring Boot, JPA"
+            title: "🤖 엄마 AI (용돈 협상 AI)",
+            description: [
+              "살까 말까?: 소비 패턴을 분석해 충동구매 여부에 대해 조언",
+              "추가 용돈 요청: AI에게 설득 → 성공 시 부모에게 용돈 인상 요청 메시지(대화 요약) 전송, 실패 시 ‘거절’ 피드백 제공",
+              "설득 기준, 용돈 한도, 대화 스타일 등은 부모가 자유롭게 커스터마이징 가능"
+            ]
           },
           {
-            name: "AI Service",
-            description: "머신러닝 기반 사기 패턴 탐지 및 분석",
-            tech: "Python, TensorFlow"
+            title: "🕵️‍♂️ 보이스피싱 탐지",
+            description: [
+              "통화 발생 시 이상한 대화가 진행된다거나 모르는 번호로 전화가 온 경우, 통화 녹음 버튼을 통해 감지 시작",
+              "딥페이크 음성 + 통화 스크립트 기반 AI 분석",
+              "의심 정황 포착 시 자녀와 가족 모두에게 실시간 알림 제공",
+            ]
           },
           {
-            name: "Config Server",
-            description: "마이크로서비스 설정 중앙화 및 환경 분리",
-            tech: "Spring Cloud Config"
+            title: "🛡️ 스미싱 방지",
+            description: [
+              "문자 내 URL 자동 분석",
+              "악성 URL 감지 시 경고 알림 전송 및 클릭 차단 유도"
+            ]
           }
-        ],
-        database: {
-          schema: `
-사용자 관리:
-- users (사용자 기본정보)
-- user_profiles (프로필 상세정보)
-- authentication_logs (인증 로그)
-
-계좌 관리:
-- accounts (계좌 정보)
-- transactions (거래 내역)  
-- transaction_categories (거래 카테고리)
-
-AI 탐지:
-- fraud_patterns (사기 패턴 정의)
-- fraud_detections (탐지 결과)
-- ml_models (ML 모델 메타데이터)
-
-알림:
-- notifications (알림 내역)
-- notification_settings (알림 설정)
-`,
-          design: "정규화된 관계형 DB 설계로 데이터 무결성 확보, 인덱스 최적화를 통한 조회 성능 향상"
+        ]
+      },
+      components: {
+        "Business Service": {
+          description: "핵심 비즈니스 로직을 담당하는 중앙 서비스",
+          responsibilities: [
+            "용돈 관리 및 협상 로직 처리",
+            "거래 기록 저장 및 분석",
+            "보이스피싱/스미싱 탐지 데이터 관리",
+            "사용자 인증 및 권한 관리"
+          ],
+          keyComponents: [
+            {
+              name: "AllowanceService",
+              description: "용돈 요청/승인 처리 및 리포트 생성",
+              methods: ["getAllowanceRequests()", "updateAllowanceRequestResponse()", "getAllowanceSummary()"]
+            },
+            {
+              name: "TransactionRecordService", 
+              description: "거래 내역 관리 및 카테고리별 분석",
+              methods: ["getTransactionRecords()", "getCalendarData()", "getDescriptionRatio()"]
+            },
+            {
+              name: "VoicePhishingService",
+              description: "보이스피싱 탐지 결과 저장 및 조회",
+              methods: ["registerVoicePhishing()", "getPhishingHistory()"]
+            },
+            {
+              name: "BadUrlService",
+              description: "악성 URL 관리 및 스미싱 차단",
+              methods: ["saveBadUrl()", "checkBadUrl()"]
+            }
+          ],
+          entities: [
+            "VoicePhishing (보이스피싱 탐지 결과)",
+            "BadUrl (악성 URL 정보)",
+            "TransactionRecord (거래 기록)",
+            "Allowance (용돈 요청/승인)"
+          ]
+        },
+        "Chatbot Service": {
+          description: "AI 엄마와의 대화형 인터페이스 서비스",
+          responsibilities: [
+            "용돈 협상 대화 처리",
+            "금융 상담 챗봇 운영",
+            "Redis 기반 대화 세션 관리",
+            "AI 서버와의 통신 중계"
+          ],
+          keyComponents: [
+            {
+              name: "ChatbotController",
+              description: "채팅 세션 시작/종료 및 메시지 처리 API",
+              methods: ["startChat()", "sendPersuadeChat()", "sendQuestionChat()", "endChat()"]
+            },
+            {
+              name: "ChatbotService",
+              description: "AI 서버 통신 및 설득 로직 처리",
+              methods: ["sendPersuadeChat()", "sendQuestionChat()", "startChat()"]
+            },
+            {
+              name: "RedisService",
+              description: "대화 이력 및 사용자 맞춤 설정 관리",
+              methods: ["loadChatHistory()", "appendChatHistory()", "loadCustomSetting()"]
+            }
+          ],
+          integrations: [
+            "FastAPI AI 서버 (자연어 처리)",
+            "Business Service (거래 정보 조회)",
+            "Batch Service (정기 용돈 정보)",
+            "Alarm Service (협상 성공 알림)"
+          ]
+        },
+        "Bank Service": {
+          description: "은행 API 연동 및 금융 거래 처리 서비스",
+          responsibilities: [
+            "은행 계좌 연동 및 관리",
+            "송금 및 이체 처리",
+            "사용자 계좌 인증",
+            "거래 내역 동기화"
+          ],
+          keyComponents: [
+            {
+              name: "AccountController",
+              description: "계좌 생성, 조회, 잔액 관리 API",
+              methods: ["createAccount()", "getAccountInfo()", "getBalance()"]
+            },
+            {
+              name: "TransferController", 
+              description: "계좌 간 송금 및 이체 처리",
+              methods: ["transfer()", "getTransferHistory()"]
+            },
+            {
+              name: "MemberController",
+              description: "은행 사용자 등록 및 인증",
+              methods: ["registerMember()", "authenticateMember()"]
+            }
+          ],
+          entities: [
+            "Account (계좌 정보)",
+            "Transfer (송금 내역)",
+            "Member (은행 사용자 정보)"
+          ]
+        },
+        "Alarm Service": {
+          description: "FCM 기반 실시간 푸시 알림 서비스",
+          responsibilities: [
+            "Firebase FCM 푸시 알림 전송",
+            "알림 전송 실패 시 재시도 처리",
+            "Kafka 이벤트 기반 알림 처리",
+            "사용자별 알림 이력 관리"
+          ],
+          keyComponents: [
+            {
+              name: "FCMNotificationSender",
+              description: "Firebase 메시지 전송 담당",
+              methods: ["send()", "validateToken()"]
+            },
+            {
+              name: "KafkaAlarmConsumer",
+              description: "Kafka 알림 이벤트 소비 및 처리",
+              methods: ["onMessage()", "onRetryMessage()"]
+            },
+            {
+              name: "AlarmService",
+              description: "알림 내역 저장 및 조회 서비스",
+              methods: ["saveAlarm()", "getAlarms()", "readAlarm()", "deleteAlarm()"]
+            }
+          ],
+          features: [
+            "Retry Topic 패턴으로 전송 실패 자동 재시도",
+            "최대 3회 재시도 후 실패 로그 기록",
+            "FCM 토큰 유효성 검사 및 갱신"
+          ]
         }
       },
       challenges: [
         {
-          problem: "금융 거래의 실시간 사기 탐지 성능 이슈",
-          situation: "AI 서버와의 동기 통신으로 인해 거래 승인 시간이 2-3초까지 지연되어 사용자 경험이 저하되고 있었습니다.",
-          solution: "Kafka를 활용한 이벤트 드리븐 아키텍처 도입",
+          problem: "FCM 알림 서버 장애 시 전송 실패 및 시스템 안정성 저하",
+          situation: "실제 알림 서버가 일시적으로 내려가면 알림 요청이 누락되거나 서비스 스레드가 대기/실패하며 장애가 전파되는 문제가 발생했습니다.",
+          solution: "Kafka 재시도 전용 토픽(alarm-retry)과 메시지 내 재시도 횟수로 최대 3회 재시도",
           implementation: [
-            "거래 요청을 즉시 승인 후 Kafka로 비동기 전송",
-            "AI 서버에서 사기 탐지 완료 시 결과를 이벤트로 발행",
-            "사기 의심 거래 발견 시 실시간 알림 및 계좌 잠금 처리"
+            "메인 토픽(alarm) 처리 중 FCMException 발생 시 AlarmRetryEventMessage로 alarm-retry 토픽 전송",
+            "AlarmRetryEventMessage.nextRetry()로 retryCount 증가, 재시도 횟수 메시지에 내장",
+            "AlarmRetryEventListener에서 MAX_RETRY_COUNT(3) 도달 시 재시도 중단",
+            "수동 ack(AckMode.MANUAL)로 실패 건도 중복 처리 없이 안전하게 종료"
           ],
-          result: "거래 승인 시간을 평균 2.3초에서 0.6초로 단축 (약 40% 개선)"
+          result: "일시 장애 시 재시도로 복구 가능, 무한 재시도 방지로 운영 안정성 확보"
         },
         {
-          problem: "마이크로서비스 간 설정 관리의 복잡성",
-          situation: "각 서비스별로 개별 설정 파일을 관리하여 환경별 배포 시 설정 불일치와 관리 오버헤드가 발생했습니다.",
-          solution: "Spring Cloud Config Server 도입",
+          problem: "AI 챗봇 컨텍스트 전달로 인한 지연과 DB 부하",
+          situation: "맞춤형 응답 생성을 위해 매 대화마다 사용자 컨텍스트와 개인정보를 AI 서버에 전달해야 했고, DB 조회 기반 구현은 응답 지연과 DB 부하를 초래했습니다.",
+          solution: "RedisTemplate 기반 세션 캐시로 컨텍스트 저장/조회",
           implementation: [
-            "Git 기반 중앙화된 설정 저장소 구성",
-            "환경별 프로파일 분리 (dev, staging, prod)",
-            "설정 변경 시 서비스 재시작 없이 동적 리로드"
+            "chat:setting:{childId} 키에 CustomSetting을 opsForValue로 저장/로드",
+            "chat:history:{chatType}:{childId} 키에 대화 이력을 List(opsForList.rightPush)로 순서 보장 저장",
+            "대화 종료 시 clearChatSession으로 관련 키 일괄 삭제",
+            "필요 데이터만 메모리 적재하여 DB 조회 최소화"
           ],
-          result: "설정 관리 시간 80% 단축, 환경별 배포 오류 제로화"
+          result: "컨텍스트 조회 지연을 수백 ms → 수십 ms로 감소, DB 조회 빈도 대폭 축소"
         },
         {
-          problem: "AI 서버와의 통신 안정성 확보",
-          situation: "AI 서버의 일시적 장애나 응답 지연으로 인한 전체 서비스 영향 최소화 필요",
-          solution: "Circuit Breaker 패턴과 WebClient 비동기 통신",
+          problem: "CloudFront 캐싱으로 Next.js 동적 페이지 최신성 저하",
+          situation: "정적 컨텐츠를 S3+CloudFront로 배포해 초기 로딩 성능은 개선됐지만, SSR/ISR 페이지가 캐싱되며 동적 반영 지연과 불일치 문제가 발생했습니다.",
+          solution: "정적 자원만 S3 제공, Next.js는 EC2/Nginx로 직접 서빙",
           implementation: [
-            "Hystrix Circuit Breaker로 AI 서비스 호출 감시",
-            "WebClient를 통한 논블로킹 비동기 통신",
-            "Fallback 메커니즘으로 AI 서버 장애 시 기본 정책 적용"
+            "GitLab + Jenkins로 BE/FE 빌드·배포 파이프라인 구성",
+            "정적 파일은 S3 업로드, CloudFront 대상에서 동적 경로 제외",
+            "Next.js 서버는 EC2에서 Nginx 리버스 프록시로 운영",
+            "캐시 무효화 및 롤백 전략 수립으로 배포 안정성 강화"
           ],
-          result: "AI 서버 장애 시에도 99.9% 서비스 가용성 유지"
+          result: "초기 로딩 성능을 유지하면서 동적 페이지 최신성 문제 해결"
         }
       ],
       techStack: {
-        backend: [
-          { name: "Java 17", reason: "안정성과 성능이 검증된 LTS 버전" },
-          { name: "Spring Boot 3.x", reason: "빠른 개발과 운영 편의성" },
-          { name: "Spring Cloud Gateway", reason: "마이크로서비스 라우팅 및 보안" },
-          { name: "Spring Security", reason: "JWT 기반 인증/인가" },
-          { name: "Spring Data JPA", reason: "ORM을 통한 생산적 데이터 액세스" }
+        "Back-end": [
+          { name: "Java", version: "17", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
+          { name: "Spring Boot", version: "3.4.1", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
+          { name: "Spring Data JPA", version: "", icon: "https://spring.io/img/projects/spring-data.svg" },
+          { name: "Spring JDBC", version: "", icon: "https://spring.io/img/projects/spring-data.svg" },
+          { name: "Spring Cloud", version: "", icon: "https://spring.io/img/projects/spring-cloud.svg" },
+          { name: "Spring Security", version: "", icon: "https://spring.io/img/projects/spring-security.svg" },
+          { name: "QueryDSL", version: "", icon: "https://cdn.inflearn.com/public/files/courses/328989/c1b5cabc-03f0-4cd8-9f98-8ec0e2f42378/329248-4.png" },
+          { name: "OAuth 2.0", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oauth/oauth-original.svg" },
+          { name: "WebSocket", version: "", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwqWz7aMlinMNdeQ2i5p8ITrqe9f81e9W_xA&s" },
+          { name: "Apache Kafka", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg" },
+          { name: "RabbitMQ", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rabbitmq/rabbitmq-original.svg" }
         ],
-        infrastructure: [
-          { name: "Docker", reason: "컨테이너 기반 일관된 배포 환경" },
-          { name: "Jenkins", reason: "CI/CD 파이프라인 자동화" },
-          { name: "Nginx", reason: "로드밸런싱과 SSL 터미네이션" },
-          { name: "AWS EC2", reason: "안정적인 클라우드 인프라" }
+        "Front-end": [
+          { name: "React", version: "19", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+          { name: "Next.js", version: "15.2.4", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
+          { name: "TypeScript", version: "5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+          { name: "Tailwind CSS", version: "4", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
+          { name: "Zustand", version: "5.0.3", icon: "https://github.com/pmndrs/zustand/raw/main/docs/bear.jpg" },
+          { name: "Nginx", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" }
         ],
-        messaging: [
-          { name: "Apache Kafka", reason: "대용량 실시간 이벤트 스트리밍" },
-          { name: "Redis", reason: "세션 관리 및 캐싱" },
-          { name: "MySQL", reason: "ACID 트랜잭션이 중요한 금융 데이터" }
+        "Database": [
+          { name: "MySQL", version: "8.0", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
+          { name: "MongoDB", version: "6.0", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-plain.svg" },
+          { name: "Redis", version: "7.0", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" }
+        ],
+        "Infrastructure": [
+          { name: "Docker", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
+          { name: "AWS EC2", version: "", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
+          { name: "AWS S3", version: "", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
+          { name: "Jenkins", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" }
         ]
       },
       codeExamples: [
         {
-          title: "Kafka 이벤트 드리븐 사기 탐지",
+          title: "Kafka 재시도 토픽 + 수동 Ack 처리",
           language: "java",
-          code: `@Service
+          code: `@Slf4j
+@Component
 @RequiredArgsConstructor
-public class FraudDetectionService {
-    
-    private final KafkaTemplate<String, TransactionEvent> kafkaTemplate;
-    private final WebClient aiServiceWebClient;
-    
-    @Transactional
-    public TransactionResponse processTransaction(TransactionRequest request) {
-        // 1. 즉시 거래 승인 (사용자 대기시간 최소화)
-        Transaction transaction = transactionRepository.save(
-            Transaction.builder()
-                .amount(request.getAmount())
-                .status(TransactionStatus.APPROVED)
-                .build()
-        );
-        
-        // 2. 비동기로 AI 사기 탐지 이벤트 발행
-        TransactionEvent event = TransactionEvent.builder()
-            .transactionId(transaction.getId())
-            .userId(request.getUserId())
-            .amount(request.getAmount())
-            .timestamp(LocalDateTime.now())
-            .build();
-            
-        kafkaTemplate.send("fraud-detection-topic", event);
-        
-        return TransactionResponse.approved(transaction.getId());
+public class AlarmEventListener {
+    private final AlarmService alarmService;
+    private final FCMTokenService fcmTokenService;
+    private final NotificationSender notificationSender;
+    private final AlarmRetryEventProducer producer;
+    @KafkaListener(
+        topics = "alarm",
+        groupId = "alarm-group",
+        containerFactory = "kafkaListenerContainerFactory"
+    )
+    public void onMessage(final AlarmEventMessage message, final Acknowledgment ack) {
+        String token = null;
+        try {
+            alarmService.saveAlarm(message);
+            token = fcmTokenService.getFCMToken(message.memberId());
+            notificationSender.send(token, message.title(), message.body());
+            ack.acknowledge();
+        } catch (FCMException e) {
+            log.warn("[FCM 전송 실패 - 재시도 요청] memberId={}, title={}, reason={}",
+                message.memberId(), message.title(), e.getMessage(), e);
+            producer.sendRetryMessage(AlarmRetryEventMessage.from(message, token));
+            ack.acknowledge();
+        }
     }
-    
-    @KafkaListener(topics = "fraud-detection-topic")
-    public void detectFraud(TransactionEvent event) {
-        // WebClient로 AI 서버와 비동기 통신
-        aiServiceWebClient.post()
-            .uri("/detect-fraud")
-            .bodyValue(event)
-            .retrieve()
-            .bodyToMono(FraudDetectionResult.class)
-            .subscribe(this::handleFraudResult);
-    }
-    
-    private void handleFraudResult(FraudDetectionResult result) {
-        if (result.isFraudulent()) {
-            // 사기 거래 탐지 시 계좌 잠금 및 알림
-            accountService.lockAccount(result.getUserId());
-            notificationService.sendFraudAlert(result);
+}
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class AlarmRetryEventListener {
+    private static final int MAX_RETRY_COUNT = 3;
+    private final NotificationSender notificationSender;
+    private final AlarmRetryEventProducer retryEventProducer;
+    @KafkaListener(
+        topics = "alarm-retry",
+        groupId = "alarm-retry-group",
+        containerFactory = "retryKafkaListenerContainerFactory"
+    )
+    public void onRetryMessage(final AlarmRetryEventMessage message, final Acknowledgment ack) {
+        if (message.retryCount() >= MAX_RETRY_COUNT) {
+            log.error("[최대 재시도 초과] token={}, title={}, retryCount={}",
+                message.token(), message.title(), message.retryCount());
+            ack.acknowledge();
+            return;
+        }
+        try {
+            notificationSender.send(message.token(), message.title(), message.body());
+            ack.acknowledge();
+        } catch (FCMException e) {
+            log.warn("[FCM 재시도 실패] token={}, retryCount={}, reason={}",
+                message.token(), message.retryCount(), e.getMessage(), e);
+            retryEventProducer.sendRetryMessage(message);
+            ack.acknowledge();
         }
     }
 }`
         },
         {
-          title: "Circuit Breaker 패턴 적용",
-          language: "java", 
-          code: `@Component
-public class AIServiceClient {
-    
-    private final WebClient webClient;
-    private final CircuitBreaker circuitBreaker;
-    
-    public AIServiceClient(WebClient.Builder builder) {
-        this.webClient = builder.baseUrl("http://ai-service").build();
-        this.circuitBreaker = CircuitBreaker.ofDefaults("ai-service");
-    }
-    
-    public Mono<FraudDetectionResult> detectFraud(TransactionEvent event) {
-        return circuitBreaker.executeSupplier(() -> 
-            webClient.post()
-                .uri("/detect-fraud")
-                .bodyValue(event)
-                .retrieve()
-                .bodyToMono(FraudDetectionResult.class)
-                .timeout(Duration.ofSeconds(3))
-        ).onErrorReturn(getDefaultFraudResult()); // Fallback 처리
-    }
-    
-    private FraudDetectionResult getDefaultFraudResult() {
-        return FraudDetectionResult.builder()
-            .fraudulent(false)
-            .reason("AI 서비스 일시 불가, 기본 정책 적용")
+          title: "재시도 메시지 모델과 프로듀서",
+          language: "java",
+          code: `@Builder
+public record AlarmRetryEventMessage(
+    String token,
+    String title,
+    String body,
+    int retryCount
+) {
+    public static AlarmRetryEventMessage from(final AlarmEventMessage message, final String token) {
+        return AlarmRetryEventMessage.builder()
+            .token(token)
+            .title(message.title())
+            .body(message.body())
+            .retryCount(0)
             .build();
+    }
+    public AlarmRetryEventMessage nextRetry() {
+        return AlarmRetryEventMessage.builder()
+            .token(token)
+            .title(title)
+            .body(body)
+            .retryCount(retryCount + 1)
+            .build();
+    }
+}
+@Component
+@RequiredArgsConstructor
+public class AlarmRetryEventProducer {
+    private static final String RETRY_TOPIC = "alarm-retry";
+    private final KafkaTemplate<String, AlarmRetryEventMessage> kafkaTemplate;
+    public void sendRetryMessage(final AlarmRetryEventMessage message) {
+        kafkaTemplate.send(RETRY_TOPIC, message.nextRetry());
+    }
+}`
+        },
+        {
+          title: "Kafka Listener 수동 Ack 설정",
+          language: "java",
+          code: `@EnableKafka
+@Configuration
+public class KafkaConsumerConfig {
+    @Value("\${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+    private <T> ConcurrentKafkaListenerContainerFactory<String, T> factory(final String groupId, final Class<T> clazz) {
+        var factory = new ConcurrentKafkaListenerContainerFactory<String, T>();
+        factory.setConsumerFactory(consumerFactory(groupId, clazz));
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+        return factory;
+    }
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, AlarmEventMessage> kafkaListenerContainerFactory() {
+        return factory("alarm-group", AlarmEventMessage.class);
+    }
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, AlarmRetryEventMessage> retryKafkaListenerContainerFactory() {
+        return factory("alarm-retry-group", AlarmRetryEventMessage.class);
+    }
+}`
+        },
+        {
+          title: "Redis 세션 컨텍스트와 대화 이력 관리",
+          language: "java",
+          code: `@Service
+@RequiredArgsConstructor
+public class RedisServiceImpl implements RedisService {
+    private static final String SETTING_KEY_PREFIX = "chat:setting:";
+    private static final String HISTORY_KEY_PREFIX = "chat:history:";
+    private final RedisTemplate<String, CustomSetting> customSettingRedisTemplate;
+    private final RedisTemplate<String, ChatNode> chatNodeRedisTemplate;
+    public void prepareChatSession(Long childId, ChatType chatType, CustomSetting setting) {
+        customSettingRedisTemplate.opsForValue().set(SETTING_KEY_PREFIX + childId, setting);
+    }
+    public void clearChatSession(Long childId, ChatType chatType) {
+        customSettingRedisTemplate.delete(SETTING_KEY_PREFIX + childId);
+        chatNodeRedisTemplate.delete(HISTORY_KEY_PREFIX + chatType.name() + ":" + childId);
+    }
+    public void appendChatHistory(Long childId, ChatType chatType, AIMessage ai, MemberMessage member) {
+        String key = HISTORY_KEY_PREFIX + chatType.name() + ":" + childId;
+        chatNodeRedisTemplate.opsForList().rightPush(key, ChatNode.from(member));
+        chatNodeRedisTemplate.opsForList().rightPush(key, ChatNode.from(ai));
+    }
+    public CustomSetting loadCustomSetting(Long childId) {
+        return customSettingRedisTemplate.opsForValue().get(SETTING_KEY_PREFIX + childId);
+    }
+    public List<ChatNode> loadChatHistory(Long childId, ChatType chatType) {
+        return chatNodeRedisTemplate.opsForList().range(HISTORY_KEY_PREFIX + chatType.name() + ":" + childId, 0, -1);
     }
 }`
         }
       ],
-      testing: {
-        strategy: "테스트 피라미드 기반 계층별 테스트 전략 수립",
-        coverage: "90%+",
-        types: [
-          {
-            type: "단위 테스트",
-            tool: "JUnit5 + Mockito",
-            description: "비즈니스 로직의 핵심 기능 테스트"
-          },
-          {
-            type: "통합 테스트", 
-            tool: "@SpringBootTest",
-            description: "서비스 간 연동과 데이터베이스 통합 테스트"
-          },
-          {
-            type: "성능 테스트",
-            tool: "K6",
-            description: "거래 처리 성능 및 동시성 테스트"
-          }
-        ]
-      },
       achievements: [
         {
-          metric: "응답 시간 개선",
-          before: "2.3초",
-          after: "0.6초", 
-          improvement: "40% 개선",
-          description: "Kafka 기반 비동기 처리 도입"
+          metric: "알림 안정성",
+          before: "장애 시 전송 누락/실패",
+          after: "최대 3회 재시도",
+          improvement: "재처리 성공률 향상",
+          description: "Kafka 재시도 토픽(alarm-retry) + retryCount 기반 재시도"
         },
         {
-          metric: "시스템 가용성",
-          before: "95%",
-          after: "99.9%",
-          improvement: "4.9% 향상",
-          description: "Circuit Breaker와 Fallback 메커니즘"
+          metric: "챗봇 컨텍스트 조회",
+          before: "매 요청 DB 조회",
+          after: "Redis 세션 캐시 조회",
+          improvement: "DB 부하 감소, 응답 지연 단축",
+          description: "사용자별 세션 키/TTL 기반 컨텍스트 캐싱"
         },
         {
-          metric: "배포 시간",
-          before: "60분",
-          after: "12분",
-          improvement: "80% 단축",
-          description: "Jenkins CI/CD 파이프라인 자동화"
-        },
-        {
-          metric: "설정 관리",
-          before: "수동 관리",
-          after: "중앙화 자동화",
-          improvement: "100% 자동화",
-          description: "Spring Config Server 도입"
+          metric: "동적 페이지 최신성",
+          before: "CloudFront 캐싱으로 반영 지연",
+          after: "EC2/Nginx 직접 서빙",
+          improvement: "최신성 확보",
+          description: "정적은 S3, 동적은 서버 직접 서빙으로 분리"
         }
       ],
       lessons: [
         {
-          category: "기술적 성장",
+          category: "운영 안정성",
           points: [
-            "MSA 환경에서 서비스 간 통신 최적화 경험",
-            "Kafka를 활용한 이벤트 드리븐 아키텍처 설계 역량",
-            "금융 도메인의 복잡한 비즈니스 로직 구현 경험"
+            "재시도 전용 토픽과 재시도 상한(3회)의 효과",
+            "수동 ack로 실패 건 중복 처리 방지와 격리",
+            "장애 전파를 막는 이벤트 드리븐 아키텍처"
           ]
         },
         {
-          category: "프로젝트 관리", 
+          category: "캐시 설계",
           points: [
-            "팀 리더로서 기술적 의사결정과 일정 관리 경험",
-            "CI/CD 파이프라인 구축을 통한 개발 생산성 향상",
-            "코드 리뷰와 문서화를 통한 팀 지식 공유 문화 구축"
+            "RedisTemplate로 컨텍스트/대화 이력 분리 저장(Value/List)",
+            "명시적 세션 종료 시 키 삭제 및 일관성 유지",
+            "DB 부하 절감과 응답 시간 단축 경험"
+          ]
+        },
+        {
+          category: "배포/캐싱 전략",
+          points: [
+            "CDN 캐싱과 SSR/ISR의 상호작용 이해",
+            "정적·동적 자원 분리 배포의 필요성",
+            "롤백·캐시 무효화 전략 수립의 중요성"
           ]
         }
       ],
       improvements: [
-        "서비스 메시 도입을 통한 더 정교한 트래픽 관리",
-        "분산 트레이싱 시스템 도입으로 MSA 모니터링 강화", 
-        "CQRS 패턴 적용을 통한 읽기/쓰기 성능 최적화",
-        "Kubernetes 기반 오케스트레이션으로 운영 자동화"
+        "알림 재시도 간격을 조금씩 늘려 서버 부담 줄이기",
+        "재시도에도 실패한 알림은 모아두고 관리자에게 알려 빠르게 대응하기",
+        "Redis 저장 기간과 대화 개수에 제한을 두어 메모리 절약하기",
+        "대화 이력과 설정을 주기적으로 DB에 백업하기",
+        "이미지·CSS 같은 정적 파일만 CDN에 올리고, 동적 화면은 서버에서 제공 유지하기"
       ],
       images: {
         gallery: [
           {
-            src: "/images/projects/aicheck/architecture.png",
-            alt: "MSA 아키텍처 다이어그램",
-            title: "마이크로서비스 아키텍처"
+            src: "/images/projects/aicheck/용돈인상요청.gif",
+            alt: "용돈 리포트",
+            title: "용돈 리포트"
           },
           {
-            src: "/images/projects/aicheck/ec2.png", 
-            alt: "AWS EC2 인스턴스 구성",
-            title: "클라우드 인프라"
-          },
-          {
-            src: "/images/projects/aicheck/s3.png",
-            alt: "AWS S3 버킷 구성", 
-            title: "파일 저장소"
+            src: "/images/projects/aicheck/엄마AI.gif",
+            alt: "엄마AI",
+            title: "엄마AI"
           },
           {
             src: "/images/projects/aicheck/보이스피싱.gif",
-            alt: "보이스피싱 탐지 데모",
-            title: "AI 보이스피싱 탐지"
+            alt: "보이스피싱",
+            title: "보이스피싱"
           },
           {
             src: "/images/projects/aicheck/스미싱.gif",
-            alt: "스미싱 탐지 데모", 
-            title: "AI 스미싱 탐지"
+            alt: "스미싱",
+            title: "스미싱"
           },
           {
             src: "/images/projects/aicheck/용돈기입장.gif",
-            alt: "용돈 기입장 기능",
-            title: "용돈 관리 기능"
+            alt: "용돈 기입장", 
+            title: "용돈 기입장",
+            size: "small"
+          }
+        ],
+        architecture: [
+          {
+            src: "/images/projects/aicheck/architecture.png",
+            alt: "MSA 아키텍처 다이어그램",
+            title: "마이크로서비스 아키텍처"
           }
         ],
         erd: [
@@ -1217,17 +1408,196 @@ public class AIServiceClient {
       role: "Back-End",
       github: "https://github.com/BrokenFinger98/SSAFY-ceon-sun",
       demo: "#",
+      components: {
+        "Class Service": {
+          description: "강의 수업 및 소스코드 관리를 담당하는 핵심 서비스",
+          responsibilities: [
+            "강의 수업 소스코드 업로드/다운로드",
+            "수업 기록 및 이력 관리",
+            "계약된 강의 상태 업데이트",
+            "페이징 기반 데이터 조회 처리"
+          ],
+          keyComponents: [
+            {
+              name: "ClassController",
+              description: "강의 관련 API 엔드포인트 제공",
+              methods: ["uploadSourceCode()", "downloadSourceCode()", "searchSourceCodes()", "searchLessonRecords()", "updateStatus()"]
+            },
+            {
+              name: "ClassService",
+              description: "강의 비즈니스 로직 처리",
+              methods: ["saveSourceCode()", "searchSourceCode()", "searchSourceCodes()", "searchLessonRecords()"]
+            }
+          ],
+          entities: [
+            "ContractedClass (계약된 강의)",
+            "SourceCode (소스코드)",
+            "LessonRecord (수업 기록)"
+          ]
+        },
+        "Chat Service": {
+          description: "실시간 채팅 기능을 제공하는 서비스",
+          responsibilities: [
+            "WebSocket 기반 실시간 채팅",
+            "MongoDB를 활용한 채팅 메시지 저장",
+            "채팅방별 메시지 이력 관리",
+            "Kafka를 통한 메시지 이벤트 처리"
+          ],
+          keyComponents: [
+            {
+              name: "ChatController",
+              description: "채팅 메시지 조회 API 제공",
+              methods: ["getChatMessage()"]
+            },
+            {
+              name: "MessageController", 
+              description: "실시간 메시지 전송 처리",
+              methods: ["sendMessage()", "handleMessage()"]
+            },
+            {
+              name: "ChatRoomController",
+              description: "채팅방 관리 및 운영",
+              methods: ["createChatRoom()", "joinChatRoom()", "leaveChatRoom()"]
+            },
+            {
+              name: "ChatMessageService",
+              description: "채팅 메시지 비즈니스 로직",
+              methods: ["findByRoomId()", "saveMessage()"]
+            }
+          ],
+          integrations: [
+            "MongoDB (메시지 저장소)",
+            "Kafka Consumer (메시지 이벤트 처리)",
+            "WebSocket (실시간 통신)"
+          ]
+        },
+        "Payment Service": {
+          description: "결제 검증 및 이력 관리 서비스",
+          responsibilities: [
+            "결제 요청 검증 및 승인",
+            "사용자별 결제 내역 관리",
+            "페이징 기반 결제 이력 조회",
+            "결제 상태 추적 및 관리"
+          ],
+          keyComponents: [
+            {
+              name: "PaymentController",
+              description: "결제 관련 API 엔드포인트",
+              methods: ["validatePayment()", "searchPayments()"]
+            },
+            {
+              name: "PaymentService",
+              description: "결제 검증 및 처리 로직",
+              methods: ["validatePayment()", "searchPaymentsByMemberId()"]
+            }
+          ],
+          entities: [
+            "Payment (결제 정보)",
+            "PaymentHistory (결제 이력)",
+            "PaymentStatus (결제 상태)"
+          ]
+        },
+        "Notification Service": {
+          description: "실시간 알림 및 이벤트 처리 서비스",
+          responsibilities: [
+            "Kafka 기반 비동기 알림 처리",
+            "SSE를 통한 실시간 알림 전송",
+            "사용자별 알림 읽음 상태 관리",
+            "쿠폰 및 시스템 알림 발송"
+          ],
+          keyComponents: [
+            {
+              name: "NotificationController",
+              description: "알림 관련 API 제공",
+              methods: ["sendNotification()", "sendCouponNotificationToAllUsers()", "getAllNotifications()", "hasUnreadNotifications()", "getNotificationDetail()"]
+            },
+            {
+              name: "SseController",
+              description: "Server-Sent Events 기반 실시간 알림",
+              methods: ["streamNotifications()", "subscribeNotifications()"]
+            },
+            {
+              name: "NotificationProducerService",
+              description: "Kafka 알림 이벤트 발행",
+              methods: ["sendNotification()"]
+            },
+            {
+              name: "NotificationService",
+              description: "알림 비즈니스 로직 처리",
+              methods: ["sendCouponNotificationToAllUsers()", "getAllNotificationsOrdered()", "hasUnreadNotifications()", "markNotificationAsRead()"]
+            }
+          ],
+          features: [
+            "WebFlux 기반 비동기 처리",
+            "Kafka Producer/Consumer 패턴",
+            "SSE 실시간 알림 스트리밍",
+            "읽음 처리 자동화"
+          ]
+        },
+        "Ranking Service": {
+          description: "강사 랭킹 시스템을 위한 실시간 데이터 처리 서비스",
+          responsibilities: [
+            "Redis를 활용한 실시간 랭킹 데이터 관리",
+            "강사 조회수 및 수업 횟수 집계",
+            "가중치 기반 랭킹 점수 계산",
+            "배치 작업을 통한 DB-Redis 동기화"
+          ],
+          keyComponents: [
+            {
+              name: "RankingController",
+              description: "랭킹 관련 API 및 배치 작업 제어",
+              methods: ["incrementTeacherViewCount()", "incrementTeacherClassCount()", "mergeRealTimeData()", "updateDatabaseRankingPoints()", "syncRedisRankingPoints()", "getTeachersRank()"]
+            },
+            {
+              name: "RankingService",
+              description: "랭킹 계산 및 데이터 동기화 로직",
+              methods: ["incrementTeacherViewCount()", "incrementTeacherClassCount()", "mergeRealTimeData()", "updateDatabaseRankingPoints()", "syncRedisRankingPoints()", "getTeachersRank()"]
+            }
+          ],
+          features: [
+            "Redis ZSet을 활용한 실시간 랭킹",
+            "3시간 단위 실시간 데이터 병합", 
+            "24시간 단위 DB-Redis 동기화",
+            "가중치 기반 랭킹 점수 산출"
+          ]
+        },
+        "Coupon Service": {
+          description: "쿠폰 발급 및 관리 서비스",
+          responsibilities: [
+            "쿠폰 생성 및 발급",
+            "사용자별 쿠폰 사용 이력 관리",
+            "Kafka를 통한 쿠폰 알림 이벤트 발행",
+            "쿠폰 유효성 검증"
+          ],
+          keyComponents: [
+            {
+              name: "CouponController",
+              description: "쿠폰 관련 API 엔드포인트",
+              methods: ["issueCoupon()", "useCoupon()", "getCouponHistory()"]
+            },
+            {
+              name: "CouponKafkaService",
+              description: "쿠폰 관련 Kafka 이벤트 처리",
+              methods: ["sendCouponNotification()", "processCouponEvent()"]
+            }
+          ],
+          integrations: [
+            "Notification Service (쿠폰 알림)",
+            "Kafka (이벤트 처리)"
+          ]
+        }
+      },
       overview: {
         background: "코로나19 이후 온라인 교육 수요가 급증하면서, 다양한 과외 매칭 플랫폼이 만들어졌습니다. 대부분 다양한 종류의 과외에 대한 서비스들였기 때문에, 개발자에 특화된 과외 매칭 플랫폼을 만들고 싶었습니다.",
         keyFeatures: [
           {
-            title: "로그인",
+            title: "🔐 로그인",
             description: [
               "Kakao 소셜 로그인을 이용한 간편한 회원가입 및 로그인"
             ]
           },
           {
-            title: "학생",
+            title: "🎓 학생",
             description: [
               "학생 소개글 작성을 통해 본인이 수강하기 원하는 카테고리 설정 가능",
               "카테고리, 성별, 나이를 필터로 하는 선생 검색 기능 제공",
@@ -1236,111 +1606,42 @@ public class AIServiceClient {
             ]
           },
           {
-            title: "선생",
+            title: "👩‍🏫 선생",
             description: [
               "선생 소개글 작성을 통해 본인이 수업 가능한 카테고리 설정 가능",
               "과외 문의를 보낸 학생과 채팅으로 대화 후, 수업 신청 기능 제공"
             ]
           },
           {
-            title: "채팅",
+            title: "💬 채팅",
             description: [
               "학생과 선생의 1:1 실시간 채팅을 통해 과외 문의 및 과외 일정 조정 기능 제공",
             ]
           },
           {
-            title: "알림",
+            title: "🔔 알림",
             description: [
               "채팅, 쿠폰 발급 이벤트, 과외 등 다양한 알림을 실시간으로 제공",
             ]
           },
           {
-            title: "쿠폰",
+            title: "🎟️ 쿠폰",
             description: [
               "선착순 쿠폰 발급 이벤트 제공",
               "발급받은 쿠폰을 이용해 수강권 결제 금액 할인"
             ]
           },
           {
-            title: "결제",
+            title: "💳 결제",
             description: [
               "포트원 API를 이용한 테스트 결제 기능 구현"
             ]
           },
           {
-            title: "랭킹",
+            title: "🏆 랭킹",
             description: [
               "선생 랭킹을 통해 학생들에게 더 많은 노출 기회 제공"
             ]
-          }
-        ]
-      },
-      architecture: {
-        keyComponents: [
-          {
-            name: "Config Service",
-            description: "MSA 전체 서비스의 중앙 집중식 설정 관리",
-            tech: "Spring Cloud Config Server, AMQP Bus"
-          },
-          {
-            name: "Discovery Service",
-            description: "서비스 등록/발견 및 로드 밸런싱",
-            tech: "Netflix Eureka Server"
-          },
-          {
-            name: "Gateway Service",
-            description: "API 게이트웨이로 모든 클라이언트 요청의 진입점",
-            tech: "Spring Cloud Gateway, Eureka Client"
-          },
-          {
-            name: "Auth Service",
-            description: "Kakao OAuth 소셜 로그인 및 JWT 토큰 관리",
-            tech: "OAuth2, JWT, Redis, Kakao API"
-          },
-          {
-            name: "Member Service",
-            description: "사용자(학생/선생) 프로필 및 검색 관리",
-            tech: "Spring Data JPA, MySQL, AWS S3"
-          },
-          {
-            name: "Class Service",
-            description: "온라인 화상 수업 및 수업 요청/계약 관리",
-            tech: "OpenVidu, JPA, MySQL, Kafka"
-          },
-          {
-            name: "Chat Service",
-            description: "실시간 1:1 채팅 및 WebSocket 연결 관리",
-            tech: "WebSocket, Kafka, MongoDB, JWT"
-          },
-          {
-            name: "Chat Consumer",
-            description: "채팅 메시지 비동기 처리 및 MongoDB 저장",
-            tech: "Kafka Consumer, MongoDB"
-          },
-          {
-            name: "Coupon Service",
-            description: "쿠폰 생성/검증 및 기본 CRUD 관리",
-            tech: "Spring Data JPA, MySQL"
-          },
-          {
-            name: "Coupon Kafka Service",
-            description: "쿠폰 발급 시스템",
-            tech: "Redis, Kafka Streams, JDBC Bulk Insert"
-          },
-          {
-            name: "Payment Service",
-            description: "아임포트 연동 결제 처리 및 결제 이력 관리",
-            tech: "Iamport API, Kafka, MySQL"
-          },
-          {
-            name: "Rank Service",
-            description: "선생님 랭킹 계산 및 평가 통계 관리",
-            tech: "Spring Data JPA, MySQL"
-          },
-          {
-            name: "Notification Service",
-            description: "실시간 알림 전송 및 알림 이력 관리",
-            tech: "Server-Sent Events, Kafka, MongoDB"
           }
         ]
       },
@@ -1370,6 +1671,7 @@ public class AIServiceClient {
           { name: "OAuth 2.0", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oauth/oauth-original.svg" },
           { name: "WebSocket", version: "", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwqWz7aMlinMNdeQ2i5p8ITrqe9f81e9W_xA&s" },
           { name: "Kafka", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg" },
+          { name: "RabbitMQ", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rabbitmq/rabbitmq-original.svg" }
         ],
         "Front-end": [
           { name: "React", version: "19", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
@@ -1693,8 +1995,7 @@ public class RedisServiceImpl implements RedisService {
         erd: [
           {
             src: "/images/projects/ceonsun/erd.png",
-            alt: "데이터베이스 ERD", 
-            title: "데이터베이스 설계"
+            alt: "데이터베이스 ERD"
           }
         ]
       }
@@ -2078,7 +2379,7 @@ public class PromptTemplateLoader {
         erd: [
           {
             src: "/images/projects/zipda/erd.png",
-            alt: "데이터베이스 ERD",
+            alt: "데이터베이스 ERD"
           }
         ]
       }
@@ -2434,8 +2735,8 @@ public class PromptTemplateLoader {
                           📸 화면 이미지
                         </h3>
                         <div className="space-y-6">
-                          {project.images.gallery.map((image, index) => (
-                            <div key={index} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+                          {(project.images.gallery as ImageItem[]).map((image: ImageItem, index: number) => (
+                            <div key={index} className={`bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 ${image.size === 'small' ? 'max-w-md mx-auto' : ''}`}>
                               <div className="p-4 bg-gray-50 dark:bg-gray-900">
                                 <p className="text-base text-gray-700 dark:text-gray-200 font-medium text-left">
                                   {image.title}
@@ -2445,7 +2746,7 @@ public class PromptTemplateLoader {
                                 <img
                                   src={image.src}
                                   alt={image.alt}
-                                  className="w-full h-auto object-contain"
+                                  className={`w-full h-auto object-contain ${image.size === 'small' ? 'max-w-sm mx-auto' : ''}`}
                                 />
                               </div>
                             </div>
@@ -2467,13 +2768,10 @@ public class PromptTemplateLoader {
                   </h2>
                   
                   <div className="space-y-8">
+                    
+
                     {/* Architecture 섹션 */}
-                    {(
-                      ('images' in project && project.images && 'architecture' in project.images) ||
-                      ('architecture' in project && project.architecture && 
-                        (project.architecture.keyComponents && project.architecture.keyComponents.length > 0)
-                      )
-                    ) && (
+                    {('images' in project && project.images && 'architecture' in project.images) && (
                       <div className="space-y-6">
                         
                         {/* Architecture 이미지 */}
@@ -2500,52 +2798,129 @@ public class PromptTemplateLoader {
                           </div>
                         )}
                         
-                        {/* Architecture 컴포넌트 */}
-                        {(
-                          ('architecture' in project && project.architecture && project.architecture.keyComponents && project.architecture.keyComponents.length > 0)
-                        ) && (
-                          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-                            <div className="p-4 bg-gray-50 dark:bg-gray-900">
-                              <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                시스템 구성
-                              </h4>
-                            </div>
-                            <div className="p-6 space-y-6">
-                              
-                              {/* 주요 컴포넌트 */}
-                              {'architecture' in project && project.architecture && project.architecture.keyComponents && project.architecture.keyComponents.length > 0 && (
-                                <div>
-                                  <div className="grid gap-4">
-                                    {project.architecture.keyComponents.map((component, index) => (
-                                      <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900">
-                                        <div className="flex items-center gap-2 mb-2">
-                                          <Server className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                                          <h6 className="font-semibold text-gray-900 dark:text-white">
-                                            {component.name}
-                                          </h6>
-                                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded text-xs">
-                                            {component.tech}
-                                          </span>
-                                        </div>
-                                        <p className="text-gray-600 dark:text-gray-300">
-                                          {component.description}
-                                        </p>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
+                    {/* Architecture 컴포넌트: 요청에 따라 제거됨 */}
                       </div>
                     )}
-                    
+
+                    {/* Components 섹션 (아키텍처 이미지 다음) */}
+                    {'components' in project && project.components && (
+                      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+                        <div className="p-4 bg-gray-50 dark:bg-gray-900">
+                          <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            🔧 주요 컴포넌트
+                          </h4>
+                        </div>
+                        <div className="p-6">
+                          <div className="space-y-8">
+                            {Object.entries(project.components).map(([serviceName, serviceInfo], index) => (
+                              <div key={index} className="border-l-4 border-blue-500 pl-6">
+                                <h5 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                  {serviceName}
+                                </h5>
+                                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                                  {serviceInfo.description}
+                                </p>
+
+                                {serviceInfo.responsibilities && (
+                                  <div className="mb-4">
+                                    <h6 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                                      주요 책임
+                                    </h6>
+                                    <ul className="list-disc pl-5 space-y-1">
+                                      {serviceInfo.responsibilities.map((responsibility, idx) => (
+                                        <li key={idx} className="text-sm text-gray-600 dark:text-gray-300">
+                                          {responsibility}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+
+                                {serviceInfo.keyComponents && (
+                                  <div className="mb-4">
+                                    <h6 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                                      핵심 컴포넌트
+                                    </h6>
+                                    <div className="grid gap-4 md:grid-cols-2">
+                                      {serviceInfo.keyComponents.map((component, idx) => (
+                                        <div key={idx} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                                          <h6 className="font-semibold text-gray-900 dark:text-white text-sm">
+                                            {component.name}
+                                          </h6>
+                                          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 mb-2">
+                                            {component.description}
+                                          </p>
+                                          {component.methods && (
+                                            <div className="text-xs">
+                                              <span className="text-gray-500 dark:text-gray-400">주요 메서드:</span>
+                                              <div className="flex flex-wrap gap-1 mt-1">
+                                                {component.methods.map((method, methodIdx) => (
+                                                  <span key={methodIdx} className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-xs font-mono">
+                                                    {method}
+                                                  </span>
+                                                ))}
+                                              </div>
+                                            </div>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {(serviceInfo as any).entities && (
+                                  <div className="mb-4">
+                                    <h6 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                                      주요 엔티티
+                                    </h6>
+                                    <div className="flex flex-wrap gap-2">
+                                      {(serviceInfo as any).entities.map((entity: string, idx: number) => (
+                                        <span key={idx} className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-xs">
+                                          {entity}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {(serviceInfo as any).integrations && (
+                                  <div className="mb-4">
+                                    <h6 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                                      연동 서비스
+                                    </h6>
+                                    <div className="flex flex-wrap gap-2">
+                                      {(serviceInfo as any).integrations.map((integration: string, idx: number) => (
+                                        <span key={idx} className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-3 py-1 rounded-full text-xs">
+                                          {integration}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {(serviceInfo as any).features && (
+                                  <div className="mb-4">
+                                    <h6 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                                      특별 기능
+                                    </h6>
+                                    <ul className="list-disc pl-5 space-y-1">
+                                      {(serviceInfo as any).features.map((feature: string, idx: number) => (
+                                        <li key={idx} className="text-sm text-gray-600 dark:text-gray-300">
+                                          {feature}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* ERD 섹션 */}
-                    {(
-                      ('images' in project && project.images && 'erd' in project.images) ||
-                      ('architecture' in project && project.architecture && 'database' in project.architecture && project.architecture.database)
-                    ) && (
+                    {('images' in project && project.images && 'erd' in project.images) && (
                       <div className="space-y-6">
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                           🗄️ ERD & Database
@@ -2561,7 +2936,14 @@ public class PromptTemplateLoader {
                             </div>
                             <div className="space-y-6 p-4">
                               {(project.images.erd as ImageItem[]).map((image: ImageItem, index: number) => (
-                                <div key={index} className="bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden">
+                                <div key={index} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+                                  {image.title && (
+                                    <div className="p-4 bg-gray-50 dark:bg-gray-900">
+                                      <p className="text-base text-gray-700 dark:text-gray-200 font-medium text-left">
+                                        {image.title}
+                                      </p>
+                                    </div>
+                                  )}
                                   <div className="w-full">
                                     <img
                                       src={image.src}
