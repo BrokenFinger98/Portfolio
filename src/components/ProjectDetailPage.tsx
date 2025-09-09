@@ -2812,7 +2812,14 @@ public class PromptTemplateLoader {
                         </div>
                         <div className="p-6">
                           <div className="space-y-8">
-                            {Object.entries(project.components).map(([serviceName, serviceInfo], index) => (
+                            {Object.entries(project.components as Record<string, {
+                              description: string;
+                              responsibilities?: string[];
+                              keyComponents?: { name: string; description: string; methods?: string[] }[];
+                              entities?: string[];
+                              integrations?: string[];
+                              features?: string[];
+                            }>).map(([serviceName, serviceInfo], index) => (
                               <div key={index} className="border-l-4 border-blue-500 pl-6">
                                 <h5 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                                   {serviceName}
@@ -2868,13 +2875,13 @@ public class PromptTemplateLoader {
                                   </div>
                                 )}
 
-                                {(serviceInfo as any).entities && (
+                                {serviceInfo.entities && (
                                   <div className="mb-4">
                                     <h6 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
                                       주요 엔티티
                                     </h6>
                                     <div className="flex flex-wrap gap-2">
-                                      {(serviceInfo as any).entities.map((entity: string, idx: number) => (
+                                      {serviceInfo.entities.map((entity: string, idx: number) => (
                                         <span key={idx} className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-xs">
                                           {entity}
                                         </span>
@@ -2883,13 +2890,13 @@ public class PromptTemplateLoader {
                                   </div>
                                 )}
 
-                                {(serviceInfo as any).integrations && (
+                                {serviceInfo.integrations && (
                                   <div className="mb-4">
                                     <h6 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
                                       연동 서비스
                                     </h6>
                                     <div className="flex flex-wrap gap-2">
-                                      {(serviceInfo as any).integrations.map((integration: string, idx: number) => (
+                                      {serviceInfo.integrations.map((integration: string, idx: number) => (
                                         <span key={idx} className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-3 py-1 rounded-full text-xs">
                                           {integration}
                                         </span>
@@ -2898,13 +2905,13 @@ public class PromptTemplateLoader {
                                   </div>
                                 )}
 
-                                {(serviceInfo as any).features && (
+                                {serviceInfo.features && (
                                   <div className="mb-4">
                                     <h6 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">
                                       특별 기능
                                     </h6>
                                     <ul className="list-disc pl-5 space-y-1">
-                                      {(serviceInfo as any).features.map((feature: string, idx: number) => (
+                                      {serviceInfo.features.map((feature: string, idx: number) => (
                                         <li key={idx} className="text-sm text-gray-600 dark:text-gray-300">
                                           {feature}
                                         </li>
