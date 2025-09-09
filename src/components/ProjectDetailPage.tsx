@@ -4,6 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
 import { 
   ArrowLeft, 
   ExternalLink, 
@@ -149,18 +152,12 @@ export default function ProjectDetailPage({ projectId }: ProjectDetailPageProps)
       subtitle: "TDD와 개인 PC 서버 운영을 통한 추억 공유 플랫폼",
       thumbnail: "💭",
       duration: "2025.07.29 ~ 2025.09.05 (5주)",
-      team: "백엔드 3명",
+      team: "백엔드 3명, 프론트 2명",
       role: "Back-End, DevOps",
       github: "https://github.com/BrokenFinger98/memento",
       demo: "#",
       overview: {
-        background: "클라우드 서비스 비용 부담과 개발 과정에서의 테스트 중요성, 그리고 팀 협업 시 API 문서 관리의 어려움을 해결하고자 했습니다. 개인 PC를 직접 서버로 운영하며 인프라 비용을 절약하고, TDD와 문서 자동화를 통해 개발 품질을 높이는 것이 목표였습니다.",
-        objectives: [
-          "개인 PC 기반 Linux 서버 구축 및 운영 경험 습득",
-          "Minio 오브젝트 스토리지를 활용한 미디어 파일 관리 시스템",
-          "TDD 방법론 도입으로 안정적인 소프트웨어 개발",
-          "Spring REST DOCS를 통한 API 문서 자동화"
-        ],
+        background: "클라우드 서비스 비용 부담과 개발 과정에서의 테스트 중요성, 그리고 팀 협업 시 API 문서 관리의 어려움을 해결하고자 했습니다. 개인 PC를 직접 서버로 운영하며 인프라 비용을 절약하고, TDD와 문서 자동화를 통해 개발 품질을 높이는 것이 목표였습니다."
       },
       challenges: [
         {
@@ -414,110 +411,446 @@ class MemoryControllerTest {
     },
     contract4k: {
       title: "Contract4k(Contract for Kotlin)",
-      subtitle: "계약 기반 설계를 Kotlin DSL로 구현할 수 있도록 돕는 오픈소스 라이브러리",
+      subtitle: "계약에 의한 설계를 Kotlin DSL로 구현할 수 있도록 돕는 오픈소스 라이브러리",
       thumbnail: "📚",
       duration: "2025.04.14 ~ 2025.05.22 (5주)",
-      team: "개인 프로젝트",
-      role: "개발자",
+      team: "백엔드 4명",
+      role: "의존성 배포 및 컴파일 타임 위빙 설계",
       github: "https://github.com/BrokenFinger98/contract4k",
       demo: "#",
       overview: {
-        background: "Java의 기존 계약 기반 설계(Contract-based Design) 도구들은 문법이 복잡하고 가독성이 떨어져 개발자들이 사용하기 어려웠습니다. Kotlin의 DSL(Domain Specific Language) 특성을 활용하여 더 직관적이고 사용하기 쉬운 계약 라이브러리를 만들고자 했습니다.",
-        objectives: [
-          "Kotlin DSL 기반 직관적인 계약 작성 인터페이스 제공",
-          "컴파일 타임 위빙으로 런타임 성능 최적화",
-          "JitPack을 통한 간편한 의존성 배포",
-          "오픈소스 생태계에 기여"
+        background: "신뢰 할 수 있는 코드를 작성하고 싶다는 팀원들의 니즈가 있었고, 그중에 계약에 의한 설계(Design by Contract)라는 개념을 알게 되었습니다. 기존의 Guava, Contract4j와 같은 라이브러리들은 사전 조건만 제공한다던가, 컴파일 타임 안정성이 부족하다는 아쉬움이 있었습니다. 이를 해결하기 위해 Kotlin의 DSL 문법을 사용하여 사용자가 더욱 쉽게 계약에 의한 설계를 지키며 코드를 작성할 수 있는 라이브러리를 개발하고자 했습니다.",
+        readme: `
+# 설치
+
+아래와 같이 Gradle 설정을 추가하면 Contract4K 라이브러리를 사용할 수 있습니다:
+
+\`\`\`kotlin
+plugins {
+    kotlin("jvm") version "2.0.21"
+    // AspectJ Post-Compile Weaving 플러그인
+    id("io.freefair.aspectj.post-compile-weaving") version "8.4"
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
+repositories {
+    mavenCentral()
+     // JitPack: GitHub에 호스팅된 라이브러리를 받아오기 위해 필요합니다.
+    maven { url = uri("https://jitpack.io") }
+}
+
+dependencies {
+    // Contract4K AOP weaving 의존성
+    aspect("com.github.monorail-team:contract4k:v1.0.0")
+    // AspectJ 런타임
+    implementation("org.aspectj:aspectjrt:1.9.21")
+    // Kotlin 리플렉션
+    implementation(kotlin("reflect"))
+}
+\`\`\`
+
+---
+
+# 빠른 시작 (Quick Start)
+
+\`\`\`kotlin
+// 1) 도메인 모델
+data class Order(val id: Long?, val amount: Int)
+
+// 2) 계약서 정의
+object ApproveOrderContract : Contract4KDsl<Pair<Order, Unit>, Order> {
+  override fun validatePre(input: Pair<Order, Unit>) = conditions {
+    "주문 금액은 1 이상이어야 합니다" means { input.first.amount >= 1 }
+  }
+}
+
+// 3) 서비스 사용
+class OrderService {
+  @Contract4kWith(ApproveOrderContract::class)
+  fun placeOrder(order: Order): Order = order
+}
+
+// 4) 실행 예시
+fun main() {
+  OrderService().placeOrder(Order(null, 0))
+  // → Validation failed with 1 errors:
+  //  - 주문 금액은 1 이상이어야 합니다
+}
+\`\`\`
+
+---
+
+# 핵심 개념
+
+## Contract4KDsl 인터페이스
+
+\`Contract4KDsl<I, O>\` 은 "계약서" 역할을 하는 DSL 진입점입니다.  
+제네릭 파라미터:
+
+- \`I\`: 메서드 호출 시점의 입력값 타입 (파라미터가 여러 개면 \`and\` 연산자를 사용해 묶음)
+- \`O\`: 메서드 실행 결과 타입
+
+주요 메서드:
+
+\`\`\`kotlin
+interface Contract4KDsl<I, O> {
+  /** ① 사전(pre) 조건 검사 — 비즈니스 로직 실행 전 */
+  fun validatePre(input: I)
+
+  /** ② 불변식(invariant) 검사 — 로직 중에도 항상 지켜져야 할 조건 */
+  fun validateInvariant(input: I, output: O)
+
+  /** ③ 사후(post) 조건 검사 — 로직 실행 후 결과 검증 */
+  fun validatePost(input: I, result: O)
+}
+\`\`\`
+
+## @Contract4kWith 어노테이션
+
+\`\`\`kotlin
+@Service
+class OrderService {
+  @Contract4kWith(ApproveOrderContract::class)
+  fun placeOrder(...) = …
+}
+\`\`\`
+
+---
+
+# DSL 사용법
+
+Contract4K 의 핵심은 **"메시지" means { 조건 }** 형태의 Kotlin DSL 로 원하는 검증 로직을 깔끔하게 작성할 수 있다는 점입니다.  
+아래처럼 **사전(pre)**, **불변(invariant)**, **사후(post)** 3단계로 나누어 블록 안에 조건을 선언하면, AOP 가 자동으로 해당 단계에서 실행해 줍니다.
+
+## 사전/불변/사후 조건 정의
+
+\`\`\`kotlin
+object ApproveOrderContract : Contract4KDsl<Pair<Order, Customer>, Order> {
+
+  // ① 사전(pre) 조건: 메서드 진입 직전에 실행
+  override fun validatePre(input: Pair<Order, Customer>) = conditions {
+    // 방법 1
+    val (order, customer) = input
+    "주문 객체는 null일 수 없습니다" means { order isNot nil }
+    "고객 객체는 null일 수 없습니다" means { customer isNot nil }
+    //방법 2
+    "주문 객체는 null일 수 없습니다" means { input.first isNot nil }
+    "고객 객체는 null일 수 없습니다" means { input.second isNot nil }
+  }
+
+  // ② 불변(invariant) 조건: 비즈니스 로직 중에도 유지되어야 할 제약
+  override fun validateInvariant(input: Pair<Order, Customer>, output: Order) = conditions {
+    "주문 ID는 항상 존재해야 합니다" means { output.id isNot nil }
+  }
+
+  // ③ 사후(post) 조건: 메서드 종료 후 최종 상태 검증
+  override fun validatePost(input: Pair<Order, Customer>, result: Order) = conditions {
+    "최종 상태는 COMPLETED 여야 합니다" means { result.status == "COMPLETED" }
+  }
+}
+\`\`\`
+
+---
+
+# 조건 빌더 유틸리티
+
+ConditionBuilder 에서 자주 쓰이는 주요 헬퍼 함수:
+
+- **숫자 검사**
+  - \`between(range: IntRange)\`
+    \`\`\`kotlin
+    order.amount between (1..10_000)
+    \`\`\`
+  - \`is positive\` / \`isNot negative\`
+    \`\`\`kotlin
+    count is positive
+    balance isNot negative
+    \`\`\`
+
+- **컬렉션 검사**
+  - \`hasCountInRange(range: IntRange)\`
+    \`\`\`kotlin
+    list hasCountInRange (1..5)
+    \`\`\`
+  - \`hasNoDuplicates()\`
+    \`\`\`kotlin
+    items hasNoDuplicates()
+    \`\`\`
+  - \`allSatisfy { predicate }\`
+    \`\`\`kotlin
+    users allSatisfy { it.isActive }
+    \`\`\`
+
+- **문자열 검사**
+  - \`hasExactLength(length: Int)\`
+    \`\`\`kotlin
+    password hasExactLength 8
+    \`\`\`
+  - \`doesNotStartWith(prefix: String)\`
+    \`\`\`kotlin
+    token doesNotStartWith "ERR_"
+    \`\`\`
+
+- **날짜·시간 검사**
+  - \`isBefore(other: Temporal)\`
+    \`\`\`kotlin
+    startDate isBefore endDate
+    \`\`\`
+  - \`isAfter(other: Temporal)\`
+    \`\`\`kotlin
+    dueDate isAfter now
+    \`\`\`
+
+---
+
+# 예외 처리
+
+- **\`ValidationException\`**
+  - 계약(pre/invariant/post) 중 하나라도 실패하면 던져집니다.
+  - \`RuntimeException\` 을 상속하며, 메시지에 어떤 조건이 왜 실패했는지 한눈에 보여 줍니다.
+  - 예시:
+    \`\`\`kotlin
+    try {
+      orderService.placeOrder(invalidOrder, customer)
+    } catch (e: ValidationException) {
+      println(e.message)
+      // → Validation failed with 1 error:
+      //    - 주문 금액은 1 이상이어야 합니다.
+    }
+    \`\`\`
+
+- **ErrorCode**
+  - 예외 메시지 안에서 \`[ERROR_CODE] 메시지\` 형태로 표시됩니다.
+  - 사용자는 메시지만 보고도 "무슨 조건"이 "왜" 실패했는지 바로 알 수 있습니다.
+
+---
+
+# 고급 기능
+
+## 1. 조건 그룹화 (OR / AND)
+
+- **meansAnyOf { … }**  
+  여러 조건 중 하나만 만족해도 OK인 그룹화
+  \`\`\`kotlin
+  conditions {
+    meansAnyOf {
+      "A 상품이 포함되어야 합니다" means { "A" in order.items }
+      "B 상품이 포함되어야 합니다" means { "B" in order.items }
+    }
+  }
+  \`\`\`
+
+- **meansAllOf { … }**  
+  모든 조건을 동시에 만족해야 하는 그룹화
+  \`\`\`kotlin
+  conditions {
+    meansAllOf {
+      "금액은 양수여야 합니다" means { order.amount > 0 }
+      "고객 나이는 18세 이상이어야 합니다" means { customer.age >= 18 }
+    }
+  }
+  \`\`\`
+
+## 2. 공통 조건 묶음 재사용 (ConditionGroup)
+
+자주 쓰이는 조건을 \`ConditionGroup\`으로 정의하고, 여러 계약서에서 재사용 가능
+
+\`\`\`kotlin
+object CommonCustomerConditions : ConditionGroup<Pair<Order, Customer>> {
+  override fun apply(builder: ConditionBuilder, input: Pair<Order, Customer>) {
+    val (_, customer) = input
+    "고객 이름은 비어 있으면 안 됩니다" means { customer.name isNot nil}
+    "고객 나이는 0 초과여야 합니다" means { customer.age > 0 }
+  }
+}
+
+conditions {
+  applyGroup(input, CommonCustomerConditions)
+  // 추가 커스텀 조건...
+}
+\`\`\`
+
+## 3. 경고 수준 조건 (softConditions)
+
+예외가 아닌 **경고**로만 처리
+\`\`\`kotlin
+softConditions {
+  "장기 미이용 고객입니다" means { daysSinceLastLogin > 365 }
+}
+\`\`\`
+
+## 4. QuickFix 제안
+
+조건에 수정 제안 추가
+\`\`\`kotlin
+conditions {
+  "주문 금액은 1,000원 이상이어야 합니다"
+    quickFix "금액을 1,000원 이상으로 설정하세요"
+    means { order.amount >= 1_000 }
+}
+\`\`\`
+
+## 5. 사용자 지정 에러 코드
+
+\`means(code, message) { … }\` 또는 \`quickFix(code, message, fix) means { … }\` 사용
+
+\`\`\`kotlin
+conditions {
+  means(
+    code    = "ERR_INVALID_AMOUNT",
+    message = "주문 금액은 1 이상이어야 합니다"
+  ) { order.amount >= 1 }
+
+  quickFix(
+    code       = "ERR_NULL_ORDER",
+    message    = "주문 객체는 null일 수 없습니다",
+    fixMessage = "올바른 주문 객체를 전달하세요"
+  ) means { order != null }
+}
+\`\`\``,
+      },
+      challenges: [
+        {
+          problem: "코드 삽입 방식의 기술적 선택과 성능 최적화",
+          situation: "계약에 의한 설계 라이브러리에서 검증 코드를 메소드에 삽입하는 방법을 결정해야 했습니다. Spring DI를 활용한 프록시 방식과 KSP를 이용한 코드 생성 방식 중에서 고민했지만, 두 방식 모두 한계점이 있었습니다.",
+          solution: "AspectJ 컴파일 타임 위빙 도입",
+          implementation: [
+            "Spring 의존성 제거로 순수 Kotlin 프로젝트에서도 사용 가능하도록 설계",
+            "AspectJ Post-Compile Weaving을 통한 바이트코드 레벨 코드 삽입",
+            "런타임 성능 저하 없이 컴파일 시점에 검증 로직 주입",
+            "어노테이션 기반 AOP로 메소드와 계약 클래스 연결"
+          ],
+          result: "런타임 오버헤드 없이 컴파일 타임에 검증 코드 삽입 완료, Spring 의존성 제거로 범용성 확보"
+        }
+      ],
+      techStack: {
+        "Back-end": [
+          { name: "Kotlin", version: "2.0.21", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" },
+          { name: "AspectJ", version: "1.9.21", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"}
         ],
+        "Tool": [
+          { name: "Jitpack", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" }
+        ]
       },
       codeExamples: [
         {
-          title: "Kotlin DSL 계약 정의",
+          title: "Contract4K DSL 기반 계약 정의",
           language: "kotlin",
-          code: `@Contract
-class BankAccount(private var balance: Double) {
+          code: `// 도메인 모델
+data class BankAccount(val id: String, var balance: Double)
+
+// 계약 클래스 정의
+object BankAccountContract : Contract4KDsl<Pair<BankAccount, Double>, BankAccount> {
     
-    @PreCondition("amount > 0")
-    @PostCondition("balance == old(balance) + amount")
-    fun deposit(amount: Double) {
-        require(amount > 0) { "입금액은 양수여야 합니다" }
-        balance += amount
+    // 사전 조건: 메서드 실행 전 검증
+    override fun validatePre(input: Pair<BankAccount, Double>) = conditions {
+        val (account, amount) = input
+        "계좌는 null일 수 없습니다" means { account isNot nil }
+        "입금액은 0보다 커야 합니다" means { amount > 0 }
+        "입금액은 1,000,000원 이하여야 합니다" means { amount <= 1_000_000 }
     }
     
-    @PreCondition("amount > 0 && amount <= balance")
-    @PostCondition("balance == old(balance) - amount")
-    fun withdraw(amount: Double): Boolean {
-        return if (amount > 0 && amount <= balance) {
-            balance -= amount
-            true
-        } else {
-            false
+    // 불변 조건: 메서드 실행 중 유지되어야 하는 조건
+    override fun validateInvariant(input: Pair<BankAccount, Double>, output: BankAccount) = conditions {
+        "계좌 잔액은 항상 0 이상이어야 합니다" means { output.balance >= 0 }
+        "계좌 ID는 변경될 수 없습니다" means { output.id == input.first.id }
+    }
+    
+    // 사후 조건: 메서드 실행 후 결과 검증
+    override fun validatePost(input: Pair<BankAccount, Double>, result: BankAccount) = conditions {
+        val (originalAccount, amount) = input
+        "입금 후 잔액이 정확해야 합니다" means { 
+            result.balance == originalAccount.balance + amount 
         }
     }
-    
-    @Invariant("balance >= 0")
-    fun getBalance(): Double = balance
 }`
         },
         {
-          title: "AspectJ 기반 자동 검증",
+          title: "AspectJ 위빙을 통한 자동 검증",
           language: "kotlin",
-          code: `@Aspect
-class ContractEnforcementAspect {
+          code: `// 서비스 클래스에 계약 적용
+class BankAccountService {
     
-    @Around("@annotation(contract)")
-    fun enforceContract(joinPoint: ProceedingJoinPoint, contract: Contract): Any? {
-        val method = (joinPoint.signature as MethodSignature).method
-        val target = joinPoint.target
-        val args = joinPoint.args
+    @Contract4kWith(BankAccountContract::class)
+    fun deposit(account: BankAccount, amount: Double): BankAccount {
+        // 비즈니스 로직만 집중
+        account.balance += amount
+        return account
+    }
+}
+
+// AspectJ Aspect 구현
+@Aspect
+class Contract4KAspect {
+    
+    @Around("@annotation(Contract4kWith)")
+    fun enforceContract(joinPoint: ProceedingJoinPoint): Any? {
+        val annotation = getContract4kWithAnnotation(joinPoint)
+        val contractClass = annotation.value
+        val contract = contractClass.objectInstance
         
-        // Pre-condition 검증
-        method.annotations.filterIsInstance<PreCondition>()
-            .forEach { preCondition ->
-                val result = evaluateCondition(preCondition.value, target, args)
-                if (!result) {
-                    throw ContractViolationException(
-                        "Pre-condition violated: \${preCondition.value}"
-                    )
-                }
-            }
+        // 입력 파라미터 준비
+        val args = joinPoint.args
+        val input = when (args.size) {
+            1 -> Pair(args[0], Unit)
+            2 -> Pair(args[0], args[1])
+            else -> args
+        }
+        
+        // 사전 조건 검증
+        contract?.validatePre(input)
         
         // 원본 메서드 실행
-        val oldState = captureState(target)
         val result = joinPoint.proceed()
         
-        // Post-condition 검증
-        method.annotations.filterIsInstance<PostCondition>()
-            .forEach { postCondition ->
-                val conditionResult = evaluateCondition(
-                    postCondition.value, target, args, oldState, result
-                )
-                if (!conditionResult) {
-                    throw ContractViolationException(
-                        "Post-condition violated: \${postCondition.value}"
-                    )
-                }
-            }
+        // 불변 조건 및 사후 조건 검증
+        contract?.validateInvariant(input, result)
+        contract?.validatePost(input, result)
         
         return result
     }
 }`
-        }
-      ],
-      achievements: [
-        {
-          metric: "오픈소스 공개",
-          before: "개인 사용",
-          after: "JitPack 배포",
-          improvement: "100% 공개",
-          description: "GitHub + JitPack 기반 의존성 배포"
         },
         {
-          metric: "런타임 성능",
-          before: "리플렉션 기반",
-          after: "컴파일 타임",
-          improvement: "90% 개선",
-          description: "AspectJ compile-time weaving 적용"
+          title: "DSL 헬퍼 함수 활용",
+          language: "kotlin",
+          code: `object ValidationContract : Contract4KDsl<User, User> {
+    
+    override fun validatePre(input: User) = conditions {
+        // 문자열 검증
+        "사용자 이름은 비어있을 수 없습니다" means { 
+            input.name hasMinLength 1 
+        }
+        "이메일 형식이 올바르지 않습니다" means { 
+            input.email matches emailRegex 
+        }
+        
+        // 숫자 범위 검증
+        "나이는 18세 이상이어야 합니다" means { 
+            input.age is positive and (input.age >= 18) 
+        }
+        "나이는 120세 이하여야 합니다" means { 
+            input.age between (1..120) 
+        }
+        
+        // 컬렉션 검증
+        "취미는 최소 1개 이상이어야 합니다" means { 
+            input.hobbies hasCountInRange (1..10) 
+        }
+        "취미에 중복이 있으면 안됩니다" means { 
+            input.hobbies hasNoDuplicates() 
+        }
+        
+        // 조건부 검증
+        meansAnyOf {
+            "프리미엄 사용자이거나" means { input.isPremium }
+            "또는 기본 사용자여야 합니다" means { !input.isPremium }
+        }
+    }
+}`
         }
       ],
       lessons: [
@@ -541,13 +874,7 @@ class ContractEnforcementAspect {
       github: "https://github.com/BrokenFinger98/aicheck-back",
       demo: "#",
       overview: {
-        background: "급증하는 금융 사기와 자녀의 잘못된 금융 습관 형성에 대한 사회적 우려가 높아지는 상황에서, AI 기술을 활용해 실시간으로 사기를 탐지하고 건전한 금융 습관을 형성할 수 있는 서비스를 만들고자 하였습니다.",
-        objectives: [
-          "온디바이스 AI 기반 실시간 금융 사기 탐지 시스템 구축",
-          "코어뱅킹·채널계 기반의 안정적인 MSA 아키텍처 설계",
-          "실시간 알림과 사용자 경험을 위한 성능 최적화",
-          "확장 가능하고 유지보수 용이한 금융 플랫폼 개발"
-        ],
+        background: "급증하는 금융 사기와 자녀의 잘못된 금융 습관 형성에 대한 사회적 우려가 높아지는 상황에서, AI 기술을 활용해 실시간으로 사기를 탐지하고 건전한 금융 습관을 형성할 수 있는 서비스를 만들고자 하였습니다."
       },
       architecture: {
         keyComponents: [
@@ -892,12 +1219,6 @@ public class AIServiceClient {
       demo: "#",
       overview: {
         background: "코로나19 이후 온라인 교육 수요가 급증하면서, 다양한 과외 매칭 플랫폼이 만들어졌습니다. 대부분 다양한 종류의 과외에 대한 서비스들였기 때문에, 개발자에 특화된 과외 매칭 플랫폼을 만들고 싶었습니다.",
-        objectives: [
-          "개발자-수강생 실시간 매칭 시스템 구축",
-          "대용량 트래픽 처리 가능한 쿠폰 발급 시스템 개발",
-          "안정적인 결제 시스템과 정산 기능 구현",
-          "MSA 기반 확장 가능한 플랫폼 아키텍처 설계"
-        ],
         keyFeatures: [
           {
             title: "로그인",
@@ -1431,12 +1752,6 @@ public class RedisServiceImpl implements RedisService {
               "찜 목록 관리 기능"
             ]
           }
-        ],
-        objectives: [
-          "복잡한 검색 조건의 동적 쿼리 최적화",
-          "OAuth2.0 기반 소셜 로그인 시스템 구축",
-          "AI 챗봇을 통한 자연어 부동산 상담",
-          "비동기 처리로 사용자 경험 개선"
         ]
       },
       challenges: [
@@ -1944,6 +2259,174 @@ public class PromptTemplateLoader {
 
                     {renderDemoVideo(project)}
 
+                    {/* README 문서 */}
+                    {'readme' in project.overview && project.overview.readme && (
+                      <div className="github-markdown bg-white dark:bg-gray-900 p-8 rounded-lg border border-gray-200 dark:border-gray-700"
+                        style={{
+                          fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
+                          fontSize: '16px',
+                          lineHeight: '1.5',
+                          wordWrap: 'break-word'
+                        }}
+                      >
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          rehypePlugins={[rehypeHighlight]}
+                          components={{
+                            code({className, children, ...props}: {className?: string, children?: React.ReactNode} & React.HTMLProps<HTMLElement>) {
+                              const match = /language-(\w+)/.exec(className || '')
+                              const isInline = !match
+                              
+                              // React 노드를 문자열로 변환하는 함수
+                              const getTextContent = (node: React.ReactNode): string => {
+                                if (typeof node === 'string') return node;
+                                if (typeof node === 'number') return String(node);
+                                if (Array.isArray(node)) return node.map(getTextContent).join('');
+                                if (node && typeof node === 'object' && 'props' in node && node.props && typeof node.props === 'object' && 'children' in node.props) {
+                                  return getTextContent((node.props as { children: React.ReactNode }).children);
+                                }
+                                return '';
+                              };
+                              
+                              const textContent = getTextContent(children);
+                              
+                              if (isInline) {
+                                return (
+                                  <code 
+                                    className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-1.5 py-0.5 rounded text-sm font-mono"
+                                    style={{
+                                      fontSize: '85%',
+                                      fontFamily: 'SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace'
+                                    }}
+                                    {...props}
+                                  >
+                                    {textContent}
+                                  </code>
+                                )
+                              }
+                              
+                              return (
+                                <div className="my-4">
+                                  <pre className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600 overflow-x-auto">
+                                    <code 
+                                      className={`text-gray-900 dark:text-gray-100 font-mono text-sm ${className || ''}`}
+                                      style={{
+                                        fontFamily: 'SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace'
+                                      }}
+                                    >
+                                      {textContent.replace(/\n$/, '')}
+                                    </code>
+                                  </pre>
+                                </div>
+                              )
+                            },
+                            h1: ({children}) => (
+                              <h1 
+                                className="text-3xl font-semibold text-gray-900 dark:text-white mb-6 mt-8 pb-3 border-b border-gray-300 dark:border-gray-600"
+                                style={{ fontWeight: '600', marginTop: '24px', marginBottom: '16px' }}
+                              >
+                                {children}
+                              </h1>
+                            ),
+                            h2: ({children}) => (
+                              <h2 
+                                className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-8 pb-2 border-b border-gray-300 dark:border-gray-600"
+                                style={{ fontWeight: '600', marginTop: '24px', marginBottom: '16px' }}
+                              >
+                                {children}
+                              </h2>
+                            ),
+                            h3: ({children}) => (
+                              <h3 
+                                className="text-xl font-semibold text-gray-900 dark:text-white mb-3 mt-6"
+                                style={{ fontWeight: '600', marginTop: '24px', marginBottom: '16px' }}
+                              >
+                                {children}
+                              </h3>
+                            ),
+                            h4: ({children}) => (
+                              <h4 
+                                className="text-lg font-semibold text-gray-900 dark:text-white mb-3 mt-5"
+                                style={{ fontWeight: '600', marginTop: '24px', marginBottom: '16px' }}
+                              >
+                                {children}
+                              </h4>
+                            ),
+                            p: ({children}) => (
+                              <p className="text-gray-900 dark:text-gray-100 mb-4" style={{ marginBottom: '16px' }}>
+                                {children}
+                              </p>
+                            ),
+                            ul: ({children}) => (
+                              <ul className="text-gray-900 dark:text-gray-100 mb-4 ml-6" style={{ marginBottom: '16px', paddingLeft: '2em' }}>
+                                {children}
+                              </ul>
+                            ),
+                            ol: ({children}) => (
+                              <ol className="text-gray-900 dark:text-gray-100 mb-4 ml-6" style={{ marginBottom: '16px', paddingLeft: '2em' }}>
+                                {children}
+                              </ol>
+                            ),
+                            li: ({children}) => (
+                              <li className="mb-1" style={{ marginBottom: '0.25em' }}>
+                                {children}
+                              </li>
+                            ),
+                            strong: ({children}) => (
+                              <strong className="font-semibold text-gray-900 dark:text-white">
+                                {children}
+                              </strong>
+                            ),
+                            blockquote: ({children}) => (
+                              <blockquote 
+                                className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 my-4 text-gray-600 dark:text-gray-400 italic"
+                                style={{ marginTop: '0', marginBottom: '16px' }}
+                              >
+                                {children}
+                              </blockquote>
+                            ),
+                            hr: () => (
+                              <hr className="border-0 border-t border-gray-300 dark:border-gray-600 my-6" style={{ margin: '24px 0' }} />
+                            ),
+                            a: ({href, children}) => (
+                              <a 
+                                href={href} 
+                                className="text-blue-600 dark:text-blue-400 hover:underline"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {children}
+                              </a>
+                            ),
+                            table: ({children}) => (
+                              <div className="overflow-x-auto my-4">
+                                <table className="border-collapse border border-gray-300 dark:border-gray-600 w-full">
+                                  {children}
+                                </table>
+                              </div>
+                            ),
+                            thead: ({children}) => (
+                              <thead className="bg-gray-50 dark:bg-gray-700">
+                                {children}
+                              </thead>
+                            ),
+                            th: ({children}) => (
+                              <th className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-left font-semibold text-gray-900 dark:text-white">
+                                {children}
+                              </th>
+                            ),
+                            td: ({children}) => (
+                              <td className="border border-gray-300 dark:border-gray-600 px-3 py-2 text-gray-900 dark:text-gray-100">
+                                {children}
+                              </td>
+                            )
+                          }}
+                        >
+                          {project.overview.readme}
+                        </ReactMarkdown>
+                      </div>
+                    )}
+
                     {/* 화면 이미지 */}
                     {'images' in project && project.images && 'gallery' in project.images && (
                       <div>
@@ -2234,37 +2717,39 @@ public class PromptTemplateLoader {
                   </h2>
                   
                   <div className="space-y-8">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                        정량적 성과
-                      </h3>
-                      <div className="grid gap-4">
-                        {project.achievements.map((achievement, index) => (
-                          <div key={index} className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg p-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-semibold text-gray-900 dark:text-white">
-                                {achievement.metric}
-                              </h4>
-                              <span className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">
-                                {achievement.improvement}
-                              </span>
+                    {'achievements' in project && project.achievements && project.achievements.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                          정량적 성과
+                        </h3>
+                        <div className="grid gap-4">
+                          {project.achievements.map((achievement, index) => (
+                            <div key={index} className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg p-4">
+                              <div className="flex items-center justify-between mb-2">
+                                <h4 className="font-semibold text-gray-900 dark:text-white">
+                                  {achievement.metric}
+                                </h4>
+                                <span className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">
+                                  {achievement.improvement}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-4 mb-2">
+                                <span className="text-gray-500 dark:text-gray-400">
+                                  Before: {achievement.before}
+                                </span>
+                                <span className="text-blue-600 dark:text-blue-400">→</span>
+                                <span className="text-green-600 dark:text-green-400 font-semibold">
+                                  After: {achievement.after}
+                                </span>
+                              </div>
+                              <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                {achievement.description}
+                              </p>
                             </div>
-                            <div className="flex items-center gap-4 mb-2">
-                              <span className="text-gray-500 dark:text-gray-400">
-                                Before: {achievement.before}
-                              </span>
-                              <span className="text-blue-600 dark:text-blue-400">→</span>
-                              <span className="text-green-600 dark:text-green-400 font-semibold">
-                                After: {achievement.after}
-                              </span>
-                            </div>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
-                              {achievement.description}
-                            </p>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                     
                     {'lessons' in project && project.lessons && (
                       <div>
