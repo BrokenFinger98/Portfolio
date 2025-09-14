@@ -150,15 +150,244 @@ export default function ProjectDetailPage({ projectId }: ProjectDetailPageProps)
   const projectsData = {
     memento: {
       title: "MEMENTO",
-      subtitle: "TDD와 개인 PC 서버 운영을 통한 추억 공유 플랫폼",
+      subtitle: "싸피생을 위한 추억 아카이빙 웹 서비스",
       thumbnail: "/images/projects/memento/logo.png",
-      duration: "2025.07.29 ~ 2025.09.05 (5주)",
+      duration: "2025.07.29 ~ 진행중",
       team: "백엔드 3명, 프론트 2명",
       role: "Back-End, DevOps",
       github: "https://github.com/BrokenFinger98/memento",
       demo: "#",
       overview: {
-        background: "클라우드 서비스 비용 부담과 개발 과정에서의 테스트 중요성, 그리고 팀 협업 시 API 문서 관리의 어려움을 해결하고자 했습니다. 개인 PC를 직접 서버로 운영하며 인프라 비용을 절약하고, TDD와 문서 자동화를 통해 개발 품질을 높이는 것이 목표였습니다."
+        background: "SSAFY 12기 12반 교육생들의 추억을 기억하고 공유하기 위한 서비스를 만들고 싶었습니다. 클라우드 서비스 비용 부담과 개발 과정에서의 테스트 중요성, 그리고 팀 협업 시 API 문서 관리의 어려움을 해결하고자 했습니다. 개인 PC를 직접 서버로 운영하며 인프라 비용을 절약하고, TDD와 문서 자동화를 통해 개발 품질을 높이는 것이 목표였습니다.",
+        keyFeatures: [
+          {
+            title: "👥 모임",
+            description: [
+              "모임을 생성하거나 모임에 참여",
+              "예: SSAFY 12기 12반"
+            ]
+          },
+          {
+            title: "🖼️ 사진 아카이빙(사진첩)",
+            description: [
+              "지도에 위치별로 기억 대표 사진 조회",
+              "날짜별로 사진 조회"
+            ]
+          },
+          {
+            title: "🧠 기억",
+            description: [
+              "모임에서 발생한 이벤트를 기억 단위로 기록",
+              "제목, 장소, 시간, 참여자를 작성"
+            ]
+          },
+          {
+            title: "📝 포스트",
+            description: [
+              "기억 하위에서 이미지 또는 글로 포스트 작성"
+            ]
+          },
+          {
+            title: "💬 리액션",
+            description: [
+              "작성된 포스트에 댓글 기반 리액션 작성",
+              "이모지: 이미지/GIF로 등록하여 모임 내 공유",
+              "보이스: audio/wav 업로드로 공유 가능",
+              "일회용 보이스는 재사용 불가 및 공유 제한"
+            ]
+          },
+          {
+            title: "📖 방명록",
+            description: [
+              "프로필: 등록된 사진 중 하나를 선택해 프로필 이미지 지정",
+              "MBTI: 모임 내에서 해당 회원의 MBTI를 대신 평가",
+              "방명록: 모임 구성원이 해당 회원의 방명록을 익명 작성"
+            ]
+          },
+          {
+            title: "🏅 업적",
+            description: [
+              "모임 내 활동으로 업적을 획득하고 칭호로 사용",
+              "예: 게시글 20개 이상 작성, 모든 MBTI 수집"
+            ]
+          }
+        ]
+      },
+      components: {
+        "Spring Boot": {
+          description: "도메인 중심 REST API, 인증/인가, 테스트·문서 자동화 제공",
+          responsibilities: [
+            "Service 계층을 중심으로 트랜잭션 경계 설정(@Transactional)",
+            "도메인별 비즈니스 로직 캡슐화와 DTO 매핑",
+            "Kakao OAuth2 + JWT 인증, REST Docs + TDD"
+          ],
+          keyComponents: [
+            { 
+              name: "AuthService", 
+              description: "Kakao OAuth2 콜백 처리 및 JWT 발급/로그인 흐름",
+              methods: ["getAuthUrl()", "handleAuthorizationCallback()"]
+            },
+            { 
+              name: "MemberService", 
+              description: "회원 조회/가입/수정 및 커뮤니티 연계",
+              methods: ["findMemberWithKakaoId()", "signUp()", "update()"]
+            },
+            { 
+              name: "CommunityService", 
+              description: "커뮤니티 CRUD 및 멤버십 관리"
+            },
+            { 
+              name: "AssociateService", 
+              description: "멤버-커뮤니티 연관(Associate) 관리",
+              methods: [
+                "searchAll()",
+                "searchAllMyAssociate()",
+                "search()",
+                "update()"
+              ]
+            },
+            { 
+              name: "MemoryService", 
+              description: "추억 단위 CRUD/목록/다운로드",
+              methods: [
+                "read()",
+                "readAll()",
+                "create()",
+                "update()",
+                "delete()",
+                "downloadImages()"
+              ] 
+            },
+            { 
+              name: "PostService", 
+              description: "포스트 작성/수정/삭제/조회 + 미디어 연동",
+              methods: [
+                "search()",
+                "searchAll()",
+                "create()",
+                "update()",
+                "delete()"
+              ]
+            },
+            { 
+              name: "CommentService", 
+              description: "댓글/이모지/보이스 등 상호작용 처리",
+              methods: [
+                "createEmojiComment()",
+                "createVoiceComment()",
+                "createTemporaryVoiceComment()",
+                "deleteComment()"
+              ]
+            },
+            { 
+              name: "VoiceService", 
+              description: "음성 업로드/조회/삭제 (MinIO 연동)",
+              methods: [
+                "createPermanentVoice()",
+                "getVoices()",
+                "removeVoice()"
+              ]
+            },
+            { 
+              name: "EmojiService", 
+              description: "이모지 업로드/조회/삭제 (MinIO 연동)",
+              methods: [
+                "createEmoji()",
+                "getEmoji()",
+                "removeEmoji()"
+              ] 
+            },
+            { 
+              name: "ProfileImageService", 
+              description: "프로필 이미지 업로드/조회/삭제 (MinIO 연동)",
+              methods: [
+                "create()",
+                "delete()",
+                "search()"
+              ]
+            },
+            { 
+              name: "AchievementService", 
+              description: "업적(배지) 조회/관리",
+              methods: ["search()"]
+            },
+            { 
+              name: "MbtiService", 
+              description: "MBTI 결과 생성/조회",
+              methods: ["create()", "search()"]
+            },
+            { 
+              name: "NotificationService", 
+              description: "알림 조회/미확인 수/스트림 처리",
+              methods: ["getNotifications()", "getUnread()"]
+            },
+            { 
+              name: "MinioService", 
+              description: "오브젝트 스토리지 업로드/삭제 래퍼",
+              methods: ["createFile()", "removeFile()"]
+            }
+          ],
+          features: [
+            "ArgumentResolver로 인증 컨텍스트 주입",
+            "JPA + QueryDSL + Auditing 기반 영속성",
+            "MockMvc 기반 TDD와 Spring REST Docs로 문서 자동화"
+          ]
+        },
+        "Web(React)": {
+          description: "React/Vite 기반 SPA로 추억 타임라인·포스트 작성·미디어 뷰 제공",
+          responsibilities: [
+            "API 연동을 통한 CRUD UI 제공",
+            "미디어 업로드/미리보기 및 인터랙션(이모지/댓글)",
+            "환경 변수(VITE_PUBLIC_API_BASE_URL 등)로 배포 환경 구성"
+          ],
+          features: [
+            "빌드 산출물은 Nginx에서 정적 서빙",
+            "Zustand 등 경량 상태관리 사용"
+          ]
+        },
+        "Nginx": {
+          description: "정적 파일 서빙과 리버스 프록시 구성",
+          responsibilities: [
+            "Vite 빌드 결과(/usr/share/nginx/html) 정적 서빙",
+            "proxy-net 연결을 통한 외부 노출/프록시 연동"
+          ],
+          features: [
+            "front-end/docker/app/Dockerfile에서 Nginx 1.27-alpine 사용",
+            "커스텀 default.conf로 라우팅 설정"
+          ]
+        },
+        "MinIO": {
+          description: "S3 호환 오브젝트 스토리지(서버/버킷/정책) 운영",
+          responsibilities: [
+            "버킷(post/voice/emoji/profile-image) 사전 생성 및 정책/권한 관리",
+            "정적 리소스 공개 범위 관리(다운로드 공개, 업로드는 서버 경유)",
+            "콘솔(9001) 기반 운영/모니터링"
+          ],
+          features: [
+            "S3 API 호환으로 AWS S3 전환 용이",
+            "minio/mc 초기화 컨테이너로 버킷/정책 자동화",
+            "9000/9001 포트 구성과 데이터 볼륨 영속화"
+          ]
+        },
+        "Redis": {
+          description: "토큰/세션 등 휘발성 데이터 저장소",
+          responsibilities: [
+            "Refresh Token 저장/검증 및 만료(TTL) 관리"
+          ]
+        },
+        "MySQL": {
+          description: "애플리케이션 데이터를 저장하는 RDBMS 서버",
+          responsibilities: [
+            "데이터 영속화와 트랜잭션 보장",
+            "볼륨 마운트 및 백업 전략 운영",
+            "헬스체크와 리소스 모니터링"
+          ],
+          features: [
+            "docker-compose(dev/prod)에서 3306 노출 없이 내부 네트워킹",
+            "데이터 볼륨 영속화와 healthcheck 구성",
+            "초기 스키마 스크립트(옵션) 마운트 가능"
+          ]
+        }
       },
       challenges: [
         {
@@ -199,216 +428,327 @@ export default function ProjectDetailPage({ projectId }: ProjectDetailPageProps)
         }
       ],
       techStack: {
-        backend: [
-          { name: "Java 17", reason: "최신 LTS 버전으로 안정성과 성능 보장" },
-          { name: "Spring Boot", reason: "빠른 개발과 운영 효율성" },
-          { name: "Spring Data JPA", reason: "객체 지향적 데이터 액세스 계층" },
-          { name: "Spring Security", reason: "사용자 인증과 권한 관리" }
+        "Back-end": [
+          { name: "Java", version: "21", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
+          { name: "Spring Boot", version: "3.5.3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
+          { name: "Spring Data JPA", version: "", icon: "https://spring.io/img/projects/spring-data.svg" },
+          { name: "Spring Security", version: "", icon: "https://spring.io/img/projects/spring-security.svg" },
+          { name: "QueryDSL", version: "", icon: "https://cdn.inflearn.com/public/files/courses/328989/c1b5cabc-03f0-4cd8-9f98-8ec0e2f42378/329248-4.png" },
+          { name: "OAuth 2.0", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/oauth/oauth-original.svg" },
+          { name: "JWT", version: "", icon: "https://jwt.io/img/pic_logo.svg" },
+          { name: "JUnit5", version: "", icon: "https://junit.org/junit5/assets/img/junit5-logo.png" },
+          { name: "Spring REST DOCS", version: "", icon: "https://spring.io/img/projects/spring-restdocs.png" },
+          { name: "MockMvc", version: "", icon: "https://spring.io/img/projects/spring-framework.svg" }
         ],
-        storage: [
-          { name: "Minio", reason: "S3 호환 오브젝트 스토리지로 미디어 파일 관리" },
-          { name: "MySQL", reason: "관계형 데이터의 일관성과 ACID 트랜잭션" }
+        "Front-end": [
+          { name: "React", version: "19", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+          { name: "TypeScript", version: "5.8.3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+          { name: "Zustand", version: "5.0.6", icon: "https://github.com/pmndrs/zustand/raw/main/docs/bear.jpg" },
+          { name: "Nginx", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" }
         ],
-        testing: [
-          { name: "JUnit5", reason: "TDD 방법론의 핵심 테스트 프레임워크" },
-          { name: "Spring REST DOCS", reason: "테스트 기반 API 문서 자동 생성" },
-          { name: "MockMvc", reason: "Spring MVC 컨트롤러 통합 테스트" }
+        "Database / Cache": [
+          { name: "MySQL", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
+          { name: "H2 Database", version: "", icon: "https://www.h2database.com/html/images/h2-logo-2.png" },
+          { name: "Redis", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" }
         ],
-        infrastructure: [
-          { name: "Ubuntu Server", reason: "개인 PC 기반 Linux 서버 환경" },
-          { name: "Docker", reason: "컨테이너 기반 서비스 배포" },
-          { name: "Docker Compose", reason: "멀티 컨테이너 애플리케이션 관리" }
+        "Infrastructure": [
+          { name: "Docker", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
+          { name: "Ubuntu Server", version: "", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ubuntu/ubuntu-plain.svg" },
+          { name: "MinIO", version: "8.5.7", icon: "https://cdn.prod.website-files.com/681c8426519d8db8f867c1e8/68656cb290ee4fa91989c2dc_Brand-Logo%20%E2%9C%85.svg" }
         ]
       },
       codeExamples: [
         {
           title: "Minio 오브젝트 스토리지 서비스",
           language: "java",
-          code: `@Service
+          code: `@Getter
+@Setter
+@Configuration
+@ConfigurationProperties(prefix = "minio")
+public class MinioProperties {
+	private String url;
+	private String accessKey;
+	private String secretKey;
+	private Map<String, String> buckets;
+
+	public enum FileType {
+		POST("post"), 
+		VOICE("voice"), 
+		EMOJI("emoji"), 
+		PROFILE_IMAGE("profile-image");
+
+		private final String bucketKey;
+
+		FileType(String bucketKey) {
+			this.bucketKey = bucketKey;
+		}
+
+		public String getBucketKey() {
+			return bucketKey;
+		}
+	}
+
+	public String getBucketName(FileType fileType) {
+		return buckets.get(fileType.getBucketKey());
+	}
+}
+
+@Configuration
+public class MinioConfig {
+
+	@Bean
+	public MinioClient minioClient(MinioProperties properties) {
+		return MinioClient.builder()
+			.endpoint(properties.getUrl())
+			.credentials(properties.getAccessKey(), properties.getSecretKey())
+			.build();
+	}
+}
+
 @RequiredArgsConstructor
-public class MinioStorageService {
-    
-    private final MinioClient minioClient;
-    
-    @Value("\${minio.bucket.name}")
-    private String bucketName;
-    
-    public String uploadFile(MultipartFile file, String fileName) throws Exception {
-        // 버킷 존재 확인 및 생성
-        ensureBucketExists();
-        
-        // 파일 업로드
-        minioClient.putObject(
-            PutObjectArgs.builder()
-                .bucket(bucketName)
-                .object(fileName)
-                .stream(file.getInputStream(), file.getSize(), -1)
-                .contentType(file.getContentType())
-                .build()
-        );
-        
-        // 퍼블릭 URL 반환
-        return minioClient.getPresignedObjectUrl(
-            GetPresignedObjectUrlArgs.builder()
-                .method(Method.GET)
-                .bucket(bucketName)
-                .object(fileName)
-                .expiry(60 * 60 * 24) // 24시간 유효
-                .build()
-        );
-    }
-    
-    private void ensureBucketExists() throws Exception {
-        boolean bucketExists = minioClient.bucketExists(
-            BucketExistsArgs.builder().bucket(bucketName).build());
-        
-        if (!bucketExists) {
-            minioClient.makeBucket(
-                MakeBucketArgs.builder().bucket(bucketName).build());
-                
-            // 퍼블릭 읽기 정책 설정
-            String policy = """
-                {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Principal": "*",
-                            "Action": "s3:GetObject",
-                            "Resource": "arn:aws:s3:::%s/*"
-                        }
-                    ]
-                }""".formatted(bucketName);
-                
-            minioClient.setBucketPolicy(
-                SetBucketPolicyArgs.builder()
-                    .bucket(bucketName)
-                    .config(policy)
-                    .build()
-            );
-        }
-    }
+@Service
+public class MinioService {
+
+	private final MinioClient minioClient;
+	private final MinioProperties minioProperties;
+
+	public String createFile(MultipartFile file, FileType fileType) {
+		try {
+			String bucket = minioProperties.getBucketName(fileType);
+			String extension = getExtension(file.getOriginalFilename());
+			String filename = UUID.randomUUID() + "." + extension;
+			long contentLength = file.getBytes().length;
+
+			try (InputStream inputStream = file.getInputStream()) {
+				minioClient.putObject(
+					PutObjectArgs.builder()
+						.bucket(bucket)
+						.object(filename)
+						.stream(inputStream, contentLength, -1)
+						.contentType(file.getContentType())
+						.build()
+				);
+			}
+
+			return minioProperties.getUrl() + "/" + bucket + "/" + filename;
+		} catch (Exception e) {
+			throw new MementoException(MINIO_EXCEPTION);
+		}
+	}
+
+	public void removeFile(String url) {
+		try {
+			String baseUrl = minioProperties.getUrl() + "/";
+			String pathAfterUrl = url.substring(baseUrl.length());
+			String[] parts = pathAfterUrl.split("/", 2);
+			String bucket = parts[0];
+			String filename = parts[1];
+
+			minioClient.removeObject(
+				RemoveObjectArgs.builder()
+					.bucket(bucket)
+					.object(filename)
+					.build()
+			);
+		} catch (Exception e) {
+			throw new MementoException(MINIO_EXCEPTION);
+		}
+	}
 }`
         },
         {
           title: "TDD 기반 API 테스트 with Spring REST DOCS",
           language: "java",
           code: `@ExtendWith(RestDocumentationExtension.class)
-@WebMvcTest(MemoryController.class)
-class MemoryControllerTest {
-    
-    @Autowired
-    private MockMvc mockMvc;
-    
-    @MockBean
-    private MemoryService memoryService;
-    
-    @Test
-    @DisplayName("추억 생성 API 테스트")
-    void createMemory_Success() throws Exception {
-        // Given
-        MemoryCreateRequest request = MemoryCreateRequest.builder()
-            .title("소중한 추억")
-            .content("가족과 함께한 여행")
-            .build();
-            
-        MemoryResponse response = MemoryResponse.builder()
-            .id(1L)
-            .title(request.getTitle())
-            .content(request.getContent())
-            .createdAt(LocalDateTime.now())
-            .build();
-            
-        given(memoryService.createMemory(any(), any()))
-            .willReturn(response);
-        
-        // When & Then
-        mockMvc.perform(post("/api/memories")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.title").value(request.getTitle()))
-            .andExpect(jsonPath("$.content").value(request.getContent()))
-            .andDo(document("memory-create",
-                requestFields(
-                    fieldWithPath("title").description("추억 제목"),
-                    fieldWithPath("content").description("추억 내용")
-                ),
-                responseFields(
-                    fieldWithPath("id").description("추억 ID"),
-                    fieldWithPath("title").description("추억 제목"),
-                    fieldWithPath("content").description("추억 내용"),
-                    fieldWithPath("createdAt").description("생성 일시")
-                )
-            ));
-    }
+public abstract class RestDocsSupport {
+
+	protected MockMvc mockMvc;
+	protected ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+	protected abstract Object initController();
+
+	@BeforeEach
+	void setUp(RestDocumentationContextProvider provider) {
+		this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
+			.setCustomArgumentResolvers(
+				new MemberIdArgumentResolver(),
+				new CommunityIdArgumentResolver(),
+				new AssociateIdArgumentResolver())
+			.apply(documentationConfiguration(provider))
+			.build();
+	}
+
+	@AfterEach
+	void clearSecurityContext() {
+		SecurityContextHolder.clearContext();
+	}
+
+	protected void setAuthentication(Long memberId, Long associateId, Long communityId) {
+		MemberPrincipal principal = new MemberPrincipal(memberId, associateId, communityId);
+		Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(auth);
+	}
+}
+  
+public class VoiceControllerDocsTest extends RestDocsSupport {
+
+	private final VoiceService voiceService = Mockito.mock(VoiceService.class);
+	private final FileValidator fileValidator = Mockito.mock(FileValidator.class);
+
+	@Override
+	protected Object initController() {
+		return new VoiceController(voiceService, fileValidator);
+	}
+
+	@Test
+	@DisplayName("보이스 목록을 조회한다.")
+	void getVoices() throws Exception {
+		// given
+		long communityId = 1L;
+		long associateId = 1L;
+		long memberId = 1L;
+		setAuthentication(memberId, associateId, communityId);
+
+		long cursor = 1L;
+		String keyword = "인쥐용";
+		int size = 10;
+		Long nextCursor = cursor + size;
+		boolean hasNext = true;
+
+		VoiceResponse voiceResponse = VoiceResponse.of(VoiceFixtures.permanentVoice());
+		VoiceListResponse response = VoiceListResponse.of(List.of(voiceResponse), nextCursor, hasNext);
+
+		given(voiceService.getVoices(any(VoiceListQueryRequest.class)))
+			.willReturn(response);
+
+		// when & then
+		mockMvc.perform(
+				get("/api/v1/communities/{communityId}/voices", communityId)
+					.param("cursor", String.valueOf(cursor))
+					.param("size", String.valueOf(size))
+					.param("keyword", keyword))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andDo(document("voice-get",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("communityId").description("커뮤니티 ID")
+				),
+				queryParameters(
+					parameterWithName("cursor").description("현재 페이지의 마지막 보이스 ID (첫 페이지는 null)").optional(),
+					parameterWithName("size").description("요청할 보이스 수 (1-30, 기본값: 10)").optional(),
+					parameterWithName("keyword").description("보이스 이름 검색 키워드 (선택)").optional()
+				),
+				responseFields(
+					fieldWithPath("voices[].id").description("보이스 ID"),
+					fieldWithPath("voices[].name").description("보이스 이름"),
+					fieldWithPath("voices[].url").description("보이스 오디오 URL"),
+					fieldWithPath("voices[].author.id").description("보이스 작성자 ID"),
+					fieldWithPath("voices[].author.nickname").description("보이스 작성자 닉네임"),
+					fieldWithPath("voices[].author.imageUrl").description("보이스 작성자 프로필 이미지 URL"),
+					fieldWithPath("nextCursor").description("다음 페이지 커서 (더 불러올 보이스가 있을 경우)").optional(),
+					fieldWithPath("hasNext").description("다음 페이지 존재 여부")
+				)
+			));
+
+		verify(voiceService).getVoices(any(VoiceListQueryRequest.class));
+	}
 }`
         }
       ],
       achievements: [
         {
           metric: "인프라 비용",
-          before: "클라우드 월 $50+",
-          after: "개인 서버 $0",
-          improvement: "100% 절약",
-          description: "개인 PC Linux 서버 구축 및 운영"
+          before: "클라우드 종량제 비용",
+          after: "개인 PC 서버",
+          improvement: "비용 절감",
+          description: "Ubuntu + Docker Compose 기반 자체 서버 운영"
         },
         {
-          metric: "파일 스토리지",
-          before: "파일 시스템",
-          after: "Minio 오브젝트 스토리지",
-          improvement: "S3 호환성 확보",
-          description: "확장 가능한 오브젝트 스토리지 구축"
+          metric: "인프라 비용",
+          before: "AWS S3",
+          after: "MinIO",
+          improvement: "비용 절감",
+          description: "오픈소스 오브젝트 스토리지 활용 경험"
         },
         {
-          metric: "테스트 커버리지",
-          before: "수동 테스트",
-          after: "TDD 90%+",
-          improvement: "자동화 달성",
-          description: "JUnit5 기반 체계적 테스트 도입"
+          metric: "배포 리드타임",
+          before: "수동 빌드/배포",
+          after: "GitHub Actions + GHCR",
+          improvement: "자동화",
+          description: "이미지 빌드/푸시·Compose 재기동으로 배포 단순화"
         },
         {
-          metric: "API 문서화",
-          before: "수동 관리",
-          after: "자동 생성",
-          improvement: "동기화 100%",
-          description: "Spring REST DOCS 기반 테스트 연동 문서"
+          metric: "문서 신뢰도",
+          before: "Notion API 문서 직접 작성",
+          after: "REST Docs 자동 생성",
+          improvement: "테스트와 동기화",
+          description: "테스트 성공 시 최신 API 스니펫 생성·배포"
+        },
+        {
+          metric: "중복 업로드 방지",
+          before: "사용자 중복 업로드 발생",
+          after: "SHA-256 해시 검증",
+          improvement: "저장소 낭비 감소",
+          description: "이미지 해시 중복 검증으로 동일 파일 등록 차단"
         }
       ],
       lessons: [
         {
+          category: "DNS 및 IP 설정",
+          points: [
+            "공인 IP vs 사설 IP, NAT 구조 이해",
+            "공유기 포트 포워딩과 UFW 방화벽 규칙 구성 (80/443 → Nginx, 내부 8080 → Spring)",
+            "Let's Encrypt(Certbot)로 SSL 발급·자동 갱신, Nginx TLS 설정",
+            "리버스 프록시 라우팅 정의(/ → 정적 자원, /api → Spring)"
+          ]
+        },
+        {
           category: "DevOps & 인프라",
           points: [
-            "개인 PC Ubuntu Server 구축 및 네트워크 설정 경험",
-            "Docker Compose를 활용한 멀티 컨테이너 서비스 운영",
-            "포트 포워딩과 방화벽 설정을 통한 안전한 서버 운영",
-            "Minio 오브젝트 스토리지 구축 및 S3 호환 API 활용"
+            "개인 PC Ubuntu Server 구축, 도메인/DNS, Nginx 리버스 프록시 구성",
+            "Docker Compose 네트워크/healthcheck/depends_on으로 기동 순서 제어",
+            "Secrets/Env 분리 및 GHCR 이미지 운영",
+            "MinIO 운영(minio/mc), 버킷 정책 설계와 공개 범위 정의"
           ]
         },
         {
           category: "TDD & 테스트",
           points: [
-            "Given-When-Then 패턴의 체계적인 테스트 작성법",
-            "Spring REST DOCS를 활용한 테스트 기반 문서 자동화",
-            "MockMvc와 JUnit5를 통한 API 통합 테스트 경험",
-            "테스트 커버리지 90% 이상 달성을 통한 코드 품질 향상"
+            "Given-When-Then 기반 시나리오 테스트 설계",
+            "RestDocsSupport로 공통 설정/리졸버/문서화 구성",
+            "MockMvc + 스텁/슬라이스 테스트로 빠른 피드백",
+            "테스트가 곧 문서가 되는 개발 흐름의 장점 체감"
           ]
         },
         {
-          category: "협업 & 문서화",
+          category: "Spring REST Docs",
           points: [
-            "API 문서 자동화로 팀 간 커뮤니케이션 효율성 증대",
-            "테스트 코드와 문서의 동기화를 통한 신뢰성 확보",
-            "Git Flow와 코드 리뷰를 통한 체계적 협업 프로세스"
+            "테스트 코드 기반 문서화로 신뢰도 상승",
+            "인터페이스의 의도치 않은 변경을 감지 가능",
           ]
         }
       ],
       improvements: [
-        "Kubernetes 클러스터 구축으로 컨테이너 오케스트레이션 자동화",
-        "Jenkins Pipeline을 통한 CI/CD 자동화 고도화",
         "Prometheus + Grafana 모니터링 시스템 구축",
-        "Load Balancer 도입으로 고가용성 서버 아키텍처 구현"
-      ]
+        "SSAFY 12기 12반만을 위한 서비스가 아니라 SSAFY 교육생 전체를 위한 서비스로 확대"
+      ],
+      images: {
+        architecture: [
+          {
+            src: "/images/projects/memento/architecture.png",
+            alt: "MSA 아키텍처 다이어그램",
+            title: "마이크로서비스 아키텍처"
+          }
+        ],
+        erd: [
+          {
+            src: "/images/projects/memento/erd.png",
+            alt: "데이터베이스 ERD"
+          }
+        ]
+      }
     },
     contract4k: {
       title: "Contract4k(Contract for Kotlin)",

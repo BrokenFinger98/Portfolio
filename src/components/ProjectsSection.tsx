@@ -6,15 +6,16 @@ export default function ProjectsSection() {
       id: "memento",
       title: "MEMENTO",
       shortDescription: "싸피생을 위한 추억 아카이빙 웹 서비스",
-      description: "개인 PC를 직접 서버로 구축하고 Minio 오브젝트 스토리지를 활용한 미디어 관리 시스템. TDD 기반 개발과 Spring REST DOCS를 통한 API 문서 자동화를 구현한 협업 프로젝트.",
+      description: "개인 PC를 직접 Linux 서버로 운영하며 Docker Compose로 API·WEB·MySQL·Redis·MinIO를 오케스트레이션. MinIO(S3 호환) 기반 미디어 관리, Spring REST Docs로 테스트 기반 API 레퍼런스 자동화, TDD로 품질 확보.",
       thumbnail: "/images/projects/memento/logo.png",
       tech: ["Java", "Spring Boot", "Spring Data JPA", "Spring Security", "MySQL", "Minio", "JUnit5", "Spring REST DOCS", "TDD"],
-      teamSize: "백엔드 3명",
-      duration: "2025.07.29 ~ ",
+      teamSize: "백엔드 3명, 프론트 2명",
+      duration: "2025.07.29 ~ 진행중",
       achievements: [
-        "개인 PC를 Linux 서버로 직접 구축 및 운영",
-        "Minio 오브젝트 스토리지로 미디어 파일 관리 시스템 구현",
-        "Spring REST DOCS로 테스트 기반 API 문서 자동화"
+        "개인 PC Linux 서버 운영 + Nginx 리버스 프록시/도메인 구성",
+        "MinIO 버킷 분리·정책으로 이미지/음성 미디어 관리 고도화",
+        "GitHub Actions + GHCR + Docker Compose로 배포 시간 단축",
+        "Spring REST Docs + TDD로 테스트·문서 동기화 및 품질 확보"
       ],
       github: "https://github.com/BrokenFinger98/memento",
     },
