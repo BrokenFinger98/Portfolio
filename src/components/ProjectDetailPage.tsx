@@ -157,6 +157,7 @@ export default function ProjectDetailPage({ projectId }: ProjectDetailPageProps)
       role: "Back-End, DevOps",
       github: "https://github.com/BrokenFinger98/memento",
       demo: "#",
+      apiReference: "/images/projects/memento/api_reference.html",
       overview: {
         background: "SSAFY 12기 12반 교육생들의 추억을 기억하고 공유하기 위한 서비스를 만들고 싶었습니다. 클라우드 서비스 비용 부담과 개발 과정에서의 테스트 중요성, 그리고 팀 협업 시 API 문서 관리의 어려움을 해결하고자 했습니다. 개인 PC를 직접 서버로 운영하며 인프라 비용을 절약하고, TDD와 문서 자동화를 통해 개발 품질을 높이는 것이 목표였습니다.",
         keyFeatures: [
@@ -2749,6 +2750,7 @@ public class PromptTemplateLoader {
     { id: "architecture", name: "아키텍처 & 설계", icon: <Server className="w-4 h-4" /> },
     { id: "challenges", name: "기술적 도전과 해결", icon: <Zap className="w-4 h-4" /> },
     { id: "code", name: "핵심 구현 코드", icon: <Code className="w-4 h-4" /> },
+    { id: "api", name: "API Reference", icon: <ExternalLink className="w-4 h-4" /> },
     { id: "achievements", name: "성과 및 배운 점", icon: <TrendingUp className="w-4 h-4" /> }
   ].filter(section => {
     // 프로젝트별로 섹션 필터링
@@ -2762,6 +2764,9 @@ public class PromptTemplateLoader {
       return false;
     }
     if (section.id === "code" && !('codeExamples' in project && project.codeExamples)) {
+      return false;
+    }
+    if (section.id === "api" && !('apiReference' in project && project.apiReference)) {
       return false;
     }
     return true;
@@ -3435,6 +3440,33 @@ public class PromptTemplateLoader {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </section>
+              )}
+
+              {activeSection === "api" && 'apiReference' in project && project.apiReference && (
+                <section>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                    📚 API Reference
+                  </h2>
+                  <div className="space-y-4">
+                    <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                      <iframe
+                        src={project.apiReference as string}
+                        className="w-full h-[75vh]"
+                        title="MEMENTO API Reference"
+                      />
+                    </div>
+                    <div className="text-right">
+                      <a
+                        href={project.apiReference as string}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        <ExternalLink className="w-4 h-4" /> 새 탭에서 열기
+                      </a>
+                    </div>
                   </div>
                 </section>
               )}
