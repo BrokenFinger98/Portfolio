@@ -425,7 +425,7 @@ export default function ProjectDetailPage({ projectId }: ProjectDetailPageProps)
             "Spring REST DOCS로 테스트 기반 문서 자동 생성",
             "Gradle 빌드 시 문서 자동 배포 설정"
           ],
-          result: "90% 이상 테스트 커버리지 달성 및 항상 최신 상태의 API 문서 제공"
+          result: "TDD 개발 방법론 적용 및 항상 최신 상태의 API 문서 제공"
         }
       ],
       techStack: {
